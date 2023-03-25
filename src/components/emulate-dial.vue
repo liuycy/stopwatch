@@ -52,7 +52,6 @@ onReady(async () => {
 })
 
 onUnload(() => {
-	console.log('unload')
 	drawer.cancelAnimationFrame(timer)
 })
 </script>

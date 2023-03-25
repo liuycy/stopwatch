@@ -12,8 +12,22 @@
 import DialPanel from '../../components/dial-panel.vue'
 import ActionsGroup from '../../components/actions-group.vue'
 import RecordsList from '../../components/records-list.vue'
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
 
 function preventPageScroll() { }
+
+onShareAppMessage(() => {
+	return {
+		title: '计次秒表|计时器',
+		imageUrl: '/static/share.jpeg'
+	}
+})
+
+onShareTimeline(() => {
+	return {
+		title: '计次秒表|计时器',
+	}
+})
 </script>
 
 <style lang="scss" scoped>

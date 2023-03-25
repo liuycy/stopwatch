@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
 	type: 'start' | 'pause' | 'reset' | 'count',
-	disabled: boolean,
+	disabled?: boolean,
 }>()
 
 const emit = defineEmits(['click'])
