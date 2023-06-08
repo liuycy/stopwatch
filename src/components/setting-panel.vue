@@ -130,13 +130,9 @@ function hidePanel() {
         border-radius: 20rpx;
         background-color: var(--color-panel-action-bg);
 
-        &>button.item {
-            border: unset;
-            height: 60rpx;
-            box-sizing: content-box;
-        }
-
         .item {
+            border: unset;
+            box-sizing: content-box;
             height: 60rpx;
             padding: 10rpx;
             padding-left: 30rpx;
