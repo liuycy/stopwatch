@@ -1,5 +1,5 @@
-import type { Duration } from '../types/time';
-import { formatDuration } from './format';
+import { formatDuration } from '@/utils/format';
+import type { Duration } from '@/types/time';
 
 interface DrawerOptions {
     instance: any;

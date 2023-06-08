@@ -1,19 +1,36 @@
 <template>
 	<view class="dial-panel">
-		<swiper class="swiper" :indicator-dots="true" indicator-color="#727272" indicator-active-color="#fff">
-			<swiper-item>
-				<number-dial></number-dial>
-			</swiper-item>
-			<swiper-item>
-				<emulate-dial></emulate-dial>
-			</swiper-item>
-		</swiper>
+		<template v-if="settings.defaultDialType === DialType.Number">
+			<swiper class="swiper" :indicator-dots="true" indicator-color="#727272" indicator-active-color="#fff">
+				<swiper-item>
+					<number-dial></number-dial>
+				</swiper-item>
+				<swiper-item>
+					<emulate-dial></emulate-dial>
+				</swiper-item>
+			</swiper>
+		</template>
+		<template v-if="settings.defaultDialType === DialType.Emulate">
+			<swiper class="swiper" :indicator-dots="true" indicator-color="#727272" indicator-active-color="#fff">
+				<swiper-item>
+					<emulate-dial></emulate-dial>
+				</swiper-item>
+				<swiper-item>
+					<number-dial></number-dial>
+				</swiper-item>
+			</swiper>
+		</template>
 	</view>
 </template>
 
 <script lang="ts" setup>
-import NumberDial from './number-dial.vue'
-import EmulateDial from './emulate-dial.vue'
+import NumberDial from '@/components/number-dial.vue'
+import EmulateDial from '@/components/emulate-dial.vue'
+
+import { useSettings } from '@/stores/settings'
+import { DialType } from '@/types/enums'
+
+const settings = useSettings()
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,8 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-import { DialStatus } from '../types/enums';
-import { formatDuration, parseDuration } from '../utils/format';
+import { DialStatus } from '@/types/enums';
+import { formatDuration, parseDuration } from '@/utils/format';
 
 export const useDialStore = defineStore('dial', () => {
     const milliseconds = ref(0);

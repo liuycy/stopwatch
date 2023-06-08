@@ -1,11 +1,24 @@
 <script lang="ts" setup>
-    import {
-        onLaunch
-    } from '@dcloudio/uni-app'
+import { onLaunch } from '@dcloudio/uni-app'
 
-    onLaunch((options) => {
-        console.log(options)
-    })
+import { useSettings } from '@/stores/settings'
+
+const settings = useSettings()
+
+settings.$subscribe((_, state) => {
+    const data = JSON.stringify(state)
+    uni.setStorage({ key: 'settings', data })
+})
+
+onLaunch(() => {
+    uni.setKeepScreenOn({ keepScreenOn: true })
+
+    const data = uni.getStorageSync('settings')
+    if (!data) return
+
+    settings.$patch(JSON.parse(data))
+    uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn })
+})
 </script>
 
 <style lang="scss">
@@ -28,5 +41,13 @@ page {
 
     --color-gray-bg: #333;
     --color-gray-hover: #1b1b1b;
+
+    --color-panel-bg: #f7f7f7;
+    --color-panel-action-bg: #fff;
+    --color-panel-cancel-border: #e6e6e6;
+    --color-panel-cancel-text: #5e6696;
+    --color-panel-text: #000;
+    --color-panel-label: #999;
+    --color-panel-label-highlight: #27bd2d;
 }
 </style>

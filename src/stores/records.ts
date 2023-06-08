@@ -1,7 +1,8 @@
-import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { formatDuration, parseDuration } from '../utils/format';
-import type { Duration } from '../types/time';
+import { ref } from 'vue';
+
+import { formatDuration, parseDuration } from '@/utils/format';
+import type { Duration } from '@/types/time';
 
 export const useRecordsStore = defineStore('records', () => {
     const byTime = ref<{ duration: string; index: number }[]>([]);

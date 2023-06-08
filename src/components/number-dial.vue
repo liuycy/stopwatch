@@ -6,11 +6,9 @@
 </template>
 
 <script lang="ts" setup>
-import TimeLabel from './time-label.vue'
+import TimeLabel from '@/components/time-label.vue'
 
-import {
-	useDialStore
-} from '../stores/dial'
+import { useDialStore } from '@/stores/dial'
 
 const dial = useDialStore()
 </script>

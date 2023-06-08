@@ -16,21 +16,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	provide
-} from "vue";
+import { computed, provide } from "vue"
 
-import type {
-	Duration
-} from "../types/time";
+import ColonSymbol from '@/components/colon-symbol.vue'
+import DotSymbol from '@/components/dot-symbol.vue'
 
-import {
-	padFixedInt
-} from '../utils/format'
-
-import ColonSymbol from './colon-symbol.vue'
-import DotSymbol from './dot-symbol.vue'
+import { padFixedInt } from '@/utils/format'
+import type { Duration } from "@/types/time"
 
 const props = defineProps<{
 	duration: Duration,

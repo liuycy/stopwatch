@@ -16,9 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	useRecordsStore
-} from '../stores/records'
+import { useRecordsStore } from '@/stores/records'
 
 const records = useRecordsStore()
 

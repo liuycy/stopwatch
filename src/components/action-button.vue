@@ -6,6 +6,9 @@
 </template>
 
 <script lang="ts" setup>
+import { useSettings } from '@/stores/settings'
+import { VibrateType } from '@/types/enums'
+
 const props = defineProps<{
 	type: 'start' | 'pause' | 'reset' | 'count',
 	disabled?: boolean,
@@ -13,10 +16,18 @@ const props = defineProps<{
 
 const emit = defineEmits(['click'])
 
+const settings = useSettings()
+
 function onClick() {
 	if (props.disabled) return
 	emit('click')
-	uni.vibrateShort()
+
+	if (settings.vibrateType === VibrateType.Short) {
+		uni.vibrateShort()
+	}
+	if (settings.vibrateType === VibrateType.Long) {
+		uni.vibrateLong()
+	}
 }
 </script>
 

@@ -5,27 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	getCurrentInstance,
-	ref
-} from "vue";
+import { onReady, onUnload } from '@dcloudio/uni-app'
+import { getCurrentInstance } from "vue"
 
-import {
-	onReady,
-	onUnload,
-} from '@dcloudio/uni-app'
-
-import {
-	Drawer
-} from '../utils/drawer'
-
-import {
-	useDialStore
-} from '../stores/dial'
-
-import {
-	useRecordsStore
-} from '../stores/records'
+import { useRecordsStore } from '@/stores/records'
+import { useDialStore } from '@/stores/dial'
+import { Drawer } from '@/utils/drawer'
 
 const dial = useDialStore()
 const records = useRecordsStore()

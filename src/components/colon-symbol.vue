@@ -6,10 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	computed,
-	inject
-} from 'vue'
+import { computed, inject } from 'vue'
 
 const fontSize = inject<number>('fontSize') ?? 0
 

@@ -1,18 +1,19 @@
 <template>
 	<view class="index" @touchmove.stop.prevent="preventPageScroll">
 		<dial-panel class="fixed"></dial-panel>
-
 		<actions-group></actions-group>
-
 		<records-list class="flexable"></records-list>
+		<setting-panel></setting-panel>
 	</view>
 </template>
 
 <script lang="ts" setup>
-import DialPanel from '../../components/dial-panel.vue'
-import ActionsGroup from '../../components/actions-group.vue'
-import RecordsList from '../../components/records-list.vue'
-import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
+import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+
+import SettingPanel from '@/components/setting-panel.vue'
+import DialPanel from '@/components/dial-panel.vue'
+import ActionsGroup from '@/components/actions-group.vue'
+import RecordsList from '@/components/records-list.vue'
 
 function preventPageScroll() { }
 

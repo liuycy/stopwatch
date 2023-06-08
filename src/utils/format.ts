@@ -1,4 +1,4 @@
-import type { Duration } from '../types/time';
+import type { Duration } from '@/types/time';
 
 export function padFixedInt(num: number | undefined, maxLength = 2) {
     if (num === undefined) return undefined;

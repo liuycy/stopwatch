@@ -8,3 +8,9 @@ export const enum DialStatus {
     Running,
     Paused,
 }
+
+export const enum VibrateType {
+    Short,
+    Long,
+    Disabled,
+}
