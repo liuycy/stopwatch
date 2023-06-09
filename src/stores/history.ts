@@ -14,9 +14,6 @@ export const useHistoryStore = defineStore('history', () => {
     function generate(times: TimeRecord[], peak?: TimePeak) {
         if (!times.length) return;
 
-        const info = uni.getStorageInfoSync();
-        console.log(info);
-
         const total = times.length;
         const ctime = formatTime(new Date(), 'yyyy-mm-dd hh:MM:ss');
 

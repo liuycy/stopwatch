@@ -52,7 +52,7 @@ root-portal {
         --color-panel-cancel-text: #7e88a1;
         --color-panel-text: #808080;
         --color-panel-label: #999;
-        --color-panel-label-highlight: #27bd2d;
+        --color-panel-label-highlight: #26c067;
     }
 }
 </style>

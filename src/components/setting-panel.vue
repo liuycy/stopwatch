@@ -92,19 +92,16 @@ import { VibrateType, DialType } from '@/types/enums'
 
 import SvgIcon from './svg-icon.vue'
 
-const visible = ref(false)
-const iconColor = ref('#000')
-const top = ref<string | null>(null)
-
 const settings = useSettingsStore()
 
-onLoad(() => {
-    const result = uni.getSystemInfoSync()
-    top.value = `${4 + (result.safeArea?.top ?? 0)}px`
+const info = uni.getSystemInfoSync()
 
-    uni.onThemeChange(({ theme }) => {
-        iconColor.value = theme === 'dark' ? '#fff' : '#000'
-    })
+const visible = ref(false)
+const top = `${4 + (info.safeArea?.top ?? 0)}px`
+const iconColor = ref<string>(info.theme === 'dark' ? '#fff' : '#000')
+
+uni.onThemeChange(({ theme }) => {
+    iconColor.value = theme === 'dark' ? '#fff' : '#000'
 })
 
 function changePanelVisible() {
