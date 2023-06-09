@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useSettings } from '@/stores/settings'
+import { useSettingsStore } from '@/stores/settings'
 import { VibrateType } from '@/types/enums'
 
 const props = defineProps<{
@@ -16,7 +16,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['click'])
 
-const settings = useSettings()
+const settings = useSettingsStore()
 
 function onClick() {
 	if (props.disabled) return

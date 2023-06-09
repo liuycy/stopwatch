@@ -2,13 +2,13 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { formatDuration, parseDuration } from '@/utils/format';
-import type { Duration } from '@/types/time';
+import type { TimeRecord, Duration, TimePeak } from '@/types/time';
 
 export const useRecordsStore = defineStore('records', () => {
-    const byTime = ref<{ duration: string; index: number }[]>([]);
+    const byTime = ref<TimeRecord[]>([]);
     const durationByTime = ref<Duration>();
     const nowByTime = ref<string>();
-    const peakByTime = ref<{ min: number; minIndex: number; max?: number; maxIndex?: number }>();
+    const peakByTime = ref<TimePeak>();
 
     let startAt = 0;
     let pausedAt = 0;
@@ -44,23 +44,35 @@ export const useRecordsStore = defineStore('records', () => {
 
     function peak(ms: number, index: number) {
         if (!peakByTime.value) {
-            return (peakByTime.value = {
-                min: ms,
-                minIndex: index,
-            });
+            peakByTime.value = { min: ms, minIndex: index };
+            return peakByTime.value;
         }
 
-        const { min, max } = peakByTime.value;
+        const { min, max, minIndex } = peakByTime.value;
 
-        if (min && min > ms) {
+        if (ms < min) {
             peakByTime.value.min = ms;
             peakByTime.value.minIndex = index;
+
+            if (index > 1 && !max) {
+                peakByTime.value.max = min;
+                peakByTime.value.maxIndex = minIndex;
+            }
+
+            return peakByTime.value;
         }
 
-        if ((!max && min < ms) || (max && max < ms)) {
+        if (ms === min) {
+            return peakByTime.value;
+        }
+
+        if (!max || ms > max) {
             peakByTime.value.max = ms;
             peakByTime.value.maxIndex = index;
+            return peakByTime.value;
         }
+
+        return peakByTime.value;
     }
 
     function addTime() {
@@ -68,7 +80,7 @@ export const useRecordsStore = defineStore('records', () => {
         const duration = parseDuration(now - startAt);
         const index = byTime.value.length + 1;
 
-        peak(now - startAt, index);
+        const { minIndex, maxIndex } = peak(now - startAt, index);
 
         startAt = now;
         byTime.value.unshift({

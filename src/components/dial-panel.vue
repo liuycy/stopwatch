@@ -27,10 +27,10 @@
 import NumberDial from '@/components/number-dial.vue'
 import EmulateDial from '@/components/emulate-dial.vue'
 
-import { useSettings } from '@/stores/settings'
+import { useSettingsStore } from '@/stores/settings'
 import { DialType } from '@/types/enums'
 
-const settings = useSettings()
+const settings = useSettingsStore()
 </script>
 
 <style lang="scss" scoped>

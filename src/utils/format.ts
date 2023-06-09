@@ -28,3 +28,20 @@ export function formatDuration(duration: Duration) {
     if (!h) return `${m}:${s}.${ss}`;
     return `${h}:${m}:${s}.${ss}`;
 }
+
+export function formatTime(time: Date, format: string) {
+    const year = time.getFullYear();
+    const month = padFixedInt(time.getMonth() + 1)!;
+    const date = padFixedInt(time.getDate())!;
+    const hours = padFixedInt(time.getHours())!;
+    const minutes = padFixedInt(time.getMinutes())!;
+    const seconds = padFixedInt(time.getSeconds())!;
+
+    return format
+        .replace(/y+/, `${year}`)
+        .replace(/m+/, month)
+        .replace(/d+/, date)
+        .replace(/h+/, hours)
+        .replace(/M+/, minutes)
+        .replace(/s+/, seconds);
+}

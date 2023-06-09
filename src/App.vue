@@ -1,33 +1,20 @@
 <script lang="ts" setup>
-import { onLaunch } from '@dcloudio/uni-app'
+import { useSettingsLanuch } from '@/stores/settings'
+import { useHistoryLaunch } from '@/stores/history';
 
-import { useSettings } from '@/stores/settings'
-
-const settings = useSettings()
-
-settings.$subscribe((_, state) => {
-    const data = JSON.stringify(state)
-    uni.setStorage({ key: 'settings', data })
-})
-
-onLaunch(() => {
-    uni.setKeepScreenOn({ keepScreenOn: true })
-
-    const data = uni.getStorageSync('settings')
-    if (!data) return
-
-    settings.$patch(JSON.parse(data))
-    uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn })
-})
+useSettingsLanuch()
+useHistoryLaunch()
 </script>
 
 <style lang="scss">
-page {
+page,
+root-portal {
     // font-family: Arial, Helvetica, sans-serif;
     font-family: Arial;
 
     --color-bg: #000;
     --color-text: #fff;
+    --color-tips: #c6c6c6;
     --color-line: #202020;
     --color-border: #2b2b2b;
 
@@ -49,5 +36,11 @@ page {
     --color-panel-text: #000;
     --color-panel-label: #999;
     --color-panel-label-highlight: #27bd2d;
+
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --color-modal-bg: #2c2c2c;
+    --color-modal-text: #fff;
+    --color-modal-confirm-text: #5e6696;
+    --color-modal-border: #373737;
 }
 </style>

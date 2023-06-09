@@ -1,23 +1,34 @@
 <template>
 	<view class="gap line"></view>
-	<scroll-view class="records-list" scroll-y>
-		<view class="record" v-if="records.nowByTime">
-			<text class="label">计次{{ records.byTime.length + 1 }}</text>
-			<text class="duration">{{ records.nowByTime }}</text>
-			<view class="gap"></view>
-		</view>
 
-		<view class="record" v-for="record in records.byTime" :key="hashKey(record.index)">
-			<text class="label">计次{{ record.index }}</text>
-			<text :class="['duration', peakClass(record.index)]">{{ record.duration }}</text>
-			<view class="gap"></view>
-		</view>
-	</scroll-view>
+	<template v-if="records.nowByTime">
+		<scroll-view class="records-list" scroll-y>
+			<view class="record">
+				<text class="label">计次{{ records.byTime.length + 1 }}</text>
+				<text class="duration">{{ records.nowByTime }}</text>
+				<view class="gap"></view>
+			</view>
+
+			<view class="record" v-for="record in records.byTime" :key="hashKey(record.index)">
+				<text class="label">计次{{ record.index }}</text>
+				<text :class="['duration', peakClass(record.index)]">{{ record.duration }}</text>
+				<view class="gap"></view>
+			</view>
+		</scroll-view>
+	</template>
+
+	<template v-else-if="settings.historyVisible">
+		<records-history></records-history>
+	</template>
 </template>
 
 <script lang="ts" setup>
+import RecordsHistory from '@/components/records-history.vue'
+
+import { useSettingsStore } from '@/stores/settings'
 import { useRecordsStore } from '@/stores/records'
 
+const settings = useSettingsStore()
 const records = useRecordsStore()
 
 function hashKey(index: number) {

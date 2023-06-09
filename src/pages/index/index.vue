@@ -4,6 +4,7 @@
 		<actions-group></actions-group>
 		<records-list class="flexable"></records-list>
 		<setting-panel></setting-panel>
+		<history-modal></history-modal>
 	</view>
 </template>
 
@@ -14,6 +15,7 @@ import SettingPanel from '@/components/setting-panel.vue'
 import DialPanel from '@/components/dial-panel.vue'
 import ActionsGroup from '@/components/actions-group.vue'
 import RecordsList from '@/components/records-list.vue'
+import HistoryModal from '@/components/history-modal.vue'
 
 function preventPageScroll() { }
 

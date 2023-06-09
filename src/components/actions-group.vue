@@ -33,12 +33,14 @@ import { computed } from "vue"
 
 import ActionButton from '@/components/action-button.vue'
 
-import { useSettings } from '@/stores/settings'
+import { useSettingsStore } from '@/stores/settings'
+import { useHistoryStore } from "@/stores/history"
 import { useRecordsStore } from '@/stores/records'
 import { useDialStore } from '@/stores/dial'
 import { DialStatus } from '@/types/enums'
 
-const settings = useSettings()
+const settings = useSettingsStore()
+const history = useHistoryStore()
 const dial = useDialStore()
 const records = useRecordsStore()
 
@@ -50,6 +52,7 @@ function onStart() {
 }
 
 function onReset() {
+	history.generate(records.byTime, records.peakByTime)
 	dial.reset()
 	records.reset()
 }

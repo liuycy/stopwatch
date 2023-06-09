@@ -11,13 +11,29 @@
         <view class="setting-page">
             <view class="function-list">
                 <view class="item">
-                    <text>保持屏幕常亮</text>
-                    <switch @change="settings.changeScreenOn()" :checked="settings.keepScreenOn" class="switch"></switch>
+                    <text>显示可导出的历史记录</text>
+                    <switch @change="settings.changeHistoryVisible()" :checked="settings.historyVisible" class="switch">
+                    </switch>
                 </view>
 
                 <view class="item">
-                    <text>显示历史记录/导出</text>
-                    <switch :checked="settings.historyVisible" class="switch"></switch>
+                    <text>删除历史记录到回收站</text>
+                    <switch @click="settings.toggleRecyleBin()" :checked="settings.recycleBinEnabled" class="switch">
+                    </switch>
+                </view>
+
+                <view class="item" v-if="settings.recycleBinEnabled">
+                    <text>查看历史记录的回收站</text>
+                    <view class="action">
+                        <image class="icon" src="@/static/icon-right-arrow.svg"></image>
+                    </view>
+                </view>
+            </view>
+
+            <view class="function-list">
+                <view class="item">
+                    <text>保持屏幕常亮</text>
+                    <switch @change="settings.changeScreenOn()" :checked="settings.keepScreenOn" class="switch"></switch>
                 </view>
 
                 <view class="item">
@@ -71,13 +87,13 @@
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
-import { useSettings } from '@/stores/settings'
+import { useSettingsStore } from '@/stores/settings'
 import { VibrateType, DialType } from '@/types/enums'
 
 const top = ref<string | null>(null)
 const visible = ref(false)
 
-const settings = useSettings()
+const settings = useSettingsStore()
 
 onLoad(() => {
     const result = uni.getSystemInfoSync()
@@ -129,6 +145,10 @@ function hidePanel() {
         margin: 32rpx;
         border-radius: 20rpx;
         background-color: var(--color-panel-action-bg);
+
+        &+.function-list {
+            margin-top: 0;
+        }
 
         .item {
             border: unset;
