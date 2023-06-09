@@ -21,23 +21,66 @@
                 </view>
             </view>
             <view class="actions">
-                <view @click="record.cancel()" class="action cancel" hover-class="hover">取消</view>
-                <view @click="record.confirm()" class="action confirm" hover-class="hover">确定</view>
+                <view @click="cancel()" class="action cancel" hover-class="hover">取消</view>
+                <view @click="confirm()" class="action confirm" hover-class="hover">确定</view>
             </view>
         </view>
     </view>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, getCurrentInstance, watchEffect } from 'vue';
 
 import { useHistoryStore } from '@/stores/history';
 
 const history = useHistoryStore()
 const record = computed(() => history.recordToBeConfirmed)
+
+const instance: any = getCurrentInstance()
+const _this = instance.ctx.$scope;
+
+function cancel() {
+    //#ifdef MP-WEIXIN
+    _this.animate('.modal-content', [
+        { opacity: 1.0, scale: [1, 1], ease: 'ease-out' },
+        { opacity: 0.1, scale: [0.1, 0.1], ease: 'ease-out' },
+    ], 200, () => {
+        record.value?.cancel()
+    })
+    //#endif
+    // #ifndef MP-WEIXIN
+    record.value?.cancel()
+    // #endif
+}
+
+function confirm() {
+    //#ifdef MP-WEIXIN
+    _this.animate('.modal-content', [
+        { opacity: 1.0, scale: [1, 1], ease: 'ease-out' },
+        { opacity: 0.1, scale: [0.1, 0.1], ease: 'ease-out' },
+    ], 200, () => {
+        record.value?.confirm()
+    })
+    //#endif
+    // #ifndef MP-WEIXIN
+    record.value?.confirm()
+    // #endif
+}
 </script>
 
 <style lang="scss" scoped>
+@keyframes slidein {
+    from {
+        opacity: 0.1;
+        transform: scale(0.1);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .confirm-modal {
     width: 100vw;
     height: 100vh;
@@ -54,6 +97,7 @@ const record = computed(() => history.recordToBeConfirmed)
         width: 75vw;
         background-color: var(--color-modal-bg);
         border-radius: 20rpx;
+        animation: 0.2s ease-in slidein;
 
         .title {
             padding-top: 32rpx;
