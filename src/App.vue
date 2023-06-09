@@ -43,4 +43,16 @@ root-portal {
     --color-modal-confirm-text: #5e6696;
     --color-modal-border: #373737;
 }
+
+@media (prefers-color-scheme: dark) {
+    page {
+        --color-panel-bg: #1e1e1e;
+        --color-panel-action-bg: #2c2c2c;
+        --color-panel-cancel-border: #202020;
+        --color-panel-cancel-text: #7e88a1;
+        --color-panel-text: #808080;
+        --color-panel-label: #999;
+        --color-panel-label-highlight: #27bd2d;
+    }
+}
 </style>

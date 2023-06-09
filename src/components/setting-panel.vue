@@ -52,7 +52,7 @@
                             <text>/</text>
                             <text :class="{ highlight: settings.vibrateType === VibrateType.Disabled }">禁用</text>
                         </view>
-                        <image class="icon" src="@/static/icon-select.svg"></image>
+                        <svg-icon src="/static/icon-select.svg" size="28rpx" :color="iconColor"></svg-icon>
                     </view>
                 </view>
 
@@ -64,14 +64,14 @@
                             <text>/</text>
                             <text :class="{ highlight: settings.defaultDialType === DialType.Emulate }">模拟秒表</text>
                         </view>
-                        <image class="icon" src="@/static/icon-select.svg"></image>
+                        <svg-icon src="/static/icon-select.svg" size="28rpx" :color="iconColor"></svg-icon>
                     </view>
                 </view>
 
                 <button class="item" open-type="feedback" plain>
                     <text>小程序有问题或想要更多功能</text>
                     <view class="action">
-                        <image class="icon" src="@/static/icon-right-arrow.svg"></image>
+                        <svg-icon src="/static/icon-right-arrow.svg" size="28rpx" :color="iconColor"></svg-icon>
                     </view>
                 </button>
             </view>
@@ -90,14 +90,21 @@ import { ref } from 'vue'
 import { useSettingsStore } from '@/stores/settings'
 import { VibrateType, DialType } from '@/types/enums'
 
-const top = ref<string | null>(null)
+import SvgIcon from './svg-icon.vue'
+
 const visible = ref(false)
+const iconColor = ref('#000')
+const top = ref<string | null>(null)
 
 const settings = useSettingsStore()
 
 onLoad(() => {
     const result = uni.getSystemInfoSync()
     top.value = `${4 + (result.safeArea?.top ?? 0)}px`
+
+    uni.onThemeChange(({ theme }) => {
+        iconColor.value = theme === 'dark' ? '#fff' : '#000'
+    })
 })
 
 function changePanelVisible() {
@@ -138,7 +145,6 @@ function hidePanel() {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: var(--color-panel-text);
     background-color: var(--color-panel-bg);
 
     .function-list {
@@ -160,6 +166,7 @@ function hidePanel() {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--color-panel-text);
 
             .switch {
                 transform: scale(0.8);
@@ -177,11 +184,6 @@ function hidePanel() {
                     .highlight {
                         color: var(--color-panel-label-highlight);
                     }
-                }
-
-                .icon {
-                    width: 28rpx;
-                    height: 28rpx;
                 }
             }
 
