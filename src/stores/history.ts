@@ -12,6 +12,8 @@ import {
     type DeletedRecord,
 } from '@/types/history';
 
+export const KeepDay4Deleted = 7;
+
 export const useHistoryStore = defineStore('history', () => {
     const records = ref<HistoryRecord[]>([]);
     const deletedRecords = ref<DeletedRecord[]>([]);
@@ -106,10 +108,11 @@ export const useHistoryStore = defineStore('history', () => {
     }
 
     function checkRecordDeleted() {
+        const ktime = KeepDay4Deleted * 24 * 60 * 60 * 1000;
         const ntime = Date.now();
         const leavedRecords = [];
         for (const record of deletedRecords.value) {
-            if (record.dtime + 5000 < ntime) {
+            if (record.dtime + ktime < ntime) {
                 deleteExcelFile(record.id).catch(() => {});
             } else {
                 leavedRecords.push(record);

@@ -6,7 +6,7 @@
 
             <view class="tips">
                 <view class="title">最近删除</view>
-                <view class="tip">记录最多保留10天, 之后会被永久删除</view>
+                <view class="tip">记录最多保留 {{ KeepDay4Deleted }} 天, 之后会被永久删除</view>
             </view>
 
             <view :class="['item', { highlight: checked.has(record.id) }]" @click="toggleCheck(record.id)"
@@ -63,7 +63,7 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { getCurrentInstance, computed, ref, type Ref } from 'vue';
 
-import { useHistoryStore } from '@/stores/history';
+import { useHistoryStore, KeepDay4Deleted } from '@/stores/history';
 import { formatTime } from '@/utils/format';
 
 import SvgIcon from '@/components/svg-icon.vue';
@@ -105,7 +105,7 @@ async function remove() {
 
 async function recovery() {
     if (!checked.value.size) {
-        history.records.unshift(...history.deletedRecords)
+        history.records.unshift(...history.deletedRecords.reverse())
         history.deletedRecords = []
     } else {
         history.recovery(checked.value)
