@@ -49,6 +49,8 @@ const settings = useSettingsStore()
 const history = useHistoryStore()
 
 async function confirmRemove(record: HistoryRecord) {
+    settings.vibrate()
+
     if (settings.recycleBinEnabled) {
         return history.remove(record.id)
     }
@@ -68,6 +70,8 @@ async function exportDeadRecord(record: HistoryRecord) {
 }
 
 async function exportExcel(record: HistoryRecord) {
+    settings.vibrate()
+
     if (record.status === 'dead') return await exportDeadRecord(record)
 
     if (record.status === 'saved') {

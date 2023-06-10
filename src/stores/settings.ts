@@ -12,25 +12,7 @@ export const useSettingsStore = defineStore('settings', () => {
     const vibrateType = ref<VibrateType>(VibrateType.Short);
     const defaultDialType = ref<DialType>(DialType.Number);
 
-    function changeHistoryVisible() {
-        historyVisible.value = !historyVisible.value;
-    }
-
-    function toggleRecyleBin() {
-        recycleBinEnabled.value = !recycleBinEnabled.value;
-    }
-
-    function changeScreenOn() {
-        keepScreenOn.value = !keepScreenOn.value;
-        uni.setKeepScreenOn({ keepScreenOn: keepScreenOn.value });
-    }
-
-    function reverseActions() {
-        isActionsReverse.value = !isActionsReverse.value;
-    }
-
-    function nextVibrateType() {
-        vibrateType.value = (vibrateType.value + 1) % 3;
+    function vibrate() {
         if (vibrateType.value === VibrateType.Short) {
             uni.vibrateShort();
         }
@@ -39,7 +21,34 @@ export const useSettingsStore = defineStore('settings', () => {
         }
     }
 
+    function changeHistoryVisible() {
+        vibrate();
+        historyVisible.value = !historyVisible.value;
+    }
+
+    function toggleRecyleBin() {
+        vibrate();
+        recycleBinEnabled.value = !recycleBinEnabled.value;
+    }
+
+    function changeScreenOn() {
+        vibrate();
+        keepScreenOn.value = !keepScreenOn.value;
+        uni.setKeepScreenOn({ keepScreenOn: keepScreenOn.value });
+    }
+
+    function reverseActions() {
+        vibrate();
+        isActionsReverse.value = !isActionsReverse.value;
+    }
+
+    function nextVibrateType() {
+        vibrateType.value = (vibrateType.value + 1) % 3;
+        vibrate();
+    }
+
     function nextDefaultDialType() {
+        vibrate();
         defaultDialType.value = (defaultDialType.value + 1) % 2;
     }
 
@@ -51,6 +60,7 @@ export const useSettingsStore = defineStore('settings', () => {
         vibrateType,
         defaultDialType,
 
+        vibrate,
         changeHistoryVisible,
         toggleRecyleBin,
         changeScreenOn,

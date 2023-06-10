@@ -63,12 +63,14 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { getCurrentInstance, computed, ref, type Ref } from 'vue';
 
+import { useSettingsStore } from '@/stores/settings';
 import { useHistoryStore, KeepDay4Deleted } from '@/stores/history';
 import { formatTime } from '@/utils/format';
 
 import SvgIcon from '@/components/svg-icon.vue';
 
 const history = useHistoryStore()
+const settings = useSettingsStore()
 const records = computed(() => history.deletedRecords)
 
 const top = `${uni.getSystemInfoSync().safeArea?.top ?? 0}px`
@@ -79,10 +81,13 @@ const actionsHeight = ref(0)
 const titleHeight = ref(0)
 
 function goBack() {
+    settings.vibrate()
     uni.navigateBack()
 }
 
 function toggleCheck(id: string) {
+    settings.vibrate()
+
     if (checked.value.has(id)) {
         checked.value.delete(id)
     } else {
@@ -91,6 +96,8 @@ function toggleCheck(id: string) {
 }
 
 async function remove() {
+    settings.vibrate()
+
     if (!checked.value.size) {
         const { confirm } = await uni.showModal({ title: `删除全部 ${history.deletedRecords.length} 条记录?` })
         if (confirm) history.confirmDelete(new Set(history.deletedRecords.map(r => r.id)))
@@ -104,6 +111,8 @@ async function remove() {
 }
 
 async function recovery() {
+    settings.vibrate()
+
     if (!checked.value.size) {
         history.records.unshift(...history.deletedRecords.reverse())
         history.deletedRecords = []

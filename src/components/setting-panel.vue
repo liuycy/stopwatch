@@ -68,7 +68,7 @@
                     </view>
                 </view>
 
-                <button class="item" open-type="feedback" plain>
+                <button @click="settings.vibrate()" class="item" open-type="feedback" plain>
                     <text>小程序有问题或想要更多功能</text>
                     <view class="action">
                         <svg-icon src="/static/icon-right-arrow.svg" size="28rpx" :color="iconColor"></svg-icon>
@@ -126,6 +126,7 @@ function hitEgg() {
 }
 
 function changePanelVisible() {
+    settings.vibrate()
     visible.value = !visible.value
 }
 
@@ -135,11 +136,13 @@ function hidePanel() {
 }
 
 function goToRecycleBinPage() {
+    settings.vibrate()
     history.checkRecordDeleted()
     uni.navigateTo({ url: 'recycle-bin' })
 }
 
 async function clearAllStorage() {
+    settings.vibrate()
     const { confirm } = await uni.showModal({ title: '清除所有缓存数据?' })
     if (confirm) {
         uni.clearStorage();
