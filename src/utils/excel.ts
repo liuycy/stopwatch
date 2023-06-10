@@ -18,6 +18,15 @@ function writeExcelToDir(data: string, filename: string) {
     });
 }
 
+export function removeExcelDir() {
+    const fs = wx.getFileSystemManager();
+    const dirPath = `${wx.env.USER_DATA_PATH}/excels`;
+
+    return new Promise((success, fail) => {
+        fs.rmdir({ dirPath, success, fail, recursive: true });
+    });
+}
+
 export function checkIfExist(filename: string) {
     const fs = wx.getFileSystemManager();
     const filePath = `${wx.env.USER_DATA_PATH}/excels/${filename}.xlsx`;
@@ -49,7 +58,7 @@ export async function saveAsUserData(filename: string, sheet: unknown[][]) {
     try {
         await buildExcelDir();
     } catch (error: any) {
-        if (!/already exists/.test(error.errMsg)) throw error;
+        if (!/exists/.test(error.errMsg)) throw error;
     }
 
     return writeExcelToDir(data, filename);
@@ -62,10 +71,21 @@ export function exportExcelFile(filename: string) {
     return new Promise((success, fail) => {
         if (!checkIfExist(filename)) return fail('not exist');
 
-        if (/mac|windows/i.test(info.platform)) {
-            wx.saveFileToDisk({ filePath, success, fail });
-        } else {
-            wx.openDocument({ filePath, success, fail });
+        if (/devtools/i.test(info.platform)) {
+            return wx.openDocument({ filePath, success, fail });
         }
+
+        if (/mac|windows/i.test(info.platform)) {
+            return wx.saveFileToDisk({ filePath, success, fail });
+        }
+
+        return wx.shareFileMessage({
+            filePath,
+            success,
+            fail: err => {
+                if (/canceled/.test(err.errMsg)) return success(null);
+                fail(err);
+            },
+        });
     });
 }

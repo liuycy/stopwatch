@@ -40,8 +40,9 @@ export const useHistoryStore = defineStore('history', () => {
             times.reduceRight((_, t) => sheet.push([t.index, t.duration]), 0);
             await saveAsUserData(id, sheet);
             record.status = 'saved';
-        } catch {
+        } catch (error) {
             record.status = 'dead';
+            throw error;
         }
     }
 
@@ -98,8 +99,23 @@ export const useHistoryStore = defineStore('history', () => {
 
     function checkRecordStatus() {
         for (const record of records.value) {
-            record.status = checkIfExist(record.id) ? 'saved' : 'dead';
+            setTimeout(() => {
+                record.status = checkIfExist(record.id) ? 'saved' : 'dead';
+            });
         }
+    }
+
+    function checkRecordDeleted() {
+        const ntime = Date.now();
+        const leavedRecords = [];
+        for (const record of deletedRecords.value) {
+            if (record.dtime + 5000 < ntime) {
+                deleteExcelFile(record.id).catch(() => {});
+            } else {
+                leavedRecords.push(record);
+            }
+        }
+        deletedRecords.value = leavedRecords;
     }
 
     return {
@@ -114,6 +130,7 @@ export const useHistoryStore = defineStore('history', () => {
         confirmDelete,
         confirmRemove,
         checkRecordStatus,
+        checkRecordDeleted,
     };
 });
 
@@ -130,6 +147,9 @@ export const useHistoryLaunch = () => {
         const data = uni.getStorageSync('history');
         if (!data) return;
         history.$patch(JSON.parse(data));
-        history.checkRecordStatus();
+        setTimeout(() => {
+            history.checkRecordStatus();
+            history.checkRecordDeleted();
+        });
     });
 };

@@ -93,11 +93,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
+import { removeExcelDir } from '@/utils/excel'
+import { useHistoryStore } from '@/stores/history'
 import { useSettingsStore } from '@/stores/settings'
 import { VibrateType, DialType } from '@/types/enums'
 
-import SvgIcon from './svg-icon.vue'
+import SvgIcon from '@/components/svg-icon.vue'
 
+const history = useHistoryStore()
 const settings = useSettingsStore()
 
 const info = uni.getSystemInfoSync()
@@ -132,6 +135,7 @@ function hidePanel() {
 }
 
 function goToRecycleBinPage() {
+    history.checkRecordDeleted()
     uni.navigateTo({ url: 'recycle-bin' })
 }
 
@@ -139,6 +143,7 @@ async function clearAllStorage() {
     const { confirm } = await uni.showModal({ title: '清除所有缓存数据?' })
     if (confirm) {
         uni.clearStorage();
+        removeExcelDir();
         eggHits.value = 0
     }
 }
