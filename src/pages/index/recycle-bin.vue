@@ -93,10 +93,13 @@ function toggleCheck(id: string) {
 async function remove() {
     if (!checked.value.size) {
         const { confirm } = await uni.showModal({ title: `删除全部 ${history.deletedRecords.length} 条记录?` })
-        if (confirm) history.deletedRecords = []
+        if (confirm) history.confirmDelete(new Set(history.deletedRecords.map(r => r.id)))
     } else {
         const { confirm } = await uni.showModal({ title: `删除所选 ${checked.value.size} 条记录?` })
-        if (confirm) history.confirmDelete(checked.value)
+        if (confirm) {
+            history.confirmDelete(checked.value)
+            checked.value = new Set()
+        }
     }
 }
 
@@ -106,6 +109,7 @@ async function recovery() {
         history.deletedRecords = []
     } else {
         history.recovery(checked.value)
+        checked.value = new Set()
     }
 
 }
@@ -117,7 +121,7 @@ function bindHeightFor(selector: string) {
 
     return {
         to: async (ref: Ref<number>) => {
-            const { height } = await result as UniApp.NodeInfo
+            const { height } = await result as UniApp.NodeInfo ?? {}
             ref.value = height ?? 0
         }
     }
@@ -129,8 +133,8 @@ function onScroll(e: any) {
 
 onLoad(() => {
     bindHeightFor('.nav').to(navHeight)
-    bindHeightFor('.actions').to(actionsHeight)
     bindHeightFor('.title').to(titleHeight)
+    bindHeightFor('.actions').to(actionsHeight)
 })
 </script>
 

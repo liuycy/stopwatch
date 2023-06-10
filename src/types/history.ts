@@ -4,7 +4,10 @@ export interface HistoryRecord {
     max?: string;
     total: number;
     ctime: number;
+    status: HistoryRecordStatus;
 }
+
+export type HistoryRecordStatus = 'saving' | 'saved' | 'dead';
 
 export type DeletedRecord = HistoryRecord & {
     dtime: number;

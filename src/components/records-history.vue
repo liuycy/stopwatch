@@ -19,12 +19,14 @@
                     </view>
 
                     <view class="actions">
-                        <view @click="confirmRemove(record)" class="action delete-action">
+                        <view @click="confirmRemove(record)" class="action" v-if="record.status !== 'saving'">
                             <svg-icon src="/static/icon-delete.svg" size="28rpx" color="#ffffff"></svg-icon>
                             <text class="label">删除</text>
                         </view>
-                        <view @click="history.exportExcel(record.id)" class="action export-ation">
-                            <svg-icon src="/static/icon-export.svg" size="28rpx" color="#ffffff"></svg-icon>
+                        <view @click="exportExcel(record)" :class="['action', { loading: record.status === 'saving' }]">
+                            <svg-icon class="icon" v-if="record.status === 'saving'" src="/static/icon-loading.svg"
+                                size="28rpx" color="#ffffff"></svg-icon>
+                            <svg-icon v-else src="/static/icon-export.svg" size="28rpx" color="#ffffff"></svg-icon>
                             <text class="label">导出</text>
                         </view>
                     </view>
@@ -59,9 +61,37 @@ async function confirmRemove(record: HistoryRecord) {
         throw error
     }
 }
+
+async function exportDeadRecord(record: HistoryRecord) {
+    const { confirm } = await uni.showModal({ title: '无法导出', content: 'Excel 文件已损坏，要删除吗？' })
+    if (confirm) history.remove(record.id)
+}
+
+async function exportExcel(record: HistoryRecord) {
+    if (record.status === 'dead') return await exportDeadRecord(record)
+
+    if (record.status === 'saved') {
+        try {
+            await history.exportExcel(record.id)
+        } catch {
+            record.status = 'dead'
+            return exportDeadRecord(record)
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>
+@keyframes spining {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .records-history {
     width: 750rpx;
     height: 100%;
@@ -116,6 +146,16 @@ async function confirmRemove(record: HistoryRecord) {
                         align-items: center;
                         border-radius: 10rpx;
                         border: 1px solid var(--color-border);
+
+                        &.loading {
+                            .icon {
+                                animation: 1s ease-in-out spining infinite;
+                            }
+
+                            .label {
+                                opacity: 0.3;
+                            }
+                        }
 
                         &+.action {
                             margin-left: 16rpx;
