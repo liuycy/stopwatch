@@ -4,7 +4,7 @@
             <view class="title">确定要删除这条记录吗?</view>
             <view class="record">
                 <view class="header">
-                    <text>记录时间: {{ record.ctime }}</text>
+                    <text>记录时间: {{ formatTime(record.ctime) }}</text>
                     <text>计次: {{ record.total }}</text>
                 </view>
                 <view class="body">
@@ -32,6 +32,7 @@
 import { computed, getCurrentInstance, watchEffect } from 'vue';
 
 import { useHistoryStore } from '@/stores/history';
+import { formatTime } from '@/utils/format';
 
 const history = useHistoryStore()
 const record = computed(() => history.recordToBeConfirmed)

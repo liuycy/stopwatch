@@ -29,7 +29,9 @@ export function formatDuration(duration: Duration) {
     return `${h}:${m}:${s}.${ss}`;
 }
 
-export function formatTime(time: Date, format: string) {
+export function formatTime(ms: number, format = 'yyyy-mm-dd hh:MM:ss') {
+    const time = new Date(ms);
+
     const year = time.getFullYear();
     const month = padFixedInt(time.getMonth() + 1)!;
     const date = padFixedInt(time.getDate())!;

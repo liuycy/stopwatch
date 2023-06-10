@@ -3,7 +3,7 @@
         <view class="wrapper" v-for="record in history.records" :key="record.id">
             <view class="record">
                 <view class="header">
-                    <text>记录时间: {{ record.ctime }}</text>
+                    <text>记录时间: {{ formatTime(record.ctime) }}</text>
                     <text>计次: {{ record.total }}</text>
                 </view>
                 <view class="body">
@@ -20,11 +20,11 @@
 
                     <view class="actions">
                         <view @click="confirmRemove(record)" class="action delete-action">
-                            <image class="icon" src="@/static/icon-delete.svg"></image>
+                            <svg-icon src="/static/icon-delete.svg" size="28rpx" color="#ffffff"></svg-icon>
                             <text class="label">删除</text>
                         </view>
                         <view @click="history.exportExcel(record.id)" class="action export-ation">
-                            <image class="icon" src="@/static/icon-export.svg"></image>
+                            <svg-icon src="/static/icon-export.svg" size="28rpx" color="#ffffff"></svg-icon>
                             <text class="label">导出</text>
                         </view>
                     </view>
@@ -35,8 +35,11 @@
 </template>
 
 <script lang="ts" setup>
+import SvgIcon from '@/components/svg-icon.vue';
+
 import { useSettingsStore } from '@/stores/settings';
 import { useHistoryStore } from '@/stores/history';
+import { formatTime } from '@/utils/format';
 
 import { RecordConfirmRejectError, type HistoryRecord } from '@/types/history';
 
@@ -116,11 +119,6 @@ async function confirmRemove(record: HistoryRecord) {
 
                         &+.action {
                             margin-left: 16rpx;
-                        }
-
-                        .icon {
-                            width: 28rpx;
-                            height: 28rpx;
                         }
 
                         .label {

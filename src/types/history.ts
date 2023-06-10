@@ -3,8 +3,12 @@ export interface HistoryRecord {
     min: string;
     max?: string;
     total: number;
-    ctime: string;
+    ctime: number;
 }
+
+export type DeletedRecord = HistoryRecord & {
+    dtime: number;
+};
 
 export type RecordToBeConfirmed = HistoryRecord & {
     confirm(): void;

@@ -42,6 +42,10 @@ root-portal {
     --color-modal-text: #fff;
     --color-modal-confirm-text: #5e6696;
     --color-modal-border: #373737;
+
+    --color-recycle-action: #3183f4;
+    --color-recycle-tips: #767676;
+    --color-recycle-border: #3a3a3a;
 }
 
 @media (prefers-color-scheme: dark) {

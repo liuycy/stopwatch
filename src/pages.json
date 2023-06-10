@@ -6,6 +6,12 @@
             "style": {
                 "navigationStyle": "custom"
             }
+        },
+        {
+            "path": "pages/index/recycle-bin",
+            "style": {
+                "navigationStyle": "custom"
+            }
         }
     ],
     "globalStyle": {},

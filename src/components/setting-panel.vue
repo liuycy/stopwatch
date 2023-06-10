@@ -22,10 +22,10 @@
                     </switch>
                 </view>
 
-                <view class="item" v-if="settings.recycleBinEnabled">
+                <view @click="goToRecycleBinPage()" class="item" v-if="settings.recycleBinEnabled">
                     <text>查看历史记录的回收站</text>
                     <view class="action">
-                        <image class="icon" src="@/static/icon-right-arrow.svg"></image>
+                        <svg-icon src="/static/icon-right-arrow.svg" size="28rpx" :color="iconColor"></svg-icon>
                     </view>
                 </view>
             </view>
@@ -36,7 +36,7 @@
                     <switch @change="settings.changeScreenOn()" :checked="settings.keepScreenOn" class="switch"></switch>
                 </view>
 
-                <view class="item">
+                <view class="item" @click="hitEgg()">
                     <text>调换操作按钮的位置</text>
                     <switch @change="settings.reverseActions()" :checked="settings.isActionsReverse" class="switch">
                     </switch>
@@ -74,6 +74,13 @@
                         <svg-icon src="/static/icon-right-arrow.svg" size="28rpx" :color="iconColor"></svg-icon>
                     </view>
                 </button>
+
+                <view class="item" @click="clearAllStorage()" v-if="eggHits > 10">
+                    <text>清除小程序所有缓存数据</text>
+                    <view class="action">
+                        <svg-icon src="/static/icon-right-arrow.svg" size="28rpx" :color="iconColor"></svg-icon>
+                    </view>
+                </view>
             </view>
 
             <view @click="hidePanel" class="cancel-button" hover-class="hover">
@@ -84,7 +91,6 @@
 </template>
 
 <script lang="ts" setup>
-import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 import { useSettingsStore } from '@/stores/settings'
@@ -100,9 +106,21 @@ const visible = ref(false)
 const top = `${4 + (info.safeArea?.top ?? 0)}px`
 const iconColor = ref<string>(info.theme === 'dark' ? '#fff' : '#000')
 
+const eggHits = ref(0)
+let eggTimer = -1
+
 uni.onThemeChange(({ theme }) => {
     iconColor.value = theme === 'dark' ? '#fff' : '#000'
 })
+
+function hitEgg() {
+    clearTimeout(eggTimer)
+    eggHits.value += 1
+    if (eggHits.value > 10) return
+    eggTimer = setTimeout(() => {
+        eggHits.value = 0
+    }, 300)
+}
 
 function changePanelVisible() {
     visible.value = !visible.value
@@ -110,6 +128,19 @@ function changePanelVisible() {
 
 function hidePanel() {
     visible.value = false
+    eggHits.value = 0
+}
+
+function goToRecycleBinPage() {
+    uni.navigateTo({ url: 'recycle-bin' })
+}
+
+async function clearAllStorage() {
+    const { confirm } = await uni.showModal({ title: '清除所有缓存数据?' })
+    if (confirm) {
+        uni.clearStorage();
+        eggHits.value = 0
+    }
 }
 </script>
 
