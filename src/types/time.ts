@@ -1,7 +1,7 @@
 export interface TimeRecord {
     id: string;
-    time: string;
-    duration: string;
+    time: Duration;
+    duration: Duration;
     index: number;
 }
 
@@ -16,6 +16,7 @@ export interface TimePeak {
 
 export interface Duration {
     milliseconds: number; // 指针角度占比
+    ms3: number;
     ms: number;
     seconds: number;
     minutes: number;

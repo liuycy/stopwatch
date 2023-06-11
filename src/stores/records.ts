@@ -11,7 +11,7 @@ export const useRecordsStore = defineStore('records', () => {
     const timeText = ref<string>();
     const timePeak = ref<TimePeak>();
 
-    let ldtime = 0;
+    let time = 0;
     let startAt = 0;
     let pausedAt = 0;
     let timer = 0;
@@ -22,7 +22,7 @@ export const useRecordsStore = defineStore('records', () => {
         durationText.value = undefined;
         timeText.value = undefined;
         timePeak.value = undefined;
-        ldtime = 0;
+        time = 0;
         startAt = 0;
         pausedAt = 0;
     }
@@ -32,7 +32,7 @@ export const useRecordsStore = defineStore('records', () => {
         const dtime = now - startAt;
         duration.value = parseDuration(dtime);
         durationText.value = formatDuration(duration.value);
-        timeText.value = formatDuration(parseDuration(ldtime + dtime));
+        timeText.value = formatDuration(parseDuration(time));
     }
 
     function start() {
@@ -47,7 +47,7 @@ export const useRecordsStore = defineStore('records', () => {
         pausedAt = Date.now();
     }
 
-    function peakTime(ms: number, time: number, index: number) {
+    function peakTime(ms: number, index: number) {
         if (!timePeak.value) {
             timePeak.value = { min: ms, minIndex: index, firstTime: time };
             return timePeak.value;
@@ -85,16 +85,15 @@ export const useRecordsStore = defineStore('records', () => {
     function addTime() {
         const now = Date.now();
         const dtime = now - startAt;
-        const time = ldtime + dtime;
         const index = timeRecords.value.length + 1;
 
         startAt = now;
-        ldtime = dtime;
-        peakTime(dtime, time, index);
+        time += dtime;
+        peakTime(dtime, index);
         timeRecords.value.unshift({
             id: `${index}-${time}-${dtime}`,
-            time: formatDuration(parseDuration(time)),
-            duration: formatDuration(parseDuration(dtime)),
+            duration: parseDuration(dtime),
+            time: parseDuration(time),
             index,
         });
     }

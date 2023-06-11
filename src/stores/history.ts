@@ -31,9 +31,9 @@ export const useHistoryStore = defineStore('history', () => {
         const id = `history-${records.value.length}-${total}-${ctime}`;
 
         records.value.unshift({
-            firstTime: times[0].time,
-            lastTime: times.length > 1 ? times[times.length - 1].time : undefined,
-            min: peak?.min ? formatDuration(parseDuration(peak.min)) : times[0].duration,
+            firstTime: formatDuration(times[0].time),
+            lastTime: times.length > 1 ? formatDuration(times[times.length - 1].time) : undefined,
+            min: peak?.min ? formatDuration(parseDuration(peak.min)) : formatDuration(times[0].duration),
             max: peak?.max ? formatDuration(parseDuration(peak.max)) : undefined,
             status: 'saving',
             total,
@@ -44,8 +44,21 @@ export const useHistoryStore = defineStore('history', () => {
         const record = records.value[0];
 
         try {
-            const sheet = [['序号' as string | number, '每次间隔', '总用时']];
-            times.reduceRight((_, t) => sheet.push([t.index, t.duration, t.time]), 0);
+            const sheet = [
+                ['序号' as string | number, '每次间隔(ms)', '总用时(ms)', '每次间隔(s)', '总用时(s)', '峰值'],
+            ];
+            times.reduceRight(
+                (_, t) =>
+                    sheet.push([
+                        t.index,
+                        formatDuration(t.duration, { ms3: true }),
+                        formatDuration(t.time, { ms3: true }),
+                        formatDuration(t.duration, { noMs: true }),
+                        formatDuration(t.time, { noMs: true }),
+                        t.index === peak?.minIndex ? '最小间隔' : t.index === peak?.maxIndex ? '最大间隔' : '',
+                    ]),
+                0
+            );
             await saveAsUserData(id, sheet);
             record.status = 'saved';
         } catch (error) {

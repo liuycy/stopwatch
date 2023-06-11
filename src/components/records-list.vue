@@ -11,8 +11,7 @@
 
 			<view class="record" v-for="record in records.timeRecords" :key="hashKey(record.id)">
 				<text class="label">{{ recordLabel }}{{ record.index }}</text>
-				<text :class="['duration', peakClass(record.index)]">{{ isTimeRecord ? record.time : record.duration
-				}}</text>
+				<text :class="['duration', peakClass(record.index)]">{{ formatValue(record) }}</text>
 				<view class="gap"></view>
 			</view>
 		</scroll-view>
@@ -28,7 +27,9 @@ import { computed } from 'vue'
 
 import { useSettingsStore } from '@/stores/settings'
 import { useRecordsStore } from '@/stores/records'
+import { formatDuration } from '@/utils/format'
 import { RecordType } from '@/types/enums'
+import type { TimeRecord } from '@/types/time'
 
 import RecordsHistory from '@/components/records-history.vue'
 
@@ -38,6 +39,11 @@ const records = useRecordsStore()
 const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
 const curRecord = computed(() => isTimeRecord.value ? records.timeText : records.durationText)
 const recordLabel = computed(() => isTimeRecord.value ? '计时' : '计次')
+
+function formatValue(record: TimeRecord) {
+	if (isTimeRecord.value) return formatDuration(record.time)
+	return formatDuration(record.duration)
+}
 
 function hashKey(id: string) {
 	if (isTimeRecord.value) {

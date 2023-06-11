@@ -6,6 +6,7 @@ import { formatDuration, parseDuration } from '@/utils/format';
 
 export const useDialStore = defineStore('dial', () => {
     const milliseconds = ref(0);
+    const ms3 = ref(0);
     const ms = ref(0);
     const seconds = ref(0);
     const minutes = ref(0);
@@ -21,6 +22,7 @@ export const useDialStore = defineStore('dial', () => {
         const duration = parseDuration(now - startAt);
 
         milliseconds.value = duration.milliseconds;
+        ms3.value = duration.ms3;
         ms.value = duration.ms;
         seconds.value = duration.seconds;
         minutes.value = duration.minutes;
@@ -43,6 +45,7 @@ export const useDialStore = defineStore('dial', () => {
 
     function reset() {
         milliseconds.value = 0;
+        ms3.value = 0;
         ms.value = 0;
         seconds.value = 0;
         minutes.value = 0;
@@ -55,6 +58,7 @@ export const useDialStore = defineStore('dial', () => {
     function now() {
         return formatDuration({
             milliseconds: milliseconds.value,
+            ms3: ms3.value,
             ms: ms.value,
             seconds: seconds.value,
             minutes: minutes.value,
@@ -64,6 +68,7 @@ export const useDialStore = defineStore('dial', () => {
 
     return {
         milliseconds,
+        ms3,
         ms,
         seconds,
         minutes,

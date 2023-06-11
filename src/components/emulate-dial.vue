@@ -5,15 +5,19 @@
 </template>
 
 <script lang="ts" setup>
-import { onReady, onUnload } from '@dcloudio/uni-app'
 import { getCurrentInstance } from "vue"
+import { onReady, onUnload } from '@dcloudio/uni-app'
 
+import { useSettingsStore } from "@/stores/settings"
 import { useRecordsStore } from '@/stores/records'
 import { useDialStore } from '@/stores/dial'
 import { Drawer } from '@/utils/drawer'
+import { RecordType } from "@/types/enums"
 
 const dial = useDialStore()
 const records = useRecordsStore()
+const settings = useSettingsStore()
+
 let drawer: Drawer
 let timer = 0
 
@@ -30,7 +34,7 @@ onReady(async () => {
 
 	const loop = () => {
 		timer = drawer.requestAnimationFrame(loop)
-		drawer.draw(dial, records.duration)
+		drawer.draw(dial, settings.defaultRecordType === RecordType.Duration ? records.duration : undefined)
 	}
 
 	loop()

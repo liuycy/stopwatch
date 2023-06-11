@@ -9,21 +9,28 @@ export function padFixedInt(num: number | undefined, maxLength = 2) {
 
 export function parseDuration(duration: number) {
     const milliseconds = duration % 60000;
-    const ms = (duration % 1000) / 10;
+    const ms3 = duration % 1000;
+    const ms = ms3 / 10;
     const seconds = (duration / 1000) % 60;
     const minutes = (duration / 60000) % 60;
 
     const hoursValue = duration / 3600000;
     const hours = hoursValue < 1 ? undefined : hoursValue;
 
-    return { milliseconds, ms, seconds, minutes, hours };
+    return { milliseconds, ms3, ms, seconds, minutes, hours };
 }
 
-export function formatDuration(duration: Duration) {
+export function formatDuration(duration: Duration, options?: { ms3?: boolean; noMs?: boolean }) {
     const h = padFixedInt(duration.hours);
     const m = padFixedInt(duration.minutes);
     const s = padFixedInt(duration.seconds);
-    const ss = padFixedInt(duration.ms);
+
+    const ss = options?.ms3 ? padFixedInt(duration.ms3, 3) : padFixedInt(duration.ms);
+
+    if (options?.noMs) {
+        if (!h) return `${m}:${s}`;
+        return `${h}:${m}:${s}`;
+    }
 
     if (!h) return `${m}:${s}.${ss}`;
     return `${h}:${m}:${s}.${ss}`;
