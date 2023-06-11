@@ -2,7 +2,7 @@ import { onLaunch } from '@dcloudio/uni-app';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { DialType, VibrateType } from '@/types/enums';
+import { DialType, RecordType, VibrateType } from '@/types/enums';
 
 export const useSettingsStore = defineStore('settings', () => {
     const historyVisible = ref(true);
@@ -10,6 +10,7 @@ export const useSettingsStore = defineStore('settings', () => {
     const keepScreenOn = ref(true);
     const isActionsReverse = ref(false);
     const vibrateType = ref<VibrateType>(VibrateType.Short);
+    const defaultRecordType = ref<RecordType>(RecordType.Duration);
     const defaultDialType = ref<DialType>(DialType.Number);
 
     function vibrate() {
@@ -47,6 +48,11 @@ export const useSettingsStore = defineStore('settings', () => {
         vibrate();
     }
 
+    function nextDefaultRecordType() {
+        vibrate();
+        defaultRecordType.value = (defaultRecordType.value + 1) % 2;
+    }
+
     function nextDefaultDialType() {
         vibrate();
         defaultDialType.value = (defaultDialType.value + 1) % 2;
@@ -58,6 +64,7 @@ export const useSettingsStore = defineStore('settings', () => {
         keepScreenOn,
         isActionsReverse,
         vibrateType,
+        defaultRecordType,
         defaultDialType,
 
         vibrate,
@@ -66,6 +73,7 @@ export const useSettingsStore = defineStore('settings', () => {
         changeScreenOn,
         reverseActions,
         nextVibrateType,
+        nextDefaultRecordType,
         nextDefaultDialType,
     };
 });

@@ -9,6 +9,11 @@ export const enum DialStatus {
     Paused,
 }
 
+export const enum RecordType {
+    Time,
+    Duration,
+}
+
 export const enum VibrateType {
     Short,
     Long,

@@ -1,17 +1,18 @@
 <template>
 	<view class="gap line"></view>
 
-	<template v-if="records.nowByTime">
+	<template v-if="curRecord">
 		<scroll-view class="records-list" scroll-y>
-			<view class="record">
-				<text class="label">计次{{ records.byTime.length + 1 }}</text>
-				<text class="duration">{{ records.nowByTime }}</text>
+			<view class="record" v-if="!isTimeRecord">
+				<text class="label">{{ recordLabel }}{{ records.timeRecords.length + 1 }}</text>
+				<text class="duration">{{ curRecord }}</text>
 				<view class="gap"></view>
 			</view>
 
-			<view class="record" v-for="record in records.byTime" :key="hashKey(record.index)">
-				<text class="label">计次{{ record.index }}</text>
-				<text :class="['duration', peakClass(record.index)]">{{ record.duration }}</text>
+			<view class="record" v-for="record in records.timeRecords" :key="hashKey(record.id)">
+				<text class="label">{{ recordLabel }}{{ record.index }}</text>
+				<text :class="['duration', peakClass(record.index)]">{{ isTimeRecord ? record.time : record.duration
+				}}</text>
 				<view class="gap"></view>
 			</view>
 		</scroll-view>
@@ -23,28 +24,40 @@
 </template>
 
 <script lang="ts" setup>
-import RecordsHistory from '@/components/records-history.vue'
+import { computed } from 'vue'
 
 import { useSettingsStore } from '@/stores/settings'
 import { useRecordsStore } from '@/stores/records'
+import { RecordType } from '@/types/enums'
+
+import RecordsHistory from '@/components/records-history.vue'
 
 const settings = useSettingsStore()
 const records = useRecordsStore()
 
-function hashKey(index: number) {
-	const {
-		minIndex,
-		maxIndex
-	} = records.peakByTime ?? {}
+const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
+const curRecord = computed(() => isTimeRecord.value ? records.timeText : records.durationText)
+const recordLabel = computed(() => isTimeRecord.value ? '计时' : '计次')
 
-	return `${index}-${minIndex}-${maxIndex}`
+function hashKey(id: string) {
+	if (isTimeRecord.value) {
+		return `${id}-${records.timeRecords.length}`
+	}
+
+	const { minIndex, maxIndex } = records.timePeak ?? {}
+	return `${id}-${minIndex}-${maxIndex}`
 }
 
 function peakClass(index: number) {
-	const {
-		minIndex,
-		maxIndex
-	} = records.peakByTime ?? {}
+	if (isTimeRecord.value) {
+		const len = records.timeRecords.length
+		return {
+			min: index === 1,
+			max: len > 1 && index === len
+		}
+	}
+
+	const { minIndex, maxIndex } = records.timePeak ?? {}
 
 	return {
 		min: minIndex === index,

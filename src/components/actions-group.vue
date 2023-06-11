@@ -3,11 +3,11 @@
 		<template v-if="dial.status === DialStatus.Running">
 			<template v-if="settings.isActionsReverse">
 				<action-button @click="onPause" type="pause">停止</action-button>
-				<action-button @click="records.addTime()" type="count">计次</action-button>
+				<action-button @click="records.addTime()" type="count">{{ recordLabel }}</action-button>
 			</template>
 
 			<template v-else>
-				<action-button @click="records.addTime()" type="count">计次</action-button>
+				<action-button @click="records.addTime()" type="count">{{ recordLabel }}</action-button>
 				<action-button @click="onPause" type="pause">停止</action-button>
 			</template>
 		</template>
@@ -15,12 +15,12 @@
 		<template v-else>
 			<template v-if="settings.isActionsReverse">
 				<action-button @click="onStart" type="start">启动</action-button>
-				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? '计次' : '复位'
+				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? recordLabel : '复位'
 				}}</action-button>
 			</template>
 
 			<template v-else>
-				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? '计次' : '复位'
+				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? recordLabel : '复位'
 				}}</action-button>
 				<action-button @click="onStart" type="start">启动</action-button>
 			</template>
@@ -37,7 +37,7 @@ import { useSettingsStore } from '@/stores/settings'
 import { useHistoryStore } from "@/stores/history"
 import { useRecordsStore } from '@/stores/records'
 import { useDialStore } from '@/stores/dial'
-import { DialStatus } from '@/types/enums'
+import { DialStatus, RecordType } from '@/types/enums'
 
 const settings = useSettingsStore()
 const history = useHistoryStore()
@@ -45,6 +45,7 @@ const dial = useDialStore()
 const records = useRecordsStore()
 
 const isInited = computed(() => dial.status === DialStatus.Init)
+const recordLabel = computed(() => settings.defaultRecordType === RecordType.Duration ? '计次' : '计时')
 
 function onStart() {
 	dial.start()
@@ -52,7 +53,7 @@ function onStart() {
 }
 
 function onReset() {
-	history.generate(records.byTime, records.peakByTime)
+	history.generate(records.timeRecords, records.timePeak)
 	dial.reset()
 	records.reset()
 }

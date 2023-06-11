@@ -5,29 +5,34 @@ import { formatDuration, parseDuration } from '@/utils/format';
 import type { TimeRecord, Duration, TimePeak } from '@/types/time';
 
 export const useRecordsStore = defineStore('records', () => {
-    const byTime = ref<TimeRecord[]>([]);
-    const durationByTime = ref<Duration>();
-    const nowByTime = ref<string>();
-    const peakByTime = ref<TimePeak>();
+    const timeRecords = ref<TimeRecord[]>([]);
+    const duration = ref<Duration>();
+    const durationText = ref<string>();
+    const timeText = ref<string>();
+    const timePeak = ref<TimePeak>();
 
+    let ldtime = 0;
     let startAt = 0;
     let pausedAt = 0;
     let timer = 0;
 
     function reset() {
-        byTime.value = [];
-        durationByTime.value = undefined;
-        nowByTime.value = undefined;
-        peakByTime.value = undefined;
+        timeRecords.value = [];
+        duration.value = undefined;
+        durationText.value = undefined;
+        timeText.value = undefined;
+        timePeak.value = undefined;
+        ldtime = 0;
         startAt = 0;
         pausedAt = 0;
     }
 
     function tick() {
         const now = Date.now();
-        const duration = parseDuration(now - startAt);
-        nowByTime.value = formatDuration(duration);
-        durationByTime.value = duration;
+        const dtime = now - startAt;
+        duration.value = parseDuration(dtime);
+        durationText.value = formatDuration(duration.value);
+        timeText.value = formatDuration(parseDuration(ldtime + dtime));
     }
 
     function start() {
@@ -42,58 +47,64 @@ export const useRecordsStore = defineStore('records', () => {
         pausedAt = Date.now();
     }
 
-    function peak(ms: number, index: number) {
-        if (!peakByTime.value) {
-            peakByTime.value = { min: ms, minIndex: index };
-            return peakByTime.value;
+    function peakTime(ms: number, time: number, index: number) {
+        if (!timePeak.value) {
+            timePeak.value = { min: ms, minIndex: index, firstTime: time };
+            return timePeak.value;
         }
 
-        const { min, max, minIndex } = peakByTime.value;
+        if (index > 1) timePeak.value.lastTime = time;
+
+        const { min, max, minIndex } = timePeak.value;
 
         if (ms < min) {
-            peakByTime.value.min = ms;
-            peakByTime.value.minIndex = index;
+            timePeak.value.min = ms;
+            timePeak.value.minIndex = index;
 
             if (index > 1 && !max) {
-                peakByTime.value.max = min;
-                peakByTime.value.maxIndex = minIndex;
+                timePeak.value.max = min;
+                timePeak.value.maxIndex = minIndex;
             }
 
-            return peakByTime.value;
+            return timePeak.value;
         }
 
         if (ms === min) {
-            return peakByTime.value;
+            return timePeak.value;
         }
 
         if (!max || ms > max) {
-            peakByTime.value.max = ms;
-            peakByTime.value.maxIndex = index;
-            return peakByTime.value;
+            timePeak.value.max = ms;
+            timePeak.value.maxIndex = index;
+            return timePeak.value;
         }
 
-        return peakByTime.value;
+        return timePeak.value;
     }
 
     function addTime() {
         const now = Date.now();
-        const duration = parseDuration(now - startAt);
-        const index = byTime.value.length + 1;
-
-        const { minIndex, maxIndex } = peak(now - startAt, index);
+        const dtime = now - startAt;
+        const time = ldtime + dtime;
+        const index = timeRecords.value.length + 1;
 
         startAt = now;
-        byTime.value.unshift({
-            duration: formatDuration(duration),
+        ldtime = dtime;
+        peakTime(dtime, time, index);
+        timeRecords.value.unshift({
+            id: `${index}-${time}-${dtime}`,
+            time: formatDuration(parseDuration(time)),
+            duration: formatDuration(parseDuration(dtime)),
             index,
         });
     }
 
     return {
-        byTime,
-        durationByTime,
-        nowByTime,
-        peakByTime,
+        timeRecords,
+        duration,
+        durationText,
+        timeText,
+        timePeak,
 
         reset,
         start,

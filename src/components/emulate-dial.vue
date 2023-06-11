@@ -25,12 +25,12 @@ onReady(async () => {
 		color: '#fff',
 		secondaryColor: '#444',
 		pointerColor: '#f1a43d',
-		byTimePointerColor: '#3788f2'
+		durationPointerColor: '#3788f2'
 	})
 
 	const loop = () => {
 		timer = drawer.requestAnimationFrame(loop)
-		drawer.draw(dial, records.durationByTime)
+		drawer.draw(dial, records.duration)
 	}
 
 	loop()

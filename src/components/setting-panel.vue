@@ -57,6 +57,18 @@
                 </view>
 
                 <view class="item">
+                    <text>默认显示的时间类型</text>
+                    <view @click="settings.nextDefaultRecordType()" class="action">
+                        <view class="label">
+                            <text :class="{ highlight: settings.defaultRecordType === RecordType.Duration }">每次间隔</text>
+                            <text>/</text>
+                            <text :class="{ highlight: settings.defaultRecordType === RecordType.Time }">总用时</text>
+                        </view>
+                        <svg-icon src="/static/icon-select.svg" size="28rpx" :color="iconColor"></svg-icon>
+                    </view>
+                </view>
+
+                <view class="item">
                     <text>默认显示的秒表类型</text>
                     <view @click="settings.nextDefaultDialType()" class="action">
                         <view class="label">
@@ -96,7 +108,7 @@ import { ref } from 'vue'
 import { removeExcelDir } from '@/utils/excel'
 import { useHistoryStore } from '@/stores/history'
 import { useSettingsStore } from '@/stores/settings'
-import { VibrateType, DialType } from '@/types/enums'
+import { VibrateType, DialType, RecordType } from '@/types/enums'
 
 import SvgIcon from '@/components/svg-icon.vue'
 

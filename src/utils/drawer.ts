@@ -8,7 +8,7 @@ interface DrawerOptions {
     color: string;
     secondaryColor: string;
     pointerColor: string;
-    byTimePointerColor: string;
+    durationPointerColor: string;
 }
 
 export class Drawer {
@@ -227,10 +227,10 @@ export class Drawer {
         ctx.restore();
     }
 
-    drawByTimePointer(durationByTime?: Duration) {
-        if (!durationByTime) return;
+    drawDurationPointer(duration?: Duration) {
+        if (!duration) return;
 
-        const { bgColor, byTimePointerColor } = this.options;
+        const { bgColor, durationPointerColor } = this.options;
         const center = this.width / 2;
         const ctx = this.ctx!;
 
@@ -239,8 +239,8 @@ export class Drawer {
         ctx.lineWidth = 2;
 
         ctx.beginPath();
-        ctx.strokeStyle = byTimePointerColor;
-        ctx.rotate((Math.PI / 30000) * durationByTime.milliseconds);
+        ctx.strokeStyle = durationPointerColor;
+        ctx.rotate((Math.PI / 30000) * duration.milliseconds);
         ctx.moveTo(0, center * 0.1);
         ctx.lineTo(0, -center + 20);
         ctx.stroke();
@@ -253,13 +253,13 @@ export class Drawer {
         ctx.restore();
     }
 
-    draw(duration: Duration, durationByTime?: Duration) {
+    draw(dialStatus: Duration, duration?: Duration) {
         this.ctx!.clearRect(0, 0, this.width, this.width);
 
-        this.drawSecondsDial(duration);
+        this.drawSecondsDial(dialStatus);
         this.drawMinutesDial();
-        this.drawMinutesPointer(duration);
-        this.drawByTimePointer(durationByTime);
-        this.drawSecondsPointer(duration);
+        this.drawMinutesPointer(dialStatus);
+        this.drawDurationPointer(duration);
+        this.drawSecondsPointer(dialStatus);
     }
 }

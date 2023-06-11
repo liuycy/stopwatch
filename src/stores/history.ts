@@ -19,6 +19,10 @@ export const useHistoryStore = defineStore('history', () => {
     const deletedRecords = ref<DeletedRecord[]>([]);
     const recordToBeConfirmed = ref<RecordToBeConfirmed>();
 
+    function sortRecords() {
+        records.value.sort((a, b) => b.ctime - a.ctime);
+    }
+
     async function generate(times: TimeRecord[], peak?: TimePeak) {
         if (!times.length) return;
 
@@ -27,6 +31,8 @@ export const useHistoryStore = defineStore('history', () => {
         const id = `history-${records.value.length}-${total}-${ctime}`;
 
         records.value.unshift({
+            firstTime: times[0].time,
+            lastTime: times.length > 1 ? times[times.length - 1].time : undefined,
             min: peak?.min ? formatDuration(parseDuration(peak.min)) : times[0].duration,
             max: peak?.max ? formatDuration(parseDuration(peak.max)) : undefined,
             status: 'saving',
@@ -38,8 +44,8 @@ export const useHistoryStore = defineStore('history', () => {
         const record = records.value[0];
 
         try {
-            const sheet: [number | string, string][] = [['序号', '计次时间']];
-            times.reduceRight((_, t) => sheet.push([t.index, t.duration]), 0);
+            const sheet = [['序号' as string | number, '每次间隔', '总用时']];
+            times.reduceRight((_, t) => sheet.push([t.index, t.duration, t.time]), 0);
             await saveAsUserData(id, sheet);
             record.status = 'saved';
         } catch (error) {
@@ -126,6 +132,7 @@ export const useHistoryStore = defineStore('history', () => {
         deletedRecords,
         recordToBeConfirmed,
 
+        sortRecords,
         generate,
         remove,
         recovery,

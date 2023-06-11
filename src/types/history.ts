@@ -2,6 +2,8 @@ export interface HistoryRecord {
     id: string;
     min: string;
     max?: string;
+    firstTime: string;
+    lastTime?: string;
     total: number;
     ctime: number;
     status: HistoryRecordStatus;

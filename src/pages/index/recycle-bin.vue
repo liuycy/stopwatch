@@ -23,18 +23,20 @@
 
                 <view class="record">
                     <view class="header">
-                        <text>记录时间: {{ formatTime(record.ctime) }}</text>
-                        <text>计次: {{ record.total }}</text>
+                        <text>删除时间: {{ formatTime(record.dtime) }}</text>
+                        <text>{{ isTimeRecord ? '计时' : '计次' }}: {{ record.total }}</text>
                     </view>
                     <view class="body">
                         <view class="content">
                             <view>
                                 <text>最小记录: </text>
-                                <text class="min">{{ record.min }}</text>
+                                <text class="min" v-if="isTimeRecord">{{ record.firstTime }}</text>
+                                <text class="min" v-else>{{ record.min }}</text>
                             </view>
                             <view>
                                 <text>最大记录: </text>
-                                <text class="max">{{ record.max ?? '-' }}</text>
+                                <text class="max" v-if="isTimeRecord">{{ record.lastTime ?? '-' }}</text>
+                                <text class="max" v-else>{{ record.max ?? '-' }}</text>
                             </view>
                         </view>
                     </view>
@@ -66,12 +68,14 @@ import { getCurrentInstance, computed, ref, type Ref } from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 import { useHistoryStore, KeepDay4Deleted } from '@/stores/history';
 import { formatTime } from '@/utils/format';
+import { RecordType } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue';
 
 const history = useHistoryStore()
 const settings = useSettingsStore()
 const records = computed(() => history.deletedRecords)
+const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
 
 const top = `${uni.getSystemInfoSync().safeArea?.top ?? 0}px`
 const checked = ref(new Set<string>())
@@ -121,6 +125,7 @@ async function recovery() {
         checked.value = new Set()
     }
 
+    history.sortRecords()
 }
 
 function bindHeightFor(selector: string) {
