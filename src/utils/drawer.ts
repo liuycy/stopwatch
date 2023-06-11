@@ -31,12 +31,17 @@ export class Drawer {
 
     async init() {
         this.initWindow();
+        //#ifdef MP-WEIXIN
         await this.initContext();
         return this;
+        //#endif
+        //#ifndef MP-WEIXIN
+        throw new Error('需要实现 initContext');
+        //#endif
     }
 
     initWindow() {
-        const info = uni.getWindowInfo();
+        const info = uni.getSystemInfoSync();
         this.dpr = info.pixelRatio;
         this.width = info.screenWidth;
     }
@@ -45,7 +50,7 @@ export class Drawer {
         const { instance, canvasId } = this.options;
 
         try {
-            const query: any = uni.createSelectorQuery().in(instance).select(`#${canvasId}`);
+            const query = wx.createSelectorQuery().in(instance).select(`#${canvasId}`);
             const info: any = await new Promise(r => query.fields({ size: true, node: true }).exec(r));
             const canvas = info[0].node;
             const renderWidth = info[0].width;
@@ -58,9 +63,9 @@ export class Drawer {
             ctx.scale(this.dpr, this.dpr);
 
             this.ctx = ctx;
-        } catch (e) {
-            console.error(e);
+        } catch (error) {
             this.ctx = undefined;
+            throw error;
         }
     }
 
