@@ -21,14 +21,14 @@ function preventPageScroll() { }
 
 onShareAppMessage(() => {
 	return {
-		title: '计次秒表|计时器',
+		title: '秒表|支持导出Excel',
 		imageUrl: '/static/share.jpeg'
 	}
 })
 
 onShareTimeline(() => {
 	return {
-		title: '计次秒表|计时器',
+		title: '秒表|支持导出Excel',
 	}
 })
 </script>
