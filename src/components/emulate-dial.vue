@@ -5,23 +5,30 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance } from "vue"
-import { onReady, onUnload } from '@dcloudio/uni-app'
+import { getCurrentInstance, computed, watchEffect, onMounted, onUnmounted } from "vue"
 
 import { useSettingsStore } from "@/stores/settings"
 import { useRecordsStore } from '@/stores/records'
 import { useDialStore } from '@/stores/dial'
 import { Drawer } from '@/utils/drawer'
-import { RecordType } from "@/types/enums"
+import { DialStatus, RecordType } from "@/types/enums"
 
 const dial = useDialStore()
 const records = useRecordsStore()
 const settings = useSettingsStore()
 
-let drawer: Drawer
-let timer = 0
+const duration = computed(() => settings.defaultRecordType === RecordType.Duration ? records.duration : undefined)
 
-onReady(async () => {
+let drawer: Drawer | undefined
+let timer: number | undefined
+
+watchEffect(async () => {
+	if (dial.status === DialStatus.Init) {
+		drawer?.draw(dial, duration.value)
+	}
+})
+
+onMounted(async () => {
 	drawer = await Drawer.create({
 		instance: getCurrentInstance(),
 		canvasId: 'dial',
@@ -32,17 +39,17 @@ onReady(async () => {
 		durationPointerColor: '#3788f2'
 	})
 
-	const loop = () => {
-		timer = drawer.requestAnimationFrame(loop)
-		drawer.draw(dial, settings.defaultRecordType === RecordType.Duration ? records.duration : undefined)
-	}
+	drawer.draw(dial, duration.value)
 
-	loop()
+	~(function start() {
+		timer = drawer.requestAnimationFrame(start)
+		if (dial.status === DialStatus.Running) {
+			drawer.draw(dial, duration.value)
+		}
+	})()
 })
 
-onUnload(() => {
-	drawer.cancelAnimationFrame(timer)
-})
+onUnmounted(() => timer && drawer?.cancelAnimationFrame(timer))
 </script>
 
 <style lang="scss" scoped>

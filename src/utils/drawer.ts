@@ -195,7 +195,7 @@ export class Drawer {
         ctx.fill();
 
         ctx.strokeStyle = pointerColor;
-        ctx.rotate((Math.PI / 1800) * ((duration.seconds + duration.minutes * 60) % 1800));
+        ctx.rotate((Math.PI / 900) * ((duration.seconds + ~~duration.minutes * 60) % 1800));
         ctx.moveTo(0, 0);
         ctx.lineTo(0, -radius);
         ctx.stroke();
