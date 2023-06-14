@@ -258,6 +258,8 @@ onLoad(() => {
         .back {
             height: 80rpx;
             padding: 0 20rpx;
+            position: relative;
+            z-index: 1;
             display: inline-flex;
             align-items: center;
             color: var(--color-recycle-action);

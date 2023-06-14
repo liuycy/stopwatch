@@ -31,8 +31,8 @@ export const useHistoryStore = defineStore('history', () => {
         const id = `history-${records.value.length}-${total}-${ctime}`;
 
         records.value.unshift({
-            firstTime: formatDuration(times[0].time),
-            lastTime: times.length > 1 ? formatDuration(times[times.length - 1].time) : undefined,
+            firstTime: formatDuration(times[times.length - 1].time),
+            lastTime: times.length > 1 ? formatDuration(times[0].time) : undefined,
             min: peak?.min ? formatDuration(parseDuration(peak.min)) : formatDuration(times[0].duration),
             max: peak?.max ? formatDuration(parseDuration(peak.max)) : undefined,
             status: 'saving',
