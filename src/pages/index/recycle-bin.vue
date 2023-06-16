@@ -24,7 +24,7 @@
                 <view class="record">
                     <view class="header">
                         <text>删除时间: {{ formatTime(record.dtime) }}</text>
-                        <text>{{ isTimeRecord ? '计时' : '计次' }}: {{ record.total }}</text>
+                        <text>{{ record.total }} 条记录</text>
                     </view>
                     <view class="body">
                         <view class="content">
@@ -103,10 +103,10 @@ async function remove() {
     settings.vibrate()
 
     if (!checked.value.size) {
-        const { confirm } = await uni.showModal({ title: `删除全部 ${history.deletedRecords.length} 条记录?` })
+        const { confirm } = await uni.showModal({ title: `删除全部 ${history.deletedRecords.length} 段记录?` })
         if (confirm) history.confirmDelete(new Set(history.deletedRecords.map(r => r.id)))
     } else {
-        const { confirm } = await uni.showModal({ title: `删除所选 ${checked.value.size} 条记录?` })
+        const { confirm } = await uni.showModal({ title: `删除所选 ${checked.value.size} 段记录?` })
         if (confirm) {
             history.confirmDelete(checked.value)
             checked.value = new Set()

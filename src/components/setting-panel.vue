@@ -150,6 +150,7 @@ function hidePanel() {
 function goToRecycleBinPage() {
     settings.vibrate()
     history.checkRecordDeleted()
+    hidePanel()
     uni.navigateTo({ url: 'recycle-bin' })
 }
 

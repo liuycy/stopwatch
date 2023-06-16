@@ -1,11 +1,11 @@
 <template>
     <view class="confirm-modal" v-if="record">
         <view class="modal-content">
-            <view class="title">确定要删除这条记录吗?</view>
+            <view class="title">确定要删除这段记录吗?</view>
             <view class="record">
                 <view class="header">
                     <text>记录时间: {{ formatTime(record.ctime) }}</text>
-                    <text>计次: {{ record.total }}</text>
+                    <text>{{ record.total }} 条记录</text>
                 </view>
                 <view class="body">
                     <view class="content">

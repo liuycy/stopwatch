@@ -4,7 +4,7 @@
             <view class="record">
                 <view class="header">
                     <text>记录时间: {{ formatTime(record.ctime) }}</text>
-                    <text>计次: {{ record.total }}</text>
+                    <text>{{ record.total }} 条记录</text>
                 </view>
                 <view class="body">
                     <view class="content">
