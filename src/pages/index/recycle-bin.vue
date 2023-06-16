@@ -1,6 +1,6 @@
 <template>
     <view class="recycle-bin">
-        <scroll-view class="list" @scroll="onScroll" :show-scrollbar="false" scroll-y enhanced enable-passive
+        <scroll-view class="list" v-show="navHeight" :show-scrollbar="false" scroll-y enhanced enable-passive
             enable-back-to-top>
             <view class="stub" :style="{ height: `${navHeight}px` }"></view>
 
@@ -63,7 +63,7 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app';
-import { getCurrentInstance, computed, ref, type Ref } from 'vue';
+import { getCurrentInstance, watchEffect, computed, ref, type Ref } from 'vue';
 
 import { useSettingsStore } from '@/stores/settings';
 import { useHistoryStore, KeepDay4Deleted } from '@/stores/history';
@@ -85,6 +85,7 @@ const actionsHeight = ref(0)
 const titleHeight = ref(0)
 
 const top = `${uni.getWindowInfo().safeArea.top}px`
+const instance = getCurrentInstance()
 
 function goBack() {
     settings.vibrate()
@@ -131,7 +132,6 @@ async function recovery() {
 }
 
 function bindHeightFor(selector: string) {
-    const instance = getCurrentInstance()
     const query = uni.createSelectorQuery().in(instance).select(selector)
     const result = new Promise(r => query.boundingClientRect(r).exec())
 
@@ -143,14 +143,24 @@ function bindHeightFor(selector: string) {
     }
 }
 
-function onScroll(e: any) {
-    showTitle.value = e.detail.scrollTop > titleHeight.value
+function observeTitleScroll() {
+    const observer = uni.createIntersectionObserver(instance)
+    observer.relativeTo('.nav').observe('.tip', (res) => {
+        showTitle.value = res.boundingClientRect.top < navHeight.value
+    })
+
+    return () => observer.disconnect()
 }
 
 onLoad(() => {
     bindHeightFor('.nav').to(navHeight)
     bindHeightFor('.title').to(titleHeight)
     bindHeightFor('.actions').to(actionsHeight)
+})
+
+watchEffect((onCleanup) => {
+    if (!navHeight.value) return
+    onCleanup(observeTitleScroll())
 })
 </script>
 
@@ -249,7 +259,7 @@ onLoad(() => {
 
     .blur-bg {
         background-color: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(20px)
+        backdrop-filter: blur(16px)
     }
 
     .nav {

@@ -24,11 +24,11 @@
 </template>
 
 <script lang="ts" setup>
-import NumberDial from '@/components/number-dial.vue'
-import EmulateDial from '@/components/emulate-dial.vue'
-
 import { useSettingsStore } from '@/stores/settings'
 import { DialType } from '@/types/enums'
+
+import NumberDial from '@/components/number-dial.vue'
+import EmulateDial from '@/components/emulate-dial.vue'
 
 const settings = useSettingsStore()
 </script>
