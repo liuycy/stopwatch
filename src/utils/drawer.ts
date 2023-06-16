@@ -41,7 +41,7 @@ export class Drawer {
     }
 
     initWindow() {
-        const info = uni.getSystemInfoSync();
+        const info = uni.getWindowInfo();
         this.dpr = info.pixelRatio;
         this.width = info.screenWidth;
     }

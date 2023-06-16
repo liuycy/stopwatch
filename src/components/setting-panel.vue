@@ -115,14 +115,15 @@ import SvgIcon from '@/components/svg-icon.vue'
 const history = useHistoryStore()
 const settings = useSettingsStore()
 
-const info = uni.getSystemInfoSync()
+const { theme } = uni.getAppBaseInfo()
+const { safeArea } = uni.getWindowInfo()
 
-const visible = ref(false)
-const top = `${4 + (info.safeArea?.top ?? 0)}px`
-const iconColor = ref<string>(info.theme === 'dark' ? '#fff' : '#000')
-
-const eggHits = ref(0)
+const top = `${4 + safeArea.top}px`
 let eggTimer = -1
+
+const iconColor = ref(theme === 'dark' ? '#fff' : '#000')
+const visible = ref(false)
+const eggHits = ref(0)
 
 uni.onThemeChange(({ theme }) => {
     iconColor.value = theme === 'dark' ? '#fff' : '#000'

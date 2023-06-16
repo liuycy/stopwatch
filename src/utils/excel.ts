@@ -65,17 +65,17 @@ export async function saveAsUserData(filename: string, sheet: unknown[][]) {
 }
 
 export function exportExcelFile(filename: string) {
-    const info = wx.getSystemInfoSync();
+    const { platform } = uni.getDeviceInfo();
     const filePath = `${wx.env.USER_DATA_PATH}/excels/${filename}.xlsx`;
 
     return new Promise((success, fail) => {
         if (!checkIfExist(filename)) return fail('not exist');
 
-        if (/devtools/i.test(info.platform)) {
+        if (/devtools/i.test(platform)) {
             return wx.openDocument({ filePath, success, fail });
         }
 
-        if (/mac|windows/i.test(info.platform)) {
+        if (/mac|windows/i.test(platform)) {
             return wx.saveFileToDisk({ filePath, success, fail });
         }
 

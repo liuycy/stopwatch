@@ -74,15 +74,17 @@ import SvgIcon from '@/components/svg-icon.vue';
 
 const history = useHistoryStore()
 const settings = useSettingsStore()
+
 const records = computed(() => history.deletedRecords)
 const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
 
-const top = `${uni.getSystemInfoSync().safeArea?.top ?? 0}px`
 const checked = ref(new Set<string>())
 const showTitle = ref(false)
 const navHeight = ref(0)
 const actionsHeight = ref(0)
 const titleHeight = ref(0)
+
+const top = `${uni.getWindowInfo().safeArea.top}px`
 
 function goBack() {
     settings.vibrate()
