@@ -1,10 +1,16 @@
 {
     "pages": [
         {
-            "path": "pages/index/index"
+            "path": "pages/index/index",
+            "style": {
+                "disableScroll": true
+            }
         },
         {
-            "path": "pages/index/recycle-bin"
+            "path": "pages/index/recycle-bin",
+            "style": {
+                "disableScroll": true
+            }
         }
     ],
     "globalStyle": {

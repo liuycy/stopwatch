@@ -1,5 +1,5 @@
 <template>
-    <view class="recycle-bin" @touchmove.stop.prevent="() => { }">
+    <view class="recycle-bin">
         <scroll-view class="list" @scroll="onScroll" :show-scrollbar="false" scroll-y enhanced enable-passive
             enable-back-to-top>
             <view class="stub" :style="{ height: `${navHeight}px` }"></view>

@@ -1,5 +1,5 @@
 <template>
-	<view class="index" @touchmove.stop.prevent="preventPageScroll">
+	<view class="index">
 		<dial-panel class="fixed"></dial-panel>
 		<actions-group></actions-group>
 		<records-list class="flexable"></records-list>
@@ -16,8 +16,6 @@ import DialPanel from '@/components/dial-panel.vue'
 import ActionsGroup from '@/components/actions-group.vue'
 import RecordsList from '@/components/records-list.vue'
 import HistoryModal from '@/components/history-modal.vue'
-
-function preventPageScroll() { }
 
 onShareAppMessage(() => {
 	return {

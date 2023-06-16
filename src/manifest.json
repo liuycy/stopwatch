@@ -54,9 +54,9 @@
         "setting": {
             "urlCheck": false
         },
-        "darkmode": true,
+        "lazyCodeLoading": "requiredComponents",
         "usingComponents": true,
-        "lazyCodeLoading": "requiredComponents"
+        "darkmode": true
     },
     "mp-alipay": {
         "usingComponents": true
