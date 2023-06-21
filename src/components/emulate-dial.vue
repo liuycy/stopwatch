@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, computed, watchEffect, onMounted, onUnmounted } from "vue"
+import { computed, watchEffect, onMounted, onUnmounted } from "vue"
 
 import { useSettingsStore } from "@/stores/settings"
 import { useRecordsStore } from '@/stores/records'
 import { useDialStore } from '@/stores/dial'
-import { Drawer } from '@/utils/drawer'
+import { WatchPainter } from '@/utils/watch-painter'
 import { DialStatus, RecordType } from "@/types/enums"
 
 const dial = useDialStore()
@@ -19,18 +19,17 @@ const settings = useSettingsStore()
 
 const duration = computed(() => settings.defaultRecordType === RecordType.Duration ? records.duration : undefined)
 
-let drawer: Drawer | undefined
+let painter: WatchPainter | undefined
 let timer: number | undefined
 
 watchEffect(async () => {
 	if (dial.status === DialStatus.Init) {
-		drawer?.draw(dial, duration.value)
+		painter?.draw(dial, duration.value)
 	}
 })
 
 onMounted(async () => {
-	drawer = await Drawer.create({
-		instance: getCurrentInstance(),
+	painter = await WatchPainter.create({
 		canvasId: 'dial',
 		bgColor: '#000',
 		color: '#fff',
@@ -39,17 +38,17 @@ onMounted(async () => {
 		durationPointerColor: '#3788f2'
 	})
 
-	drawer.draw(dial, duration.value)
+	painter.draw(dial, duration.value)
 
 	~(function start() {
-		timer = drawer.requestAnimationFrame(start)
+		timer = painter.requestAnimationFrame(start)
 		if (dial.status === DialStatus.Running) {
-			drawer.draw(dial, duration.value)
+			painter.draw(dial, duration.value)
 		}
 	})()
 })
 
-onUnmounted(() => timer && drawer?.cancelAnimationFrame(timer))
+onUnmounted(() => timer && painter?.cancelAnimationFrame(timer))
 </script>
 
 <style lang="scss" scoped>

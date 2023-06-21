@@ -2,16 +2,17 @@ import { onLaunch } from '@dcloudio/uni-app';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { DialType, RecordType, VibrateType } from '@/types/enums';
+import { DialType, PageType, RecordType, VibrateType } from '@/types/enums';
 
 export const useSettingsStore = defineStore('settings', () => {
     const historyVisible = ref(true);
     const recycleBinEnabled = ref(false);
     const keepScreenOn = ref(true);
     const isActionsReverse = ref(false);
-    const vibrateType = ref<VibrateType>(VibrateType.Short);
-    const defaultRecordType = ref<RecordType>(RecordType.Duration);
-    const defaultDialType = ref<DialType>(DialType.Number);
+    const vibrateType = ref(VibrateType.Short);
+    const defaultRecordType = ref(RecordType.Duration);
+    const defaultDialType = ref(DialType.Number);
+    const defaultPageType = ref(PageType.Stopwatch);
 
     function vibrate() {
         if (vibrateType.value === VibrateType.Short) {
@@ -20,6 +21,11 @@ export const useSettingsStore = defineStore('settings', () => {
         if (vibrateType.value === VibrateType.Long) {
             uni.vibrateLong();
         }
+    }
+
+    function changePageType(type: PageType, vibratable = true) {
+        if (vibratable) vibrate();
+        defaultPageType.value = type;
     }
 
     function changeHistoryVisible() {
@@ -66,8 +72,10 @@ export const useSettingsStore = defineStore('settings', () => {
         vibrateType,
         defaultRecordType,
         defaultDialType,
+        defaultPageType,
 
         vibrate,
+        changePageType,
         changeHistoryVisible,
         toggleRecyleBin,
         changeScreenOn,
@@ -93,6 +101,7 @@ export const useSettingsLanuch = () => {
         if (!data) return;
 
         settings.$patch(JSON.parse(data));
+        settings.changePageType(settings.defaultPageType, false);
         uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn });
     });
 };

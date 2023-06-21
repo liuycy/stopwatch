@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import { useGlobalStore } from '@/stores/global'
 import { useSettingsLanuch } from '@/stores/settings'
-import { useHistoryLaunch } from '@/stores/history';
+import { useHistoryLaunch } from '@/stores/history'
 
+useGlobalStore()
 useSettingsLanuch()
 useHistoryLaunch()
 </script>
@@ -17,6 +19,7 @@ root-portal {
     --color-tips: #c6c6c6;
     --color-line: #202020;
     --color-border: #2b2b2b;
+    --color-blur: rgba(0, 0, 0, 0.3);
 
     --color-green: #65ce67;
     --color-green-bg: #112813;
@@ -25,6 +28,10 @@ root-portal {
     --color-red: #ee534f;
     --color-red-bg: #2d100c;
     --color-red-hover: #180808;
+
+    --color-orange: #efa448;
+    --color-orange-bg: #30200a;
+    --color-orange-hover: #191103;
 
     --color-gray-bg: #333;
     --color-gray-hover: #1b1b1b;
@@ -46,6 +53,8 @@ root-portal {
     --color-recycle-action: #3183f4;
     --color-recycle-tips: #767676;
     --color-recycle-border: #3a3a3a;
+
+    --color-mask-bar: rgba(255, 255, 255, 0.2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,6 +66,20 @@ root-portal {
         --color-panel-text: #808080;
         --color-panel-label: #999;
         --color-panel-label-highlight: #26c067;
+    }
+}
+
+.picker-mask {
+    background: none;
+}
+
+.picker-indicator {
+    &::after {
+        border: none;
+    }
+
+    &::before {
+        border: none;
     }
 }
 </style>

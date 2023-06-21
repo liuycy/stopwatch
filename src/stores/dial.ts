@@ -13,8 +13,8 @@ export const useDialStore = defineStore('dial', () => {
     const hours = ref<number>();
     const status = ref(DialStatus.Init);
 
+    let pauseAt = 0;
     let startAt = 0;
-    let pausedAt = 0;
     let timer = 0;
 
     function tick() {
@@ -30,16 +30,14 @@ export const useDialStore = defineStore('dial', () => {
     }
 
     function start() {
-        const now = Date.now();
-        const durationMs = now - pausedAt;
-        startAt += durationMs;
+        startAt += Date.now() - pauseAt;
         status.value = DialStatus.Running;
         timer = setInterval(tick, 20);
     }
 
     function pause() {
         clearInterval(timer);
-        pausedAt = Date.now();
+        pauseAt = Date.now();
         status.value = DialStatus.Paused;
     }
 
@@ -52,7 +50,7 @@ export const useDialStore = defineStore('dial', () => {
         hours.value = undefined;
         status.value = DialStatus.Init;
         startAt = 0;
-        pausedAt = 0;
+        pauseAt = 0;
     }
 
     function now() {

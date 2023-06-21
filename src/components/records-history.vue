@@ -1,5 +1,5 @@
 <template>
-    <scroll-view class="records-history" scroll-y>
+    <scroll-view class="records-history" :show-scrollbar="false" enhanced scroll-y enable-passive enable-back-to-top>
         <view class="wrapper" v-for="record in history.records" :key="record.id">
             <view class="record">
                 <view class="header">
@@ -35,18 +35,20 @@
                 </view>
             </view>
         </view>
+
+        <view class="footer" :style="{ height: `${footerHeight ?? 0}px` }"></view>
     </scroll-view>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, inject, type Ref } from 'vue';
 
-import { useSettingsStore } from '@/stores/settings';
 import { useHistoryStore } from '@/stores/history';
+import { useSettingsStore } from '@/stores/settings';
 import { formatTime } from '@/utils/format';
 
-import { RecordConfirmRejectError, type HistoryRecord } from '@/types/history';
 import { RecordType } from '@/types/enums';
+import { RecordConfirmRejectError, type HistoryRecord } from '@/types/history';
 
 import SvgIcon from '@/components/svg-icon.vue';
 
@@ -54,6 +56,8 @@ const settings = useSettingsStore()
 const history = useHistoryStore()
 
 const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
+
+const footerHeight = inject<Ref<number>>('footerHeight')
 
 async function confirmRemove(record: HistoryRecord) {
     settings.vibrate()
@@ -179,6 +183,10 @@ async function exportExcel(record: HistoryRecord) {
                 }
             }
         }
+    }
+
+    .footer {
+        width: 100%;
     }
 }
 </style>

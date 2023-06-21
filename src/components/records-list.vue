@@ -2,7 +2,7 @@
 	<view class="gap line"></view>
 
 	<template v-if="curRecord">
-		<scroll-view class="records-list" scroll-y>
+		<scroll-view class="records-list" :show-scrollbar="false" enhanced scroll-y enable-passive enable-back-to-top>
 			<view class="record" v-if="!isTimeRecord">
 				<text class="label">{{ recordLabel }}{{ records.timeRecords.length + 1 }}</text>
 				<text class="duration">{{ curRecord }}</text>
@@ -14,6 +14,8 @@
 				<text :class="['duration', peakClass(record.index)]">{{ formatValue(record) }}</text>
 				<view class="gap"></view>
 			</view>
+
+			<view class="footer" :style="{ height: `${footerHeight ?? 0}px` }"></view>
 		</scroll-view>
 	</template>
 
@@ -23,13 +25,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, inject, type Ref } from 'vue'
 
-import { useSettingsStore } from '@/stores/settings'
 import { useRecordsStore } from '@/stores/records'
-import { formatDuration } from '@/utils/format'
+import { useSettingsStore } from '@/stores/settings'
 import { RecordType } from '@/types/enums'
 import type { TimeRecord } from '@/types/time'
+import { formatDuration } from '@/utils/format'
 
 import RecordsHistory from '@/components/records-history.vue'
 
@@ -39,6 +41,8 @@ const records = useRecordsStore()
 const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
 const curRecord = computed(() => isTimeRecord.value ? records.timeText : records.durationText)
 const recordLabel = computed(() => isTimeRecord.value ? '计时' : '计次')
+
+const footerHeight = inject<Ref<number>>('footerHeight')
 
 function formatValue(record: TimeRecord) {
 	if (isTimeRecord.value) return formatDuration(record.time)
@@ -112,6 +116,10 @@ function peakClass(index: number) {
 		.gap {
 			bottom: 0;
 		}
+	}
+
+	.footer {
+		width: 100%;
 	}
 }
 </style>

@@ -1,9 +1,9 @@
+import { useGlobalStore } from '@/stores/global';
 import { formatDuration } from '@/utils/format';
+import { CanvasPainter, type CanvasPainterOptions } from '@/types/canvas';
 import type { Duration } from '@/types/time';
 
-interface DrawerOptions {
-    instance: any;
-    canvasId: string;
+interface WatchPainterOptions extends CanvasPainterOptions {
     bgColor: string;
     color: string;
     secondaryColor: string;
@@ -11,62 +11,18 @@ interface DrawerOptions {
     durationPointerColor: string;
 }
 
-export class Drawer {
-    static async create(options: DrawerOptions) {
-        return new Drawer(options).init();
+export class WatchPainter extends CanvasPainter {
+    static create(options: WatchPainterOptions) {
+        return new WatchPainter(options).init();
     }
 
-    dpr!: number;
-    width!: number;
+    width: number;
+    options: WatchPainterOptions;
 
-    ctx?: CanvasRenderingContext2D;
-    cancelAnimationFrame!: (id: number) => void;
-    requestAnimationFrame!: (fn: Function) => number;
-
-    options: DrawerOptions;
-
-    constructor(options: DrawerOptions) {
-        this.options = options;
-    }
-
-    async init() {
-        this.initWindow();
-        //#ifdef MP-WEIXIN
-        await this.initContext();
-        return this;
-        //#endif
-        //#ifndef MP-WEIXIN
-        throw new Error('需要实现 initContext');
-        //#endif
-    }
-
-    initWindow() {
-        const info = uni.getWindowInfo();
-        this.dpr = info.pixelRatio;
-        this.width = info.screenWidth;
-    }
-
-    async initContext() {
-        const { instance, canvasId } = this.options;
-
-        try {
-            const query = wx.createSelectorQuery().in(instance).select(`#${canvasId}`);
-            const info: any = await new Promise(r => query.fields({ size: true, node: true }).exec(r));
-            const canvas = info[0].node;
-            const renderWidth = info[0].width;
-            const renderHeight = info[0].height;
-            const ctx = canvas.getContext('2d');
-            this.requestAnimationFrame = canvas.requestAnimationFrame;
-            this.cancelAnimationFrame = canvas.cancelAnimationFrame;
-            canvas.width = renderWidth * this.dpr;
-            canvas.height = renderHeight * this.dpr;
-            ctx.scale(this.dpr, this.dpr);
-
-            this.ctx = ctx;
-        } catch (error) {
-            this.ctx = undefined;
-            throw error;
-        }
+    constructor(options: WatchPainterOptions) {
+        super(options);
+        this.width = useGlobalStore().screenWidth;
+        this.options = { ...super.options, ...options };
     }
 
     drawSecondsDial(duration: Duration) {

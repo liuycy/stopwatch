@@ -1,6 +1,6 @@
 <template>
     <view class="recycle-bin">
-        <scroll-view class="list" v-show="navHeight" :show-scrollbar="false" scroll-y enhanced enable-passive
+        <scroll-view class="list" v-show="navHeight" :show-scrollbar="false" enhanced scroll-y enable-passive
             enable-back-to-top>
             <view class="stub" :style="{ height: `${navHeight}px` }"></view>
 
@@ -63,15 +63,18 @@
 
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app';
-import { getCurrentInstance, watchEffect, computed, ref, type Ref } from 'vue';
+import { computed, getCurrentInstance, ref, watchEffect } from 'vue';
 
+import { useGlobalStore } from '@/stores/global';
+import { KeepDay4Deleted, useHistoryStore } from '@/stores/history';
 import { useSettingsStore } from '@/stores/settings';
-import { useHistoryStore, KeepDay4Deleted } from '@/stores/history';
-import { formatTime } from '@/utils/format';
 import { RecordType } from '@/types/enums';
+import { formatTime } from '@/utils/format';
+import { bindHeightFor } from '@/utils/node';
 
 import SvgIcon from '@/components/svg-icon.vue';
 
+const global = useGlobalStore()
 const history = useHistoryStore()
 const settings = useSettingsStore()
 
@@ -84,8 +87,7 @@ const navHeight = ref(0)
 const actionsHeight = ref(0)
 const titleHeight = ref(0)
 
-const top = `${uni.getWindowInfo().safeArea.top}px`
-const instance = getCurrentInstance()
+const top = `${global.safeArea.top}px`
 
 function goBack() {
     settings.vibrate()
@@ -131,19 +133,8 @@ async function recovery() {
     history.sortRecords()
 }
 
-function bindHeightFor(selector: string) {
-    const query = uni.createSelectorQuery().in(instance).select(selector)
-    const result = new Promise(r => query.boundingClientRect(r).exec())
-
-    return {
-        to: async (ref: Ref<number>) => {
-            const { height } = await result as UniApp.NodeInfo ?? {}
-            ref.value = height ?? 0
-        }
-    }
-}
-
 function observeTitleScroll() {
+    const instance = getCurrentInstance()
     const observer = uni.createIntersectionObserver(instance)
     observer.relativeTo('.nav').observe('.tip', (res) => {
         showTitle.value = res.boundingClientRect.top < navHeight.value
@@ -258,8 +249,8 @@ watchEffect((onCleanup) => {
     }
 
     .blur-bg {
-        background-color: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(16px)
+        background-color: var(--color-blur);
+        backdrop-filter: blur(16px);
     }
 
     .nav {

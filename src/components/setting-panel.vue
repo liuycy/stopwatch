@@ -1,8 +1,8 @@
 <template>
-    <template v-if="top">
+    <template>
         <view @click="changePanelVisible" class="setting-button" hover-class="hover" :hover-start-time="0"
             :hover-stay-time="50" :style="{ top }">
-            <image class="icon" src="@/static/icon-setting.svg"></image>
+            <svg-icon class="icon" src="/static/icon-setting.svg" size="42rpx" color="#fff"></svg-icon>
             <text>设置</text>
         </view>
     </template>
@@ -106,22 +106,21 @@
 import { ref } from 'vue'
 
 import { removeExcelDir } from '@/utils/excel'
+import { useGlobalStore } from '@/stores/global'
 import { useHistoryStore } from '@/stores/history'
 import { useSettingsStore } from '@/stores/settings'
 import { VibrateType, DialType, RecordType } from '@/types/enums'
 
 import SvgIcon from '@/components/svg-icon.vue'
 
+const global = useGlobalStore()
 const history = useHistoryStore()
 const settings = useSettingsStore()
 
-const { theme } = uni.getAppBaseInfo()
-const { safeArea } = uni.getWindowInfo()
-
-const top = `${4 + safeArea.top}px`
+const top = `${4 + global.safeArea.top ?? 0}px`
 let eggTimer = -1
 
-const iconColor = ref(theme === 'dark' ? '#fff' : '#000')
+const iconColor = ref(global.theme === 'dark' ? '#fff' : '#000')
 const visible = ref(false)
 const eggHits = ref(0)
 
@@ -178,8 +177,6 @@ async function clearAllStorage() {
     border: 1px solid var(--color-border);
 
     .icon {
-        width: 0.7 * 60rpx;
-        height: 0.7 * 60rpx;
         position: absolute;
         left: 30rpx;
         top: 50%;

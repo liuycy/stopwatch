@@ -1,4 +1,5 @@
 import { utils, write } from 'xlsx';
+import { useGlobalStore } from '@/stores/global';
 
 function buildExcelDir() {
     const fs = wx.getFileSystemManager();
@@ -65,7 +66,7 @@ export async function saveAsUserData(filename: string, sheet: unknown[][]) {
 }
 
 export function exportExcelFile(filename: string) {
-    const { platform } = uni.getDeviceInfo();
+    const { platform } = useGlobalStore();
     const filePath = `${wx.env.USER_DATA_PATH}/excels/${filename}.xlsx`;
 
     return new Promise((success, fail) => {

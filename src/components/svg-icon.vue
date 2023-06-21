@@ -17,7 +17,7 @@ const props = defineProps<{
 
 const base64 = ref<string>()
 
-function initSrc() {
+watchEffect(() => {
     const fs = uni.getFileSystemManager()
     let svg = decode(fs.readFileSync(props.src, 'base64') as string)
     if (/fill=".*?"/.test(svg)) {
@@ -26,10 +26,7 @@ function initSrc() {
         svg = svg.replace(/<svg /, `<svg fill="${props.color}" `);
     }
     base64.value = `data:image/svg+xml;base64,${encode(svg)}`;
-}
-
-
-watchEffect(initSrc)
+})
 </script>
 
 <style lang="scss" scoped>

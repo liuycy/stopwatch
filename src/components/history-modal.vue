@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, getCurrentInstance, watchEffect } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 
 import { useHistoryStore } from '@/stores/history';
 import { formatTime } from '@/utils/format';

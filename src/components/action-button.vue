@@ -10,7 +10,7 @@ import { useSettingsStore } from '@/stores/settings'
 import { VibrateType } from '@/types/enums'
 
 const props = defineProps<{
-	type: 'start' | 'pause' | 'reset' | 'count',
+	type: 'green' | 'red' | 'orange' | 'gray',
 	disabled?: boolean,
 }>()
 
@@ -50,7 +50,7 @@ function onClick() {
 	}
 
 
-	&.start {
+	&.green {
 		background-color: var(--color-green-bg);
 		color: var(--color-green);
 
@@ -59,7 +59,7 @@ function onClick() {
 		}
 	}
 
-	&.pause {
+	&.red {
 		background-color: var(--color-red-bg);
 		color: var(--color-red);
 
@@ -68,8 +68,16 @@ function onClick() {
 		}
 	}
 
-	&.count,
-	&.reset {
+	&.orange {
+		background-color: var(--color-orange-bg);
+		color: var(--color-orange);
+
+		&.hover {
+			background-color: var(--color-orange-hover);
+		}
+	}
+
+	&.gray {
 		background-color: var(--color-gray-bg);
 
 		&.hover {

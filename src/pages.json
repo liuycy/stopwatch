@@ -14,6 +14,7 @@
         }
     ],
     "globalStyle": {
+        "backgroundColor": "#000",
         "navigationStyle": "custom"
     },
     "uniIdRouter": {}

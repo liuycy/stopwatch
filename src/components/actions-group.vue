@@ -2,34 +2,34 @@
 	<view class="actions-group">
 		<template v-if="dial.status === DialStatus.Running">
 			<template v-if="settings.isActionsReverse">
-				<action-button @click="onPause" type="pause">停止</action-button>
-				<action-button @click="records.addTime()" type="count">{{ recordLabel }}</action-button>
+				<action-button @click="onPause" type="gray">停止</action-button>
+				<action-button @click="records.addTime()" type="gray">{{ recordLabel }}</action-button>
 			</template>
 
 			<template v-else>
-				<action-button @click="records.addTime()" type="count">{{ recordLabel }}</action-button>
-				<action-button @click="onPause" type="pause">停止</action-button>
+				<action-button @click="records.addTime()" type="gray">{{ recordLabel }}</action-button>
+				<action-button @click="onPause" type="red">停止</action-button>
 			</template>
 		</template>
 
 		<template v-else>
 			<template v-if="settings.isActionsReverse">
-				<action-button @click="onStart" type="start">启动</action-button>
-				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? recordLabel : '复位'
+				<action-button @click="onStart" type="green">启动</action-button>
+				<action-button @click="onReset" type="gray" :disabled="isInited">{{ isInited ? recordLabel : '复位'
 				}}</action-button>
 			</template>
 
 			<template v-else>
-				<action-button @click="onReset" type="reset" :disabled="isInited">{{ isInited ? recordLabel : '复位'
+				<action-button @click="onReset" type="gray" :disabled="isInited">{{ isInited ? recordLabel : '复位'
 				}}</action-button>
-				<action-button @click="onStart" type="start">启动</action-button>
+				<action-button @click="onStart" type="green">启动</action-button>
 			</template>
 		</template>
 	</view>
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue"
+import { computed, onUnmounted } from "vue"
 
 import ActionButton from '@/components/action-button.vue'
 
@@ -62,6 +62,13 @@ function onPause() {
 	dial.pause()
 	records.pause()
 }
+
+onUnmounted(() => {
+	dial.pause()
+	dial.reset()
+	records.pause()
+	records.reset()
+})
 </script>
 
 <style lang="scss" scoped>
