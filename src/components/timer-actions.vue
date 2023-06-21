@@ -13,11 +13,36 @@
 </template>
 
 <script lang="ts" setup>
+import { watch } from 'vue'
+
 import { useTimerStore } from '@/stores/timer';
 
 import ActionButton from '@/components/action-button.vue'
 
 const timer = useTimerStore()
+let interval = -1
+
+async function showTips() {
+    uni.vibrateLong()
+    interval = setInterval(() => uni.vibrateLong(), 1000)
+
+    const { confirm } = await uni.showModal({
+        title: '时间到了',
+        confirmText: '停止',
+        cancelText: '重复',
+    })
+
+    if (confirm) return clearInterval(interval)
+
+    clearInterval(interval)
+    timer.start()
+}
+
+watch(() => timer.state, (curr, prev) => {
+    if (curr === 'stopped' && prev !== 'stopped') {
+        showTips()
+    }
+})
 </script>
 
 <style lang="scss" scoped>

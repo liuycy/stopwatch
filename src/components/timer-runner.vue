@@ -16,7 +16,7 @@ let rafId: number | undefined
 
 onMounted(async () => {
     painter = await TimerPainter.create({
-        imageSrc: '/static/icon-phone-shake.svg',
+        imageSrc: '/static/icon-phone-shake.png',
         canvasId: 'runner',
         timeColor: '#fff',
         tipsColor: '#999',
