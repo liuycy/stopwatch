@@ -4,6 +4,7 @@
 		<page-timer></page-timer>
 		<footer-bar class="footer"></footer-bar>
 		<history-modal></history-modal>
+		<timer-modal></timer-modal>
 	</view>
 </template>
 
@@ -17,6 +18,7 @@ import PageStopwatch from '@/components/page-stopwatch.vue'
 import PageTimer from '@/components/page-timer.vue'
 import FooterBar from '@/components/footer-bar.vue'
 import HistoryModal from '@/components/history-modal.vue'
+import TimerModal from '@/components/timer-modal.vue'
 
 const footerHeight = ref(0)
 

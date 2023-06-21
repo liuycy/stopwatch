@@ -10,37 +10,35 @@
             <action-button @click="timer.start()" type="green" v-else>继续</action-button>
         </template>
     </view>
+    <view class="tips" v-if="timer.state === 'running'">
+        <text>息屏或切到后台 自动停止计时</text>
+    </view>
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { onHide } from '@dcloudio/uni-app';
 
 import { useTimerStore } from '@/stores/timer';
+import { useSettingsStore } from '@/stores/settings';
 
 import ActionButton from '@/components/action-button.vue'
 
 const timer = useTimerStore()
-let interval = -1
+const settings = useSettingsStore()
 
-async function showTips() {
-    uni.vibrateLong()
-    interval = setInterval(() => uni.vibrateLong(), 1000)
+onMounted(() => {
+    uni.setKeepScreenOn({ keepScreenOn: true })
+})
 
-    const { confirm } = await uni.showModal({
-        title: '时间到了',
-        confirmText: '停止',
-        cancelText: '重复',
-    })
+onUnmounted(() => {
+    uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn })
+    timer.reset()
+})
 
-    if (confirm) return clearInterval(interval)
-
-    clearInterval(interval)
-    timer.start()
-}
-
-watch(() => timer.state, (curr, prev) => {
-    if (curr === 'stopped' && prev !== 'stopped') {
-        showTips()
+onHide(() => {
+    if (timer.state === 'running') {
+        timer.pause()
     }
 })
 </script>
@@ -53,5 +51,13 @@ watch(() => timer.state, (curr, prev) => {
     top: 745rpx;
     display: flex;
     justify-content: space-between;
+}
+
+.tips {
+    width: 100vw;
+    position: absolute;
+    top: 960rpx;
+    color: var(--color-tips);
+    text-align: center;
 }
 </style>

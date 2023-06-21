@@ -40,8 +40,6 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted } from 'vue'
-
 import { useTimerStore } from '@/stores/timer'
 
 const timer = useTimerStore()
@@ -52,10 +50,6 @@ function onChange(e: any) {
     timer.state = 'stopped'
     timer.picked = e.detail.value
 }
-
-onUnmounted(() => {
-    timer.reset()
-})
 </script>
 
 <style lang="scss" scoped>

@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useTimerStore = defineStore('timer', () => {
     const state = ref<'running' | 'paused' | 'stopped'>('stopped');
     const picked = ref([0, 0, 0]);
+    const finished = ref(0);
     const startAt = ref(0);
     const duration = ref(0);
     const endAt = ref(0);
@@ -15,7 +16,10 @@ export const useTimerStore = defineStore('timer', () => {
 
     function tick() {
         const now = Date.now();
-        if (now >= endAt.value) return stop();
+        if (now >= endAt.value) {
+            finished.value += 1;
+            return stop();
+        }
         duration.value = endAt.value - now;
     }
 
@@ -52,11 +56,11 @@ export const useTimerStore = defineStore('timer', () => {
     return {
         state,
         picked,
-        isAllZero,
-
+        finished,
         startAt,
         duration,
         endAt,
+        isAllZero,
 
         start,
         pause,

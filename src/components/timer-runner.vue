@@ -25,10 +25,8 @@ onMounted(async () => {
     })
 
     ~(function loop() {
+        painter.draw(timer)
         rafId = painter.requestAnimationFrame(loop)
-        if (timer.state !== 'stopped') {
-            painter.draw(timer.startAt, timer.endAt, timer.duration)
-        }
     })()
 })
 
