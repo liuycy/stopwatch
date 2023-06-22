@@ -19,9 +19,9 @@ specifiers:
   '@dcloudio/uni-quickapp-webview': 3.0.0-alpha-3070720230316001
   '@dcloudio/uni-stacktracey': 3.0.0-alpha-3070720230316001
   '@dcloudio/vite-plugin-uni': 3.0.0-alpha-3070720230316001
-  '@types/wechat-miniprogram': ^3.4.1
   '@vue/tsconfig': ^0.1.3
   js-base64: ^3.7.5
+  miniprogram-api-typings: ^3.10.0
   pinia: ^2.0.33
   sass: ^1.59.3
   typescript: ^4.9.4
@@ -57,8 +57,8 @@ devDependencies:
   '@dcloudio/uni-cli-shared': 3.0.0-alpha-3070720230316001_postcss@8.4.21+vue@3.2.47
   '@dcloudio/uni-stacktracey': 3.0.0-alpha-3070720230316001
   '@dcloudio/vite-plugin-uni': 3.0.0-alpha-3070720230316001_snwypj6lv3myyn26fkc3kmxsyq
-  '@types/wechat-miniprogram': 3.4.1
   '@vue/tsconfig': 0.1.3
+  miniprogram-api-typings: 3.10.0
   sass: 1.59.3
   typescript: 4.9.5
   vite: 4.0.3_sass@1.59.3+terser@5.16.6
@@ -2775,10 +2775,6 @@ packages:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
 
-  /@types/wechat-miniprogram/3.4.1:
-    resolution: {integrity: sha512-szbuYR32VotxNQNQ4YyQ6Ob3ya0tLY0zpf/xvi6DF8Oqb+0Y+5CL5BpxS+4wBSJvlu3VfSXhjxZ0ze1a3l16Pw==}
-    dev: true
-
   /@types/yargs-parser/21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
     dev: true
@@ -5025,6 +5021,10 @@ packages:
   /minimist/1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: false
+
+  /miniprogram-api-typings/3.10.0:
+    resolution: {integrity: sha512-pvGZmj9uamahlqfPj1bwn5Cd/bjImc5ehyAha/QfA9limG6HO9Plj/yROfSChK6J6+VUoVB9cnNthx4XuI0T2Q==}
+    dev: true
 
   /mkdirp/0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}

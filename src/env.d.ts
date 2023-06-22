@@ -1,4 +1,3 @@
-/// <reference types="@types/wechat-miniprogram" />
 /// <reference types="vite/client" />
 
 declare module '*.vue' {

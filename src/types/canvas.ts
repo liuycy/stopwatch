@@ -9,8 +9,8 @@ export interface CanvasPainterOptions {
 export abstract class CanvasPainter {
     cancelAnimationFrame!: WechatMiniprogram.Canvas['cancelAnimationFrame'];
     requestAnimationFrame!: WechatMiniprogram.Canvas['requestAnimationFrame'];
-    image?: CanvasImageSource;
-    ctx?: CanvasRenderingContext2D;
+    ctx?: WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D;
+    image?: WechatMiniprogram.Image;
     canvasHeight!: number;
     canvasWidth!: number;
 
@@ -51,12 +51,12 @@ export abstract class CanvasPainter {
     }
 
     initImage(canvas: WechatMiniprogram.Canvas) {
-        return new Promise<CanvasImageSource | undefined>((resolve, reject) => {
+        return new Promise<WechatMiniprogram.Image | undefined>((resolve, reject) => {
             try {
                 if (!this.options.imageSrc) return resolve(undefined);
                 const image = canvas.createImage();
                 image.src = this.options.imageSrc;
-                image.onload = () => resolve(image as CanvasImageSource);
+                image.onload = () => resolve(image);
                 image.onerror = reject;
             } catch (error) {
                 reject(error);

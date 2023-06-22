@@ -18,10 +18,12 @@ import { getCurrentInstance, ref, watch } from 'vue';
 import { onHide } from '@dcloudio/uni-app';
 
 import { useTimerStore } from '@/stores/timer';
+import { TimerBell } from '@/utils/timer-bell';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
 const timer = useTimerStore()
+const timerbell = new TimerBell()
 
 const instance: any = getCurrentInstance()
 const _this = instance.ctx.$scope;
@@ -61,6 +63,8 @@ function confirm() {
 }
 
 function heartBeat() {
+    timerbell.ring()
+
     if (lyric++ % 2 === 0) {
         uni.vibrateLong()
     } else {
@@ -68,16 +72,17 @@ function heartBeat() {
         setTimeout(uni.vibrateShort, 300)
         setTimeout(uni.vibrateShort, 600)
     }
+
+    interval = setTimeout(heartBeat, 1000)
 }
 
 watch(() => visible.value, () => {
-    if (!visible.value) clearInterval(interval)
+    if (!visible.value) clearTimeout(interval)
 })
 
 watch(() => timer.finished, (curr, prev) => {
     if (curr > prev) {
         visible.value = true
-        interval = setInterval(heartBeat, 1000)
         heartBeat()
     }
 })
