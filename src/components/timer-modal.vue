@@ -2,8 +2,12 @@
     <view class="confirm-modal" v-if="visible">
         <view class="modal-content">
             <view class="title">计时结束</view>
+            <view class="tips">息屏或切到后台 自动停止计时</view>
             <view class="icon">
-                <svg-icon src="/static/icon-phone-shake.svg" size="200rpx" color="#c6c6c6"></svg-icon>
+                <svg-icon v-if="settings.enableTimerRing" src="/static/icon-phone-ring.svg" size="200rpx"
+                    color="#c6c6c6"></svg-icon>
+                <svg-icon v-else-if="settings.enableTimerVibrate" src="/static/icon-phone-shake.svg" size="200rpx"
+                    color="#c6c6c6"></svg-icon>
             </view>
             <view class="actions">
                 <view @click="cancel()" class="action cancel" hover-class="hover">重复</view>
@@ -18,19 +22,20 @@ import { getCurrentInstance, ref, watch } from 'vue';
 import { onHide } from '@dcloudio/uni-app';
 
 import { useTimerStore } from '@/stores/timer';
+import { useSettingsStore } from '@/stores/settings';
 import { TimerBell } from '@/utils/timer-bell';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
 const timer = useTimerStore()
+const settings = useSettingsStore()
 const timerbell = new TimerBell()
 
 const instance: any = getCurrentInstance()
 const _this = instance.ctx.$scope;
-let interval = -1;
-let lyric = 0
 
 const visible = ref(false)
+let timeout = -1;
 
 function cancel() {
     //#ifdef MP-WEIXIN
@@ -63,24 +68,17 @@ function confirm() {
 }
 
 function heartBeat() {
-    timerbell.ring()
-
-    if (lyric++ % 2 === 0) {
-        uni.vibrateLong()
-    } else {
-        uni.vibrateShort()
-        setTimeout(uni.vibrateShort, 300)
-        setTimeout(uni.vibrateShort, 600)
-    }
-
-    interval = setTimeout(heartBeat, 1000)
+    if (settings.enableTimerRing) timerbell.ring()
+    if (settings.enableTimerVibrate) uni.vibrateLong()
+    timeout = setTimeout(heartBeat, 1000)
 }
 
 watch(() => visible.value, () => {
-    if (!visible.value) clearTimeout(interval)
+    if (!visible.value) clearTimeout(timeout)
 })
 
 watch(() => timer.finished, (curr, prev) => {
+    if (!settings.enableTimerRing && !settings.enableTimerVibrate) return
     if (curr > prev) {
         visible.value = true
         heartBeat()
@@ -152,6 +150,12 @@ onHide(() => {
             text-align: center;
             font-weight: bold;
             color: var(--color-tips);
+        }
+
+        .tips {
+            margin-top: 16rpx;
+            font-size: 24rpx;
+            text-align: center;
         }
 
         .icon {

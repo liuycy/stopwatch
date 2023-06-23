@@ -1,5 +1,5 @@
 <template>
-    <view class="footer-bar">
+    <view class="footer-bar" v-if="!settings.isTimerPageFullscreen">
         <view class="action" @click="settings.changePageType(PageType.Stopwatch)">
             <svg-icon src="/static/icon-stopwatch.svg" size="56rpx" :color="getActiceColor(PageType.Stopwatch)"></svg-icon>
             <view class="label" :style="{ color: getActiceColor(PageType.Stopwatch) }">秒表</view>

@@ -2,7 +2,7 @@
     <template>
         <view @click="changePanelVisible" class="setting-button" hover-class="hover" :hover-start-time="0"
             :hover-stay-time="50" :style="{ top }">
-            <svg-icon class="icon" src="/static/icon-setting.svg" size="42rpx" color="#fff"></svg-icon>
+            <svg-icon class="icon" src="/static/icon-setting.svg" size="18px" color="#fff"></svg-icon>
             <text>设置</text>
         </view>
     </template>
@@ -117,7 +117,7 @@ const global = useGlobalStore()
 const history = useHistoryStore()
 const settings = useSettingsStore()
 
-const top = `${4 + global.safeArea.top ?? 0}px`
+const top = `${4 + global.safeArea.top}px`
 let eggTimer = -1
 
 const iconColor = ref(global.theme === 'dark' ? '#fff' : '#000')
@@ -167,20 +167,19 @@ async function clearAllStorage() {
 
 <style lang="scss" scoped>
 .setting-button {
-    width: 80rpx;
-    padding-left: 55rpx;
+    width: 66px;
+    height: 30px;
     position: absolute;
-    left: 32rpx;
-    font-size: 30rpx;
-    line-height: 60rpx;
-    border-radius: 30rpx;
+    left: 16px;
+    font-size: 16px;
+    border-radius: 18px;
     border: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .icon {
-        position: absolute;
-        left: 30rpx;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        margin-right: 2px;
     }
 
     &.hover {

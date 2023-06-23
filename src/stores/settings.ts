@@ -14,6 +14,12 @@ export const useSettingsStore = defineStore('settings', () => {
     const defaultDialType = ref(DialType.Number);
     const defaultPageType = ref(PageType.Stopwatch);
 
+    const enableTimerVibrate = ref(true);
+    const enableTimerRing = ref(false);
+    const isReverseTimer = ref(true);
+    const isLockedClock = ref(false);
+    const hiddenSeconds = ref(false);
+
     function vibrate() {
         if (vibrateType.value === VibrateType.Short) {
             uni.vibrateShort();
@@ -73,6 +79,11 @@ export const useSettingsStore = defineStore('settings', () => {
         defaultRecordType,
         defaultDialType,
         defaultPageType,
+        enableTimerVibrate,
+        enableTimerRing,
+        isReverseTimer,
+        isLockedClock,
+        hiddenSeconds,
 
         vibrate,
         changePageType,

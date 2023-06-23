@@ -11,6 +11,13 @@
             "style": {
                 "disableScroll": true
             }
+        },
+        {
+            "path": "pages/index/timer-fullscreen",
+            "style": {
+                "disableScroll": true,
+                "pageOrientation": "landscape"
+            }
         }
     ],
     "globalStyle": {

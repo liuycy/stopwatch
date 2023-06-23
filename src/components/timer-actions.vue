@@ -1,17 +1,17 @@
 <template>
-    <view class="actions-group">
-        <action-button @click="timer.stop()" type="gray" :disabled="timer.state === 'stopped'">取消</action-button>
+    <view class="actions-group" :class="{ fullscreen }">
+        <action-button class="action" @click="timer.stop()" :size="size" type="gray"
+            :disabled="timer.state === 'stopped'">取消</action-button>
 
         <template v-if="timer.state === 'stopped'">
-            <action-button @click="timer.start()" type="green" :disabled="timer.isAllZero">开始计时</action-button>
+            <action-button class="action" @click="timer.start()" :size="size" type="green"
+                :disabled="timer.isAllZero">开始</action-button>
         </template>
         <template v-else>
-            <action-button @click="timer.pause()" type="orange" v-if="timer.state === 'running'">暂停</action-button>
-            <action-button @click="timer.start()" type="green" v-else>继续</action-button>
+            <action-button class="action" @click="timer.pause()" :size="size" type="orange"
+                v-if="timer.state === 'running'">暂停</action-button>
+            <action-button class="action" @click="timer.start()" :size="size" type="green" v-else>继续</action-button>
         </template>
-    </view>
-    <view class="tips" v-if="timer.state === 'running'">
-        <text>息屏或切到后台 自动停止计时</text>
     </view>
 </template>
 
@@ -26,6 +26,11 @@ import ActionButton from '@/components/action-button.vue'
 
 const timer = useTimerStore()
 const settings = useSettingsStore()
+
+defineProps<{
+    size?: string;
+    fullscreen?: boolean;
+}>()
 
 onMounted(() => {
     uni.setKeepScreenOn({ keepScreenOn: true })
@@ -51,13 +56,14 @@ onHide(() => {
     top: 745rpx;
     display: flex;
     justify-content: space-between;
-}
 
-.tips {
-    width: 100vw;
-    position: absolute;
-    top: 960rpx;
-    color: var(--color-tips);
-    text-align: center;
+    &.fullscreen {
+        top: unset;
+        right: 0;
+        bottom: 0;
+        align-items: flex-end;
+        width: calc(100% - 40px);
+        padding: 20px;
+    }
 }
 </style>

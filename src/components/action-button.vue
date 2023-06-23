@@ -1,6 +1,6 @@
 <template>
-	<view @click="onClick" :class="['action', type, { disabled }]" hover-class="hover" :hover-start-time="0"
-		:hover-stay-time="50">
+	<view class="action" @click="onClick" :class="[type, { disabled }]" :style="size && { '--size': size }"
+		hover-class="hover" :hover-start-time="0" :hover-stay-time="50">
 		<slot></slot>
 	</view>
 </template>
@@ -12,6 +12,7 @@ import { VibrateType } from '@/types/enums'
 const props = defineProps<{
 	type: 'green' | 'red' | 'orange' | 'gray',
 	disabled?: boolean,
+	size?: string;
 }>()
 
 const emit = defineEmits(['click'])
@@ -36,17 +37,17 @@ function onClick() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 165rpx;
-	height: 165rpx;
+	width: var(--size, 82px);
+	height: var(--size, 82px);
 	border-radius: 50%;
 
 	&::before {
 		position: absolute;
 		content: '';
-		width: 145rpx;
-		height: 145rpx;
+		width: calc(var(--size, 82px) - 10px);
+		height: calc(var(--size, 82px) - 10px);
 		border-radius: 50%;
-		border: 6rpx solid var(--color-bg);
+		border: 3px solid var(--color-bg);
 	}
 
 

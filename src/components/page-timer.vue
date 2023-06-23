@@ -3,6 +3,7 @@
         <timer-picker :class="['panel', { hidden: timer.state !== 'stopped' }]"></timer-picker>
         <timer-runner v-if="timer.state !== 'stopped'"></timer-runner>
         <timer-actions></timer-actions>
+        <timer-setting></timer-setting>
     </view>
 </template>
 
@@ -14,6 +15,7 @@ import { PageType } from '@/types/enums'
 import TimerPicker from '@/components/timer-picker.vue'
 import TimerRunner from '@/components/timer-runner.vue'
 import TimerActions from '@/components/timer-actions.vue'
+import TimerSetting from '@/components/timer-setting.vue'
 
 const settings = useSettingsStore()
 const timer = useTimerStore()

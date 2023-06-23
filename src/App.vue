@@ -54,7 +54,7 @@ root-portal {
     --color-recycle-tips: #767676;
     --color-recycle-border: #3a3a3a;
 
-    --color-mask-bar: rgba(255, 255, 255, 0.2);
+    --color-mask-bar: rgba(255, 255, 255, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
