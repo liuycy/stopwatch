@@ -15,7 +15,22 @@
         </template>
 
         <template v-if="settings.isReverseTimer && timer.state === 'running'">
+            <view class="tips" :class="{ hidden }">
+                <text class="text">当前时间 {{ formatTime(timer.endAt - timer.duration, 'hh:MM') }}, </text>
+                <text class="text">在 {{ formatTime(timer.endAt, 'hh:MM') }} 结束计时</text>
+                <svg-icon class="icon" src="/static/icon-phone-ring.svg" size="12px" color="#fff"
+                    v-if="settings.enableTimerRing"></svg-icon>
+                <svg-icon class="icon" src="/static/icon-phone-shake.svg" size="12px" color="#fff"
+                    v-else-if="settings.enableTimerVibrate"></svg-icon>
+            </view>
             <view class="tips" :class="{ hidden }">息屏或切到后台 自动暂停计时</view>
+        </template>
+
+        <template v-if="!settings.isReverseTimer && timer.state === 'running'">
+            <view class="tips" :class="{ hidden }">
+                <text class="text">从 {{ formatTime(timer.firstStartAt, 'hh:MM') }} 开始计时, </text>
+                <text class="text">当前时间 {{ formatTime(timer.startAt + timer.duration, 'hh:MM') }}</text>
+            </view>
         </template>
 
         <view class="actions" @click="hideIfNoClick()" :class="{ float: settings.isLockedClock, hidden }">
@@ -48,12 +63,13 @@ import { onHide } from '@dcloudio/uni-app';
 
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
+import { formatTime } from '@/utils/format';
 
 import SvgIcon from '@/components/svg-icon.vue';
 import TimerActions from '@/components/timer-actions.vue';
 import TimerClock from '@/components/timer-clock.vue';
 import TimerModal from '@/components/timer-modal.vue';
-import TimerPicker from '@/components/timer-picker.vue';
+import TimerPicker from '@/components/timer-picker-fullscreen.vue';
 
 let timeout = -1
 const settings = useSettingsStore()
@@ -163,13 +179,12 @@ onHide(() => {
     }
 
     .picker {
-        width: 500px;
-        height: 100vh;
+        width: 300px;
         position: absolute;
         transition: all 0.3s;
 
         &.hidden {
-            left: -500px;
+            left: -300px;
         }
     }
 
@@ -184,9 +199,20 @@ onHide(() => {
         transform: translateX(-50%);
         font-size: 12px;
         color: var(--color-tips);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &+.tips {
+            margin-top: 24px;
+        }
+
+        .icon {
+            margin-left: 4px;
+        }
 
         &.hidden {
-            transition: all 0.3s 2s;
+            transition: all 0.3s 5s;
             top: -100%;
         }
     }

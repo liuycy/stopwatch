@@ -33,14 +33,14 @@ onLoad(() => {
 
 onShareAppMessage(() => {
 	return {
-		title: '秒表|支持导出Excel',
+		title: '秒表(支持导出Excel)|计时器',
 		imageUrl: '/static/share.jpeg'
 	}
 })
 
 onShareTimeline(() => {
 	return {
-		title: '秒表|支持导出Excel',
+		title: '秒表(支持导出Excel)|计时器',
 	}
 })
 </script>

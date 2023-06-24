@@ -6,7 +6,7 @@
     </view>
 
     <view class="timer-setting">
-        <view class="function-list">
+        <view class="function-list" v-if="settings.isReverseTimer">
             <view class="item">
                 <view>计时结束时提醒</view>
                 <view>

@@ -1,5 +1,5 @@
 <template>
-    <view class="view-box" :class="{ fullscreen }" :style="{ '--top': top }">
+    <view class="view-box" :style="{ '--top': top }">
         <picker-view class="picker-view" @change="onChange" indicator-class="picker-indicator" mask-class="picker-mask"
             immediate-change>
             <picker-view-column class="action">
@@ -57,14 +57,14 @@ defineProps<{
 <style lang="scss" scoped>
 .view-box {
     --padding: 16px;
-    --height: 240px;
-    --width: calc(750rpx - 2 * var(--padding));
+    --width: 200px;
+    --height: calc(100vh - 32px);
 
     width: var(--width);
     height: var(--height);
     padding: var(--padding);
     position: relative;
-    top: var(--top);
+    left: var(--top);
     display: flex;
     align-items: flex-end;
 
@@ -79,7 +79,7 @@ defineProps<{
             align-items: center;
 
             .text {
-                flex: 0 0 40%;
+                flex: 0 0 50%;
                 height: 100%;
                 display: inline-flex;
                 justify-content: flex-end;
@@ -110,7 +110,7 @@ defineProps<{
             justify-content: flex-end;
 
             .label {
-                flex: 0 0 55%;
+                flex: 0 0 45%;
                 display: inline-flex;
                 font-weight: bold;
                 font-size: 14px;
@@ -146,7 +146,5 @@ defineProps<{
             }
         }
     }
-
-
 }
 </style>
