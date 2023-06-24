@@ -37,15 +37,8 @@ function setForOnlyClock() {
     duration.value = 1000 * (s + 60 * m + 3600 * h)
 }
 
-function setNotReverseTimer() {
-    if (timer.state !== 'running') return
-    const now = Date.now()
-    duration.value = now - timer.startAt
-}
-
 function setDuration() {
     if (settings.isLockedClock) return setForOnlyClock()
-    if (!settings.isReverseTimer) return setNotReverseTimer()
     duration.value = timer.duration
 }
 
@@ -75,9 +68,9 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .timer-clock {
-    padding: 30px 60px;
     width: calc(100% - 120px);
     height: calc(100% - 60px);
+    padding: 30px 60px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -28,7 +28,7 @@ function getActiceColor(type: PageType) {
 .footer-bar {
     position: absolute;
     bottom: 0;
-    width: 100vw;
+    width: 750rpx;
     height: 50px;
     padding-top: 5px;
     padding-bottom: env(safe-area-inset-bottom, 20px);

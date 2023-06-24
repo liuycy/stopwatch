@@ -5,7 +5,7 @@
 
         <template v-if="timer.state === 'stopped'">
             <action-button class="action" @click="timer.start()" :size="size" type="green"
-                :disabled="timer.isAllZero && settings.isReverseTimer">开始</action-button>
+                :disabled="timer.startDisabled">开始</action-button>
         </template>
         <template v-else>
             <action-button class="action" @click="timer.pause()" :size="size" type="orange"
@@ -16,36 +16,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from 'vue'
-import { onHide } from '@dcloudio/uni-app';
-
 import { useTimerStore } from '@/stores/timer';
-import { useSettingsStore } from '@/stores/settings';
 
 import ActionButton from '@/components/action-button.vue'
 
 const timer = useTimerStore()
-const settings = useSettingsStore()
 
 defineProps<{
     size?: string;
     fullscreen?: boolean;
 }>()
-
-onMounted(() => {
-    uni.setKeepScreenOn({ keepScreenOn: true })
-})
-
-onUnmounted(() => {
-    uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn })
-    timer.reset()
-})
-
-onHide(() => {
-    if (timer.state === 'running') {
-        timer.pause()
-    }
-})
 </script>
 
 <style lang="scss" scoped>
@@ -53,7 +33,7 @@ onHide(() => {
     width: calc(100% - 60rpx);
     padding: 0 30rpx;
     position: absolute;
-    top: 745rpx;
+    top: 650rpx;
     display: flex;
     justify-content: space-between;
 

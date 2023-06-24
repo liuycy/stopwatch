@@ -29,14 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted } from "vue"
+import { computed } from "vue"
 
 import ActionButton from '@/components/action-button.vue'
 
-import { useSettingsStore } from '@/stores/settings'
+import { useDialStore } from '@/stores/dial'
 import { useHistoryStore } from "@/stores/history"
 import { useRecordsStore } from '@/stores/records'
-import { useDialStore } from '@/stores/dial'
+import { useSettingsStore } from '@/stores/settings'
 import { DialStatus, RecordType } from '@/types/enums'
 
 const settings = useSettingsStore()
@@ -62,13 +62,6 @@ function onPause() {
 	dial.pause()
 	records.pause()
 }
-
-onUnmounted(() => {
-	dial.pause()
-	dial.reset()
-	records.pause()
-	records.reset()
-})
 </script>
 
 <style lang="scss" scoped>

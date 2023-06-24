@@ -75,7 +75,7 @@ export class WatchPainter extends CanvasPainter {
             ctx.fillText(i === 0 ? '60' : `${5 * i}`, x, y);
         }
         // 画文字时间戳
-        ctx.font = `${fontSize * 0.7}px Arial`;
+        ctx.font = `${fontSize * 0.7}px "Courier New", Courier, monospace`;
         ctx.fillText(formatDuration(duration), 0, center * 0.35);
 
         ctx.restore();

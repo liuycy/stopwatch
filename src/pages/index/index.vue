@@ -1,7 +1,7 @@
 <template>
 	<view class="index">
-		<page-stopwatch></page-stopwatch>
-		<page-timer></page-timer>
+		<page-stopwatch v-if="settings.defaultPageType === PageType.Stopwatch"></page-stopwatch>
+		<page-timer v-if="settings.defaultPageType === PageType.Timer"></page-timer>
 		<footer-bar class="footer"></footer-bar>
 		<history-modal></history-modal>
 		<timer-modal></timer-modal>
@@ -9,10 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 import { provide, ref } from 'vue'
+import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 
+import { useSettingsStore } from '@/stores/settings'
 import { bindHeightFor } from '@/utils/node'
+import { PageType } from '@/types/enums'
 
 import PageStopwatch from '@/components/page-stopwatch.vue'
 import PageTimer from '@/components/page-timer.vue'
@@ -20,6 +22,7 @@ import FooterBar from '@/components/footer-bar.vue'
 import HistoryModal from '@/components/history-modal.vue'
 import TimerModal from '@/components/timer-modal.vue'
 
+const settings = useSettingsStore()
 const footerHeight = ref(0)
 
 provide('footerHeight', footerHeight)

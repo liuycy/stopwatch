@@ -1,5 +1,5 @@
 <template>
-    <view class="page-stopwatch" v-if="settings.defaultPageType === PageType.Stopwatch">
+    <view class="page-stopwatch">
         <dial-panel class="fixed"></dial-panel>
         <actions-group></actions-group>
         <records-list class="flexable"></records-list>
@@ -8,15 +8,25 @@
 </template>
 
 <script lang="ts" setup>
-import { useSettingsStore } from '@/stores/settings';
-import { PageType } from '@/types/enums'
+import { onUnmounted } from "vue"
 
-import DialPanel from '@/components/dial-panel.vue'
+import { useDialStore } from '@/stores/dial'
+import { useRecordsStore } from '@/stores/records'
+
 import ActionsGroup from '@/components/actions-group.vue'
+import DialPanel from '@/components/dial-panel.vue'
 import RecordsList from '@/components/records-list.vue'
 import SettingPanel from '@/components/setting-panel.vue'
 
-const settings = useSettingsStore()
+const dial = useDialStore()
+const records = useRecordsStore()
+
+onUnmounted(() => {
+    dial.pause()
+    dial.reset()
+    records.pause()
+    records.reset()
+})
 </script>
 
 <style lang="scss" scoped>

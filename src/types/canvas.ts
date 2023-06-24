@@ -3,13 +3,15 @@ import { getCurrentInstance } from 'vue';
 
 export interface CanvasPainterOptions {
     canvasId: string;
-    imageSrc?: string;
 }
 
 export abstract class CanvasPainter {
+    private images = new Map<string, WechatMiniprogram.Image>();
+
     cancelAnimationFrame!: WechatMiniprogram.Canvas['cancelAnimationFrame'];
     requestAnimationFrame!: WechatMiniprogram.Canvas['requestAnimationFrame'];
     ctx?: WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D;
+    canvas?: WechatMiniprogram.Canvas;
     image?: WechatMiniprogram.Image;
     canvasHeight!: number;
     canvasWidth!: number;
@@ -50,13 +52,21 @@ export abstract class CanvasPainter {
         });
     }
 
-    initImage(canvas: WechatMiniprogram.Canvas) {
+    setCurrentImage(key?: string) {
+        if (!key) this.image = undefined;
+        else this.image = this.images.get(key);
+    }
+
+    createImage(key: string, src: string) {
         return new Promise<WechatMiniprogram.Image | undefined>((resolve, reject) => {
             try {
-                if (!this.options.imageSrc) return resolve(undefined);
-                const image = canvas.createImage();
-                image.src = this.options.imageSrc;
-                image.onload = () => resolve(image);
+                if (!this.canvas) return reject(new Error('no canvas'));
+                const image = this.canvas.createImage();
+                image.src = src;
+                image.onload = () => {
+                    this.images.set(key, image);
+                    resolve(image);
+                };
                 image.onerror = reject;
             } catch (error) {
                 reject(error);
@@ -72,18 +82,16 @@ export abstract class CanvasPainter {
             const node = uni.createSelectorQuery().in(instance).select(`#${canvasId}`);
             const { width, height } = await this.querySize(node);
 
-            const canvas = await this.queryCanvas(node);
-            this.image = await this.initImage(canvas);
-            this.requestAnimationFrame = canvas.requestAnimationFrame;
-            this.cancelAnimationFrame = canvas.cancelAnimationFrame;
-            this.canvasWidth = width!;
+            this.canvas = await this.queryCanvas(node);
+            this.requestAnimationFrame = this.canvas.requestAnimationFrame;
+            this.cancelAnimationFrame = this.canvas.cancelAnimationFrame;
+            this.canvas.height = this.dpr * height!;
+            this.canvas.width = this.dpr * width!;
             this.canvasHeight = height!;
-            canvas.width = this.dpr * width!;
-            canvas.height = this.dpr * height!;
+            this.canvasWidth = width!;
 
-            const ctx = canvas.getContext('2d');
-            ctx.scale(this.dpr, this.dpr);
-            this.ctx = ctx;
+            this.ctx = this.canvas.getContext('2d');
+            this.ctx.scale(this.dpr, this.dpr);
         } catch (error) {
             this.ctx = undefined;
             throw error;

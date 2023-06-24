@@ -23,7 +23,19 @@
             </view>
         </view>
 
-        <view class="tips" v-if="timer.state === 'running'">
+        <view class="function-list">
+            <view class="item">
+                <view>计时器类型</view>
+                <view>
+                    <view class="span">
+                        <view>倒计时</view>
+                        <switch class="switch" @change="changeSetting('timer')" :checked="settings.isReverseTimer"></switch>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <view class="tips" v-if="settings.isReverseTimer && timer.state === 'running'">
             <text>息屏或切到后台 自动暂停计时</text>
         </view>
     </view>
@@ -42,15 +54,18 @@ const timer = useTimerStore()
 
 const top = `${4 + global.safeArea.top}px`
 
-
 function fullscreen() {
     uni.redirectTo({ url: 'timer-fullscreen' })
 }
 
-function changeSetting(type: 'ring' | 'vibrate') {
+function changeSetting(type: 'ring' | 'vibrate' | 'timer' | 'hidden') {
     settings.vibrate()
     if (type === 'ring') settings.enableTimerRing = !settings.enableTimerRing
     if (type === 'vibrate') settings.enableTimerVibrate = !settings.enableTimerVibrate
+    if (type === 'timer') {
+        settings.isReverseTimer = !settings.isReverseTimer
+        timer.reset()
+    }
 }
 </script>
 
@@ -79,10 +94,10 @@ function changeSetting(type: 'ring' | 'vibrate') {
 .timer-setting {
     width: 100vw;
     position: absolute;
-    top: 920rpx;
+    top: 830rpx;
 
     .function-list {
-        margin: 16px;
+        margin: 8px 16px;
         border-radius: 10px;
         background-color: var(--color-modal-bg);
 

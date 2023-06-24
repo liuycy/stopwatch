@@ -58,7 +58,7 @@ defineProps<{
 .view-box {
     --padding: 16px;
     --height: 240px;
-    --width: calc(100vw - 2 * var(--padding));
+    --width: calc(750rpx - 2 * var(--padding));
 
     width: var(--width);
     height: var(--height);
