@@ -1,7 +1,8 @@
 <template>
     <view class="timer-fullscreen">
-        <timer-picker class="picker" :class="{ hidden: !pickerVisible }" fullscreen
-            v-if="!settings.isLockedClock && settings.isReverseTimer"></timer-picker>
+        <template v-if="!settings.isLockedClock && settings.isReverseTimer">
+            <timer-picker class="picker" :class="{ hidden: !pickerVisible }" fullscreen></timer-picker>
+        </template>
 
         <view class="back-button" :class="{ hidden }" @click="goBack()" hover-class="hover" :hover-start-time="0"
             :hover-stay-time="50">
@@ -9,26 +10,28 @@
             <text>竖屏</text>
         </view>
 
-        <timer-clock class="clock" @click="onClockClick()" v-if="!pickerVisible"></timer-clock>
+        <template v-if="!pickerVisible">
+            <timer-clock class="clock" @click="onClockClick()"></timer-clock>
+        </template>
 
-        <view class="tips" :class="{ hidden }" v-if="settings.isReverseTimer && timer.state === 'running'">
-            <text>息屏或切到后台 自动暂停计时</text>
-        </view>
+        <template v-if="settings.isReverseTimer && timer.state === 'running'">
+            <view class="tips" :class="{ hidden }">息屏或切到后台 自动暂停计时</view>
+        </template>
 
         <view class="actions" @click="hideIfNoClick()" :class="{ float: settings.isLockedClock, hidden }">
             <view class="action">
                 <text>锁定为时钟</text>
-                <switch class="switch" @change="toggleLockedClock()" :checked="settings.isLockedClock">
+                <switch class="switch" @change="toggleLockedClock" :checked="settings.isLockedClock">
                 </switch>
             </view>
-            <view class="action" v-if="settings.isLockedClock || !settings.isReverseTimer">
+            <view class="action">
                 <text>隐藏秒钟</text>
-                <switch class="switch" @change="toggleHiddenSeconds()" :checked="settings.hiddenSeconds">
+                <switch class="switch" @change="toggleHiddenSeconds" :checked="settings.hiddenSeconds">
                 </switch>
             </view>
             <view class="action" v-if="!settings.isLockedClock">
                 <text>倒计时</text>
-                <switch class="switch" @change="toggleReverseTimer()" :checked="settings.isReverseTimer">
+                <switch class="switch" @change="toggleReverseTimer" :checked="settings.isReverseTimer">
                 </switch>
             </view>
 
@@ -63,22 +66,23 @@ function goBack() {
     uni.redirectTo({ url: 'index' })
 }
 
-function toggleReverseTimer() {
-    settings.vibrate()
-    settings.isReverseTimer = !settings.isReverseTimer
+function toggleReverseTimer(e: any) {
+    if (e.type !== 'change') return
+    settings.vibrate();
+    settings.isReverseTimer = !settings.isReverseTimer;
     timer.reset()
 }
 
-function toggleHiddenSeconds() {
-    console.log('change');
-
-    settings.vibrate()
-    settings.hiddenSeconds = !settings.hiddenSeconds
+function toggleHiddenSeconds(e: any) {
+    if (e.type !== 'change') return
+    settings.vibrate();
+    settings.hiddenSeconds = !settings.hiddenSeconds;
 }
 
-function toggleLockedClock() {
-    settings.vibrate()
-    settings.isLockedClock = !settings.isLockedClock
+function toggleLockedClock(e: any) {
+    if (e.type !== 'change') return
+    settings.vibrate();
+    settings.isLockedClock = !settings.isLockedClock;
     hideIfNoClick()
     timer.reset()
 }
