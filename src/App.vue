@@ -12,7 +12,7 @@ useHistoryLaunch()
 page,
 root-portal {
     // font-family: Arial, Helvetica, sans-serif;
-    font-family: Arial;
+    font-family: "Courier New", Courier, monospace;
 
     --color-bg: #000;
     --color-text: #fff;
@@ -55,6 +55,7 @@ root-portal {
     --color-recycle-border: #3a3a3a;
 
     --color-mask-bar: rgba(255, 255, 255, 0.15);
+    --color-mask-bg: rgba(0, 0, 0, 0.7);
 }
 
 @media (prefers-color-scheme: dark) {

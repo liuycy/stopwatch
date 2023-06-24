@@ -1,12 +1,5 @@
 <template>
     <view class="view-box" :class="{ fullscreen }" :style="{ '--top': top }">
-        <view class="time-label" v-if="settings.isTimerPageFullscreen">
-            <text class="number">{{ padFixedInt(duration.hours) }}</text>
-            <colon-symbol></colon-symbol>
-            <text class="number">{{ padFixedInt(duration.minutes) }}</text>
-            <colon-symbol></colon-symbol>
-            <text class="number">{{ padFixedInt(duration.seconds) }}</text>
-        </view>
         <picker-view class="picker-view" @change="onChange" indicator-class="picker-indicator" mask-class="picker-mask"
             immediate-change>
             <picker-view-column class="action">
@@ -41,25 +34,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-
 import { useGlobalStore } from '@/stores/global'
 import { useTimerStore } from '@/stores/timer'
-import { useSettingsStore } from '@/stores/settings'
-import { parseDuration, padFixedInt } from '@/utils/format'
-
-import ColonSymbol from '@/components/colon-symbol.vue'
 
 const global = useGlobalStore()
 const timer = useTimerStore()
-const settings = useSettingsStore()
 
-const duration = computed(() => parseDuration(timer.duration))
 const top = `${global.safeArea.top}px`
-
-defineProps<{
-    fullscreen?: boolean
-}>()
 
 function onChange(e: any) {
     if (timer.state === 'running' || timer.state === 'paused') return
@@ -67,24 +48,33 @@ function onChange(e: any) {
     timer.state = 'stopped'
     timer.picked = e.detail.value
 }
+
+defineProps<{
+    fullscreen?: boolean
+}>()
 </script>
 
 <style lang="scss" scoped>
 .view-box {
-    width: calc(100vw - 48px);
-    height: 600rpx;
-    padding: 24px;
+    --padding: 16px;
+    --height: 240px;
+    --width: calc(100vw - 2 * var(--padding));
+
+    width: var(--width);
+    height: var(--height);
+    padding: var(--padding);
     position: relative;
+    top: var(--top);
     display: flex;
     align-items: flex-end;
 
     .picker-view {
         width: 100%;
-        height: 240px;
+        height: 100%;
 
         .item {
             text-align: center;
-            font-size: 24px;
+            font-size: 20px;
             display: flex;
             align-items: center;
 
@@ -101,13 +91,12 @@ function onChange(e: any) {
 
     .mask {
         pointer-events: none;
-        padding: 24px;
-        padding-top: 0;
+        width: calc(100% - 32px);
+        height: calc(100% - 32px);
+        padding: 16px;
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 240px;
-        width: calc(100% - 48px);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -116,7 +105,6 @@ function onChange(e: any) {
         .item {
             flex: 1 1 auto;
             height: 34px;
-            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -125,57 +113,45 @@ function onChange(e: any) {
                 flex: 0 0 55%;
                 display: inline-flex;
                 font-weight: bold;
-                font-size: 16px;
+                font-size: 14px;
                 color: var(--color-text);
             }
         }
 
         .bar {
-            position: absolute;
-            width: calc(100vw - 96rpx);
             height: 34px;
+            width: var(--width);
+            position: absolute;
             border-radius: 5px;
             background-color: var(--color-mask-bar);
 
             &::before {
                 content: ' ';
+                height: 100vh;
+                width: var(--width);
                 position: absolute;
                 top: -100vh;
                 display: inline-block;
-                width: calc(100vw - 96rpx);
-                height: 100vh;
-                background-color: rgba(0, 0, 0, 0.7);
+                background-color: var(--color-mask-bg);
             }
 
             &::after {
                 content: ' ';
+                height: 100vh;
+                width: var(--width);
                 position: absolute;
                 top: 34px;
                 display: inline-block;
-                width: calc(100vw - 96rpx);
-                height: 100vh;
-                background-color: rgba(0, 0, 0, 0.7);
+                background-color: var(--color-mask-bg);
             }
         }
     }
 
     &.fullscreen {
-        margin-left: var(--top, 20px);
-        width: 200px;
-        height: calc(100vh - 48px);
-
-        .picker-view {
-            height: 100%;
-        }
-
-        .mask {
-            width: 200px;
-            height: calc(100vh - 48px);
-
-            .bar {
-                width: 200px;
-            }
-        }
+        --height: calc(100vh - 48px);
+        --width: 200px;
+        top: unset;
+        left: var(--top);
     }
 }
 </style>

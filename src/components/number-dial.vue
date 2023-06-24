@@ -1,6 +1,6 @@
 <template>
 	<view class="number-dial">
-		<time-label class="label" :fontSize="dial.hours ? 150 : 180" :duration="dial">
+		<time-label class="label" :fontSize="dial.hours ? 120 : 150" :duration="dial">
 		</time-label>
 	</view>
 </template>

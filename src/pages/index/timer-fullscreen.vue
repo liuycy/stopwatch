@@ -1,9 +1,8 @@
 <template>
     <view class="timer-fullscreen">
-        <view class="panel" @click="hideIfNoClick()">
-            <timer-picker fullscreen v-if="!settings.isLockedClock && settings.isReverseTimer"></timer-picker>
-            <timer-clock v-if="settings.isLockedClock || !settings.isReverseTimer"></timer-clock>
-        </view>
+        <timer-picker class="picker" :class="{ hidden: !pickerVisible }" fullscreen></timer-picker>
+
+        <timer-clock class="clock" @click="hideIfNoClick()" v-if="!pickerVisible"></timer-clock>
 
         <view class="actions" @click="hideIfNoClick()" :class="{ float: settings.isLockedClock, hidden }">
             <view class="action" v-if="!settings.isLockedClock">
@@ -27,31 +26,29 @@
             <svg-icon class="icon" src="/static/icon-normal-screen.svg" size="16px" color="#fff"></svg-icon>
             <text>竖屏</text>
         </view>
+
+        <timer-modal fullscreen></timer-modal>
     </view>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 
 import { useSettingsStore } from '@/stores/settings'
+import { useTimerStore } from '@/stores/timer'
 
 import SvgIcon from '@/components/svg-icon.vue'
 import TimerActions from '@/components/timer-actions.vue'
 import TimerClock from '@/components/timer-clock.vue'
 import TimerPicker from '@/components/timer-picker.vue'
+import TimerModal from '@/components/timer-modal.vue'
 
+let timeout = -1
 const settings = useSettingsStore()
+const timer = useTimerStore()
 
 const hidden = ref(false)
-let timeout = -1
-
-function hideIfNoClick() {
-    clearTimeout(timeout)
-    hidden.value = false
-    timeout = setTimeout(() => {
-        hidden.value = true
-    }, 5000)
-}
+const pickerVisible = computed(() => timer.state === 'stopped' && !settings.isLockedClock && settings.isReverseTimer)
 
 function goBack() {
     uni.redirectTo({ url: 'index' })
@@ -66,6 +63,19 @@ function changeSettings(type: 'timer' | 'locked' | 'hidden') {
         hideIfNoClick()
     }
 }
+
+function hideIfNoClick() {
+    clearTimeout(timeout)
+    hidden.value = false
+    timeout = setTimeout(() => {
+        if (pickerVisible.value) return
+        hidden.value = true
+    }, 5000)
+}
+
+watchEffect(() => {
+    if (pickerVisible.value) hidden.value = false
+})
 
 onMounted(() => {
     hideIfNoClick()
@@ -104,11 +114,22 @@ onMounted(() => {
         }
 
         &.hidden {
-            top: -30px;
+            top: -100%;
         }
     }
 
-    .panel {
+    .picker {
+        width: 500px;
+        height: 100vh;
+        position: absolute;
+        transition: all 0.3s;
+
+        &.hidden {
+            left: -500px;
+        }
+    }
+
+    .clock {
         flex: 1 1 auto;
     }
 

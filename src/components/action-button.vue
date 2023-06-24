@@ -37,17 +37,17 @@ function onClick() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: var(--size, 82px);
-	height: var(--size, 82px);
+	width: var(--size, 165rpx);
+	height: var(--size, 165rpx);
 	border-radius: 50%;
 
 	&::before {
 		position: absolute;
 		content: '';
-		width: calc(var(--size, 82px) - 10px);
-		height: calc(var(--size, 82px) - 10px);
+		width: calc(var(--size, 165rpx) - 20rpx);
+		height: calc(var(--size, 165rpx) - 20rpx);
 		border-radius: 50%;
-		border: 3px solid var(--color-bg);
+		border: 6rpx solid var(--color-bg);
 	}
 
 

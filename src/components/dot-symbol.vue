@@ -10,7 +10,7 @@ import { computed, inject } from 'vue'
 const fontSize = inject<number>('fontSize') ?? 0
 
 const style = computed(() => ({
-	height: `${fontSize * 0.7}rpx`
+	height: `${fontSize * 0.55}rpx`
 }))
 
 const dotStyle = computed(() => ({

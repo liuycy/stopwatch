@@ -5,7 +5,7 @@
 
         <template v-if="timer.state === 'stopped'">
             <action-button class="action" @click="timer.start()" :size="size" type="green"
-                :disabled="timer.isAllZero">开始</action-button>
+                :disabled="timer.isAllZero && settings.isReverseTimer">开始</action-button>
         </template>
         <template v-else>
             <action-button class="action" @click="timer.pause()" :size="size" type="orange"

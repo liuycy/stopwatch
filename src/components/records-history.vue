@@ -3,18 +3,18 @@
         <view class="wrapper" v-for="record in history.records" :key="record.id">
             <view class="record">
                 <view class="header">
-                    <text>记录时间: {{ formatTime(record.ctime) }}</text>
+                    <text>记录时间 {{ formatTime(record.ctime) }}</text>
                     <text>{{ record.total }} 条记录</text>
                 </view>
                 <view class="body">
                     <view class="content">
                         <view>
-                            <text>最小记录: </text>
+                            <text>最小记录 </text>
                             <text class="min" v-if="isTimeRecord">{{ record.firstTime }}</text>
                             <text class="min" v-else>{{ record.min }}</text>
                         </view>
                         <view>
-                            <text>最大记录: </text>
+                            <text>最大记录 </text>
                             <text class="max" v-if="isTimeRecord">{{ record.lastTime ?? '-' }}</text>
                             <text class="max" v-else>{{ record.max ?? '-' }}</text>
                         </view>
@@ -22,13 +22,13 @@
 
                     <view class="actions">
                         <view @click="confirmRemove(record)" class="action" v-if="record.status !== 'saving'">
-                            <svg-icon src="/static/icon-delete.svg" size="28rpx" color="#ffffff"></svg-icon>
+                            <svg-icon src="/static/icon-delete.svg" size="14px" color="#ffffff"></svg-icon>
                             <text class="label">删除</text>
                         </view>
                         <view @click="exportExcel(record)" :class="['action', { loading: record.status === 'saving' }]">
                             <svg-icon class="icon" v-if="record.status === 'saving'" src="/static/icon-loading.svg"
-                                size="28rpx" color="#ffffff"></svg-icon>
-                            <svg-icon v-else src="/static/icon-export.svg" size="28rpx" color="#ffffff"></svg-icon>
+                                size="14px" color="#ffffff"></svg-icon>
+                            <svg-icon v-else src="/static/icon-export.svg" size="14px" color="#ffffff"></svg-icon>
                             <text class="label">导出</text>
                         </view>
                     </view>
@@ -113,21 +113,21 @@ async function exportExcel(record: HistoryRecord) {
     box-sizing: border-box;
 
     .wrapper {
-        margin: 10rpx 30rpx;
+        margin: 5px 16px;
 
         .record {
+            padding: 5px;
             display: flex;
             flex-direction: column;
             border: 1px solid var(--color-border);
-            border-radius: 10rpx;
-            padding: 10rpx;
+            border-radius: 5px;
 
             .header {
                 display: flex;
                 justify-content: space-between;
-                font-size: 24rpx;
                 color: var(--color-tips);
-                margin-bottom: 8rpx;
+                font-size: 10px;
+                margin-bottom: 4px;
             }
 
             .body {
@@ -136,8 +136,7 @@ async function exportExcel(record: HistoryRecord) {
                 align-items: flex-end;
 
                 .content {
-                    font-size: 30rpx;
-                    line-height: 36rpx;
+                    font-size: 14px;
 
                     .min {
                         color: var(--color-green);
@@ -149,17 +148,16 @@ async function exportExcel(record: HistoryRecord) {
                 }
 
                 .actions {
-                    margin-left: 20rpx;
+                    margin-left: 10px;
 
                     .action {
-                        padding: 4rpx 8rpx;
-                        width: 84rpx;
-                        height: 40rpx;
-                        line-height: 40rpx;
+                        width: 40px;
+                        height: 20px;
+                        padding: 2px 4px;
                         display: inline-flex;
                         justify-content: space-between;
                         align-items: center;
-                        border-radius: 10rpx;
+                        border-radius: 5px;
                         border: 1px solid var(--color-border);
 
                         &.loading {
@@ -173,11 +171,11 @@ async function exportExcel(record: HistoryRecord) {
                         }
 
                         &+.action {
-                            margin-left: 16rpx;
+                            margin-left: 8px;
                         }
 
                         .label {
-                            font-size: 24rpx;
+                            font-size: 12px;
                         }
                     }
                 }

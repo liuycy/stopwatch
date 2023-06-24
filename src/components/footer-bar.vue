@@ -1,5 +1,5 @@
 <template>
-    <view class="footer-bar" v-if="!settings.isTimerPageFullscreen">
+    <view class="footer-bar">
         <view class="action" @click="settings.changePageType(PageType.Stopwatch)">
             <svg-icon src="/static/icon-stopwatch.svg" size="56rpx" :color="getActiceColor(PageType.Stopwatch)"></svg-icon>
             <view class="label" :style="{ color: getActiceColor(PageType.Stopwatch) }">秒表</view>
@@ -29,8 +29,8 @@ function getActiceColor(type: PageType) {
     position: absolute;
     bottom: 0;
     width: 100vw;
-    height: 100rpx;
-    padding-top: 10rpx;
+    height: 50px;
+    padding-top: 5px;
     padding-bottom: env(safe-area-inset-bottom, 20px);
     display: flex;
     justify-content: space-around;
@@ -43,10 +43,10 @@ function getActiceColor(type: PageType) {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 20rpx;
+        font-size: 10px;
 
         .label {
-            margin-top: 4rpx;
+            margin-top: 2px;
         }
     }
 }

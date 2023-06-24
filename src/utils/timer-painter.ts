@@ -48,18 +48,18 @@ export class TimerPainter extends CanvasPainter {
 
         this.ctx.beginPath();
         this.ctx.textAlign = 'center';
-        this.ctx.font = `${0.18 * h}px Arial`;
+        this.ctx.font = `${0.18 * h}px "Courier New", Courier, monospace`;
         this.ctx.fillStyle = this.options.timeColor;
         this.ctx.fillText(formatDuration(parseDuration(timer.duration), { noMs: true }), 0, 0);
 
         this.ctx.beginPath();
         this.ctx.globalAlpha = timer.state === 'paused' ? 0.3 : 1;
-        this.ctx.font = ` 18px Arial`;
+        this.ctx.font = ` 18px "Courier New", Courier, monospace`;
         this.ctx.fillStyle = this.options.tipsColor;
         this.ctx.fillText(formatTime(timer.endAt, 'hh:MM'), 15, 45);
 
         if (this.image) {
-            this.ctx.drawImage(this.image, -32, 28, 22, 22);
+            this.ctx.drawImage(this.image, -40, 30, 22, 22);
         }
 
         this.ctx.restore();

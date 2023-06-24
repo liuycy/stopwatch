@@ -1,7 +1,7 @@
 <template>
-    <view class="timer-clock" :style="{ fontSize }">
+    <view class="timer-clock" @click="$emit('click')" :style="{ fontSize }">
         <view class="card">
-            <text class="label">{{ padFixedInt(time.hours) }}</text>
+            <text class="label">{{ padFixedInt(time.hours ?? 0) }}</text>
         </view>
         <view class="card">
             <text class="label">{{ padFixedInt(time.minutes) }}</text>
@@ -15,9 +15,11 @@
 <script lang="ts" setup>
 import { computed, getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue';
 
+import { useTimerStore } from '@/stores/timer';
 import { useSettingsStore } from '@/stores/settings';
 import { parseDuration, padFixedInt } from '@/utils/format';
 
+const timer = useTimerStore()
 const settings = useSettingsStore()
 const instance = getCurrentInstance()
 
@@ -27,12 +29,24 @@ const time = computed(() => parseDuration(duration.value))
 
 let interval = -1
 
-function setDuration() {
+function setForOnlyClock() {
     const date = new Date()
     const h = date.getHours()
     const m = date.getMinutes()
     const s = date.getSeconds()
     duration.value = 1000 * (s + 60 * m + 3600 * h)
+}
+
+function setNotReverseTimer() {
+    if (timer.state !== 'running') return
+    const now = Date.now()
+    duration.value = now - timer.startAt
+}
+
+function setDuration() {
+    if (settings.isLockedClock) return setForOnlyClock()
+    if (!settings.isReverseTimer) return setNotReverseTimer()
+    duration.value = timer.duration
 }
 
 function setFonstSize() {
@@ -77,9 +91,12 @@ onUnmounted(() => {
 
         .label {
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background-color: var(--color-modal-bg);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 0.1em;
+            width: 1.2em;
+            height: 1.2em;
         }
 
         &+.card {

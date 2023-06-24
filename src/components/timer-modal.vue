@@ -1,12 +1,12 @@
 <template>
-    <view class="confirm-modal" v-if="visible">
+    <view class="confirm-modal" :class="{ fullscreen }" v-if="visible">
         <view class="modal-content">
             <view class="title">计时结束</view>
             <view class="tips">息屏或切到后台 自动停止计时</view>
             <view class="icon">
-                <svg-icon v-if="settings.enableTimerRing" src="/static/icon-phone-ring.svg" size="200rpx"
+                <svg-icon v-if="settings.enableTimerRing" src="/static/icon-phone-ring.svg" :size="iconSize"
                     color="#c6c6c6"></svg-icon>
-                <svg-icon v-else-if="settings.enableTimerVibrate" src="/static/icon-phone-shake.svg" size="200rpx"
+                <svg-icon v-else-if="settings.enableTimerVibrate" src="/static/icon-phone-shake.svg" :size="iconSize"
                     color="#c6c6c6"></svg-icon>
             </view>
             <view class="actions">
@@ -27,19 +27,21 @@ import { TimerBell } from '@/utils/timer-bell';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
+const props = defineProps<{ fullscreen?: boolean }>()
+const iconSize = props.fullscreen ? '80px' : '100px'
+const instance: any = getCurrentInstance()
+const scopedCtx = instance.ctx.$scope;
+let timeout = -1;
+
 const timer = useTimerStore()
 const settings = useSettingsStore()
 const timerbell = new TimerBell()
 
-const instance: any = getCurrentInstance()
-const _this = instance.ctx.$scope;
-
 const visible = ref(false)
-let timeout = -1;
 
 function cancel() {
     //#ifdef MP-WEIXIN
-    _this.animate('.modal-content', [
+    scopedCtx.animate('.modal-content', [
         { opacity: 1.0, scale: [1, 1], ease: 'ease-out' },
         { opacity: 0.1, scale: [0.1, 0.1], ease: 'ease-out' },
     ], 200, () => {
@@ -55,7 +57,7 @@ function cancel() {
 
 function confirm() {
     //#ifdef MP-WEIXIN
-    _this.animate('.modal-content', [
+    scopedCtx.animate('.modal-content', [
         { opacity: 1.0, scale: [1, 1], ease: 'ease-out' },
         { opacity: 0.1, scale: [0.1, 0.1], ease: 'ease-out' },
     ], 200, () => {
@@ -142,24 +144,24 @@ onHide(() => {
     .modal-content {
         width: 75vw;
         background-color: var(--color-modal-bg);
-        border-radius: 20rpx;
+        border-radius: 10px;
         animation: 0.2s ease-in slidein;
 
         .title {
-            padding-top: 32rpx;
+            padding-top: 16px;
             text-align: center;
             font-weight: bold;
             color: var(--color-tips);
         }
 
         .tips {
-            margin-top: 16rpx;
-            font-size: 24rpx;
+            margin-top: 8px;
+            font-size: 12px;
             text-align: center;
         }
 
         .icon {
-            padding: 32rpx 0;
+            padding: 16px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -172,7 +174,7 @@ onHide(() => {
             border-top: 1px solid var(--color-modal-border);
 
             .action {
-                height: 80rpx;
+                height: 40px;
                 flex: 0 0 50%;
                 display: flex;
                 justify-content: center;
@@ -196,5 +198,11 @@ onHide(() => {
             }
         }
     }
-}
-</style>
+
+    &.fullscreen {
+        z-index: 1;
+        .modal-content {
+            width: 70vh;
+        }
+    }
+}</style>

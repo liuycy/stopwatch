@@ -2,7 +2,7 @@
     <template>
         <view @click="changePanelVisible" class="setting-button" hover-class="hover" :hover-start-time="0"
             :hover-stay-time="50" :style="{ top }">
-            <svg-icon class="icon" src="/static/icon-setting.svg" size="18px" color="#fff"></svg-icon>
+            <svg-icon class="icon" src="/static/icon-setting.svg" size="20px" color="#fff"></svg-icon>
             <text>设置</text>
         </view>
     </template>

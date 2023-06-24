@@ -1,11 +1,11 @@
 <template>
     <view class="fullscreen-button" @click="fullscreen()" hover-class="hover" :hover-start-time="0" :hover-stay-time="50"
         :style="{ top }">
-        <svg-icon class="icon" src="/static/icon-fullscreen.svg" size="32rpx" color="#fff"></svg-icon>
+        <svg-icon class="icon" src="/static/icon-fullscreen.svg" size="16px" color="#fff"></svg-icon>
         <text>横屏</text>
     </view>
 
-    <view class="timer-setting" v-if="!settings.isTimerPageFullscreen">
+    <view class="timer-setting">
         <view class="function-list">
             <view class="item">
                 <view>计时结束时提醒</view>
@@ -82,17 +82,17 @@ function changeSetting(type: 'ring' | 'vibrate') {
     top: 920rpx;
 
     .function-list {
-        margin: 56rpx;
-        border-radius: 20rpx;
+        margin: 16px;
+        border-radius: 10px;
         background-color: var(--color-modal-bg);
 
         .item {
             border: unset;
             box-sizing: content-box;
-            height: 60rpx;
+            height: 30px;
             padding: 10rpx;
-            padding-left: 30rpx;
-            font-size: 28rpx;
+            padding-left: 16px;
+            font-size: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -104,7 +104,7 @@ function changeSetting(type: 'ring' | 'vibrate') {
             }
 
             .switch {
-                transform: scale(0.7);
+                transform: scale(0.6);
             }
         }
     }
@@ -113,6 +113,7 @@ function changeSetting(type: 'ring' | 'vibrate') {
         width: 100%;
         color: var(--color-tips);
         text-align: center;
+        font-size: 12px;
     }
 }
 </style>

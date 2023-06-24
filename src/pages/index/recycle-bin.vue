@@ -23,18 +23,18 @@
 
                 <view class="record">
                     <view class="header">
-                        <text>删除时间: {{ formatTime(record.dtime) }}</text>
+                        <text>删除时间 {{ formatTime(record.dtime) }}</text>
                         <text>{{ record.total }} 条记录</text>
                     </view>
                     <view class="body">
                         <view class="content">
                             <view>
-                                <text>最小记录: </text>
+                                <text>最小记录 </text>
                                 <text class="min" v-if="isTimeRecord">{{ record.firstTime }}</text>
                                 <text class="min" v-else>{{ record.min }}</text>
                             </view>
                             <view>
-                                <text>最大记录: </text>
+                                <text>最大记录 </text>
                                 <text class="max" v-if="isTimeRecord">{{ record.lastTime ?? '-' }}</text>
                                 <text class="max" v-else>{{ record.max ?? '-' }}</text>
                             </view>
@@ -161,7 +161,7 @@ watchEffect((onCleanup) => {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    font-size: 32rpx;
+    font-size: 16px;
     color: var(--color-text);
     background-color: var(--color-bg);
 
@@ -174,11 +174,11 @@ watchEffect((onCleanup) => {
         overflow: hidden;
 
         .tips {
-            padding: 0 32rpx;
-            padding-bottom: 32rpx;
+            padding: 0 16px;
+            padding-bottom: 16px;
 
             .title {
-                font-size: 50rpx;
+                font-size: 25px;
                 font-weight: bold;
             }
 
@@ -197,15 +197,15 @@ watchEffect((onCleanup) => {
 
             .checkbox {
                 position: relative;
-                padding: 32rpx;
+                padding: 16px;
 
                 .icon-bg {
                     position: absolute;
                     left: 50%;
                     top: 50%;
                     transform: translate(-50%, -50%);
-                    width: 30rpx;
-                    height: 30rpx;
+                    width: 15px;
+                    height: 15px;
                     border-radius: 50%;
                     background-color: #fff;
                 }
@@ -213,7 +213,7 @@ watchEffect((onCleanup) => {
 
             .record {
                 flex: 1 1 auto;
-                padding: 12rpx 32rpx;
+                padding: 6px 16px;
                 display: flex;
                 flex-direction: column;
                 border-top: 1px solid var(--color-recycle-border);
@@ -221,9 +221,9 @@ watchEffect((onCleanup) => {
                 .header {
                     display: flex;
                     justify-content: space-between;
-                    font-size: 24rpx;
+                    font-size: 10px;
                     color: var(--color-tips);
-                    margin-bottom: 8rpx;
+                    margin-bottom: 4px;
                 }
 
                 .body {
@@ -232,8 +232,7 @@ watchEffect((onCleanup) => {
                     align-items: flex-end;
 
                     .content {
-                        font-size: 30rpx;
-                        line-height: 36rpx;
+                        font-size: 14px;
 
                         .min {
                             color: var(--color-green);
@@ -259,8 +258,8 @@ watchEffect((onCleanup) => {
         top: 0;
 
         .back {
-            height: 80rpx;
-            padding: 0 20rpx;
+            height: 40px;
+            padding: 0 10px;
             position: relative;
             z-index: 1;
             display: inline-flex;
@@ -270,8 +269,8 @@ watchEffect((onCleanup) => {
 
         .nav-title {
             width: 100vw;
-            height: 80rpx;
-            line-height: 80rpx;
+            height: 40px;
+            line-height: 40px;
             position: absolute;
             bottom: 0;
             text-align: center;
@@ -288,7 +287,7 @@ watchEffect((onCleanup) => {
         color: var(--color-recycle-action);
 
         .action {
-            padding: 32rpx;
+            padding: 16px;
         }
     }
 

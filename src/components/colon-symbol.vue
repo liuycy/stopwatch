@@ -11,7 +11,7 @@ import { computed, inject } from 'vue'
 const fontSize = inject<number>('fontSize') ?? 0
 
 const style = computed(() => ({
-	height: `${fontSize * 0.5}rpx`
+	height: `${fontSize * 0.4}rpx`
 }))
 
 const dotStyle = computed(() => ({
@@ -25,6 +25,7 @@ const dotStyle = computed(() => ({
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
 
 	.dot {
 		background-color: var(--color-text);

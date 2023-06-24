@@ -73,11 +73,12 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .actions-group {
-	width: calc(100% - 60rpx);
-	padding: 0 30rpx;
+	width: calc(100% - 32px);
+	padding: 0 16px;
 	position: absolute;
 	top: 745rpx;
 	display: flex;
 	justify-content: space-between;
+	font-size: 16px;
 }
 </style>

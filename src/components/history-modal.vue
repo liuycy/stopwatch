@@ -4,17 +4,17 @@
             <view class="title">确定要删除这段记录吗?</view>
             <view class="record">
                 <view class="header">
-                    <text>记录时间: {{ formatTime(record.ctime) }}</text>
+                    <text>记录时间 {{ formatTime(record.ctime) }}</text>
                     <text>{{ record.total }} 条记录</text>
                 </view>
                 <view class="body">
                     <view class="content">
                         <view>
-                            <text>最小记录: </text>
+                            <text>最小记录 </text>
                             <text class="min">{{ record.min }}</text>
                         </view>
                         <view>
-                            <text>最大记录: </text>
+                            <text>最大记录 </text>
                             <text class="max">{{ record.max ?? '-' }}</text>
                         </view>
                     </view>
@@ -95,13 +95,13 @@ function confirm() {
     color: var(--color-modal-text);
 
     .modal-content {
-        width: 75vw;
+        width: calc(100vw - 64px);
         background-color: var(--color-modal-bg);
-        border-radius: 20rpx;
+        border-radius: 10px;
         animation: 0.2s ease-in slidein;
 
         .title {
-            padding-top: 32rpx;
+            padding-top: 16px;
             text-align: center;
             font-weight: bold;
             color: var(--color-tips);
@@ -110,14 +110,14 @@ function confirm() {
         .record {
             display: flex;
             flex-direction: column;
-            padding: 32rpx;
+            padding: 16px;
 
             .header {
                 display: flex;
                 justify-content: space-between;
-                font-size: 24rpx;
+                font-size: 10px;
                 color: var(--color-tips);
-                margin-bottom: 8rpx;
+                margin-bottom: 4px;
             }
 
             .body {
@@ -126,8 +126,7 @@ function confirm() {
                 align-items: flex-end;
 
                 .content {
-                    font-size: 30rpx;
-                    line-height: 36rpx;
+                    font-size: 14px;
 
                     .min {
                         color: var(--color-green);
@@ -146,11 +145,12 @@ function confirm() {
             border-top: 1px solid var(--color-modal-border);
 
             .action {
-                height: 80rpx;
+                height: 40px;
                 flex: 0 0 50%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                font-size: 14px;
 
                 &.hover {
                     opacity: 0.5;
