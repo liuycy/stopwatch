@@ -26,10 +26,10 @@
     <img src="./misc/11.jpg" width="200">
 </p>
 <p>
-    <img src="./misc/12.jpg" width="420">
-    <img src="./misc/13.jpg" width="420">
-    <img src="./misc/14.jpg" width="420">
-    <img src="./misc/15.jpg" width="420">
-    <img src="./misc/16.jpg" width="420">
-    <img src="./misc/17.jpg" width="420">
+    <img src="./misc/12.jpg" width="400">
+    <img src="./misc/13.jpg" width="400">
+    <img src="./misc/14.jpg" width="400">
+    <img src="./misc/15.jpg" width="400">
+    <img src="./misc/16.jpg" width="400">
+    <img src="./misc/17.jpg" width="400">
 </p>
