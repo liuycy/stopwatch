@@ -12,21 +12,24 @@
 <img src="./misc/qrcode.jpg" width="200px">
 
 ## 小程序截图
-<img src="./misc/1.jpg" width="200px">
-<img src="./misc/2.jpg" width="200px">
-<img src="./misc/3.jpg" width="200px">
-<img src="./misc/4.jpg" width="200px">
-<img src="./misc/5.jpg" width="200px">
-<img src="./misc/6.jpg" width="200px">
-<img src="./misc/7.jpg" width="200px">
-<img src="./misc/8.jpg" width="200px">
-<img src="./misc/9.jpg" width="200px">
-<img src="./misc/10.jpg" width="200px">
-<img src="./misc/11.jpg" width="200px">
-
-<img src="./misc/12.jpg" width="420px">
-<img src="./misc/13.jpg" width="420px">
-<img src="./misc/14.jpg" width="420px">
-<img src="./misc/15.jpg" width="420px">
-<img src="./misc/16.jpg" width="420px">
-<img src="./misc/17.jpg" width="420px">
+<div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, 200px); ">
+    <img src="./misc/1.jpg">
+    <img src="./misc/2.jpg">
+    <img src="./misc/3.jpg">
+    <img src="./misc/4.jpg">
+    <img src="./misc/5.jpg">
+    <img src="./misc/6.jpg">
+    <img src="./misc/7.jpg">
+    <img src="./misc/8.jpg">
+    <img src="./misc/9.jpg">
+    <img src="./misc/10.jpg">
+    <img src="./misc/11.jpg">
+</div>
+<div style="display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, 420px); margin-top: 10px;">
+    <img src="./misc/12.jpg">
+    <img src="./misc/13.jpg">
+    <img src="./misc/14.jpg">
+    <img src="./misc/15.jpg">
+    <img src="./misc/16.jpg">
+    <img src="./misc/17.jpg">
+</div>
