@@ -20,7 +20,7 @@ export class TimerPainter extends CanvasPainter {
 
     constructor(options: TimerPainterOptions) {
         super(options);
-        this.options = { ...super.options, ...options };
+        this.options = options;
     }
 
     drawCircleBg(w: number, h: number) {

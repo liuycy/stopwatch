@@ -130,6 +130,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+    clearTimeout(timeout)
     uni.setKeepScreenOn({ keepScreenOn: settings.keepScreenOn })
     timer.reset()
 })

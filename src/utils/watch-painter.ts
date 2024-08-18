@@ -21,11 +21,11 @@ export class WatchPainter extends CanvasPainter {
 
     constructor(options: WatchPainterOptions) {
         super(options);
+        this.options = options;
         this.width = useGlobalStore().screenWidth;
-        this.options = { ...super.options, ...options };
     }
 
-    drawSecondsDial(duration: Duration) {
+    drawSecondsDial() {
         const { color, secondaryColor } = this.options;
         const center = this.width / 2;
         const ctx = this.ctx!;
@@ -74,9 +74,6 @@ export class WatchPainter extends CanvasPainter {
             const y = distance * Math.sin(angle);
             ctx.fillText(i === 0 ? '60' : `${5 * i}`, x, y);
         }
-        // 画文字时间戳
-        ctx.font = `${fontSize * 0.7}px "Courier New", Courier, monospace`;
-        ctx.fillText(formatDuration(duration), 0, center * 0.35);
 
         ctx.restore();
     }
@@ -130,6 +127,26 @@ export class WatchPainter extends CanvasPainter {
             const y = distance * Math.sin(angle);
             ctx.fillText(i === 0 ? '30' : `${5 * i}`, x, y);
         }
+
+        ctx.restore();
+    }
+
+    drawDurationText(duration: Duration) {
+        const { color } = this.options;
+        const fontSize = 0.08 * this.width;
+        const center = this.width / 2;
+        const ctx = this.ctx!;
+
+        ctx.save();
+        ctx.translate(center, center);
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2;
+        ctx.textAlign = 'center';
+
+        // 画文字时间戳
+        ctx.beginPath();
+        ctx.font = `${fontSize * 0.7}px "Courier New", Courier, monospace`;
+        ctx.fillText(formatDuration(duration), 0, center * 0.35);
 
         ctx.restore();
     }
@@ -214,11 +231,19 @@ export class WatchPainter extends CanvasPainter {
         ctx.restore();
     }
 
+    async init() {
+        await super.init();
+        this.drawSecondsDial();
+        this.drawMinutesDial();
+        this.background = this.ctx!.getImageData(0, 0, this.canvas!.width, this.canvas!.height);
+        return this;
+    }
+
     draw(dialStatus: Duration, duration?: Duration) {
         this.ctx!.clearRect(0, 0, this.width, this.width);
+        this.ctx!.putImageData(this.background!, 0, 0);
 
-        this.drawSecondsDial(dialStatus);
-        this.drawMinutesDial();
+        this.drawDurationText(dialStatus);
         this.drawMinutesPointer(dialStatus);
         this.drawDurationPointer(duration);
         this.drawSecondsPointer(dialStatus);

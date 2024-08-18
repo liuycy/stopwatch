@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { onHide } from '@dcloudio/uni-app';
-import { computed, onUnmounted } from 'vue';
+import { onUnmounted } from 'vue';
 
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';

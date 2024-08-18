@@ -11,6 +11,7 @@ export abstract class CanvasPainter {
     cancelAnimationFrame!: WechatMiniprogram.Canvas['cancelAnimationFrame'];
     requestAnimationFrame!: WechatMiniprogram.Canvas['requestAnimationFrame'];
     ctx?: WechatMiniprogram.CanvasRenderingContext.CanvasRenderingContext2D;
+    background?: WechatMiniprogram.ImageData;
     canvas?: WechatMiniprogram.Canvas;
     image?: WechatMiniprogram.Image;
     canvasHeight!: number;
