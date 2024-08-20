@@ -14,8 +14,8 @@
 
 <script lang="ts" setup>
 import { useSettingsStore } from '@/stores/settings'
-import { PageType, PageURLs } from '@/types/enums'
-import { redirectTo } from '@/utils/pages';
+import { pageTo } from '@/utils/pages';
+import { PageType } from '@/types/enums'
 
 import SvgIcon from '@/components/svg-icon.vue'
 
@@ -29,10 +29,10 @@ function switchTab(type: PageType) {
     settings.changePageType(type)
 
     if (type === PageType.Stopwatch) {
-        return redirectTo(PageURLs.Stopwatch)
+        return pageTo("Stopwatch")
     }
     if (type === PageType.Timer) {
-        return redirectTo(PageURLs.Timer)
+        return pageTo("Timer")
     }
 
 }

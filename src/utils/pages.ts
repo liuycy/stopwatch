@@ -1,5 +1,10 @@
-import type { PageURLs } from '@/types/enums';
+const PageURLs = {
+    RecycleBin: '/pages/index/recycle-bin',
+    Stopwatch: '/pages/index/stopwatch',
+    Timer: '/pages/index/timer',
+    TimerFullscreen: '/pages/index/timer-fullscreen',
+};
 
-export async function redirectTo(url: PageURLs) {
-    return await uni.redirectTo({ url });
+export function pageTo(page: keyof typeof PageURLs) {
+    return uni.reLaunch({ url: PageURLs[page] });
 }

@@ -68,8 +68,8 @@ import { computed, getCurrentInstance, ref, watchEffect } from 'vue';
 import { useGlobalStore } from '@/stores/global';
 import { KeepDay4Deleted, useHistoryStore } from '@/stores/history';
 import { useSettingsStore } from '@/stores/settings';
-import { PageURLs, RecordType } from '@/types/enums';
-import { redirectTo } from '@/utils/pages';
+import { RecordType } from '@/types/enums';
+import { pageTo } from '@/utils/pages';
 import { formatTime } from '@/utils/format';
 import { bindHeightFor } from '@/utils/node';
 
@@ -92,7 +92,7 @@ const top = `${global.topGap}px`
 
 function goBack() {
     settings.vibrate()
-    redirectTo(PageURLs.Stopwatch)
+    pageTo("Stopwatch")
 }
 
 function toggleCheck(id: string) {

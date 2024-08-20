@@ -13,6 +13,7 @@ page,
 root-portal {
     // font-family: Arial, Helvetica, sans-serif;
     font-family: "Courier New", Courier, monospace;
+    background-color: #000;
 
     --color-bg: #000;
     --color-text: #fff;

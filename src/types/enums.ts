@@ -25,10 +25,3 @@ export const enum VibrateType {
     Long = 1,
     Disabled = 2,
 }
-
-export const enum PageURLs {
-    RecycleBin = '/pages/index/recycle-bin',
-    Stopwatch = '/pages/index/stopwatch',
-    Timer = '/pages/index/timer',
-    TimerFullscreen = '/pages/index/timer-fullscreen',
-}

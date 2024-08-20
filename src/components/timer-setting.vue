@@ -48,8 +48,8 @@
 import { useGlobalStore } from '@/stores/global';
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
-import { redirectTo } from '@/utils/pages';
-import { PageType, PageURLs } from '@/types/enums';
+import { pageTo } from '@/utils/pages';
+import { PageType } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
@@ -61,7 +61,7 @@ const top = `${4 + global.topGap}px`
 
 function fullscreen() {
     settings.changePageType(PageType.TimerFullscreen)
-    redirectTo(PageURLs.TimerFullscreen)
+    pageTo("TimerFullscreen")
 }
 
 function changeSetting(type: 'ring' | 'vibrate' | 'timer' | 'hidden') {

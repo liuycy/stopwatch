@@ -8,22 +8,22 @@
 import { onLoad } from '@dcloudio/uni-app';
 
 import { useSettingsStore } from '@/stores/settings'
-import { PageType, PageURLs } from '@/types/enums'
+import { PageType } from '@/types/enums'
 
 import SvgIcon from '@/components/svg-icon.vue'
-import { redirectTo } from '@/utils/pages';
+import { pageTo } from '@/utils/pages';
 
 const settings = useSettingsStore()
 
 onLoad(() => {
 	if (settings.defaultPageType === PageType.Stopwatch) {
-		return redirectTo(PageURLs.Stopwatch)
+		return pageTo("Stopwatch")
 	}
 	if (settings.defaultPageType === PageType.Timer) {
-		return redirectTo(PageURLs.Timer)
+		return pageTo("Timer")
 	}
 	if (settings.defaultPageType === PageType.TimerFullscreen) {
-		return redirectTo(PageURLs.TimerFullscreen)
+		return pageTo("TimerFullscreen")
 	}
 });
 </script>
