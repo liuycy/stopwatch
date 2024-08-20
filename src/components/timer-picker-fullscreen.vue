@@ -40,7 +40,7 @@ import { useTimerStore } from '@/stores/timer'
 const global = useGlobalStore()
 const timer = useTimerStore()
 
-const top = `${global.safeArea.top}px`
+const top = `${global.topGap}px`
 
 function onChange(e: any) {
     if (timer.state === 'running' || timer.state === 'paused') return

@@ -1,6 +1,7 @@
 export const enum PageType {
     Stopwatch = 0,
     Timer = 1,
+    TimerFullscreen = 2,
 }
 
 export const enum DialType {

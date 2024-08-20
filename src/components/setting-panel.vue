@@ -119,7 +119,7 @@ const global = useGlobalStore()
 const history = useHistoryStore()
 const settings = useSettingsStore()
 
-const top = `${4 + global.safeArea.top}px`
+const top = `${4 + global.topGap}px`
 let eggTimer = -1
 
 const iconColor = ref(global.theme === 'dark' ? '#fff' : '#000')

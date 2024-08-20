@@ -22,6 +22,9 @@ onLoad(() => {
 	if (settings.defaultPageType === PageType.Timer) {
 		return redirectTo(PageURLs.Timer)
 	}
+	if (settings.defaultPageType === PageType.TimerFullscreen) {
+		return redirectTo(PageURLs.TimerFullscreen)
+	}
 });
 </script>
 

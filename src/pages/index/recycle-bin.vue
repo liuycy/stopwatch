@@ -88,7 +88,7 @@ const navHeight = ref(0)
 const actionsHeight = ref(0)
 const titleHeight = ref(0)
 
-const top = `${global.safeArea.top}px`
+const top = `${global.topGap}px`
 
 function goBack() {
     settings.vibrate()

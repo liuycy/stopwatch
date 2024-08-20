@@ -1,16 +1,19 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useGlobalStore = defineStore('global', () => {
     const { theme } = uni.getAppBaseInfo();
     const { platform } = uni.getDeviceInfo();
-    const { safeArea, pixelRatio, screenWidth } = uni.getWindowInfo();
+    const { safeArea, statusBarHeight, pixelRatio, screenWidth } = uni.getWindowInfo();
+
+    const topGap = safeArea.top || statusBarHeight;
 
     return {
         theme,
         platform,
 
-        safeArea,
         pixelRatio,
         screenWidth,
+        topGap,
     };
 });
