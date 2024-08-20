@@ -1,6 +1,6 @@
 <template>
-    <view class="fullscreen-button" @click="fullscreen()" hover-class="hover" :hover-start-time="0" :hover-stay-time="50"
-        :style="{ top }">
+    <view class="fullscreen-button" @click="fullscreen()" hover-class="hover" :hover-start-time="0"
+        :hover-stay-time="50" :style="{ top }">
         <svg-icon class="icon" src="/static/icon-fullscreen.svg" size="16px" color="#fff"></svg-icon>
         <text>横屏</text>
     </view>
@@ -12,11 +12,13 @@
                 <view>
                     <view class="span">
                         <view>铃声</view>
-                        <switch class="switch" @change="changeSetting('ring')" :checked="settings.enableTimerRing"></switch>
+                        <switch class="switch" @change="changeSetting('ring')" :checked="settings.enableTimerRing">
+                        </switch>
                     </view>
                     <view class="span">
                         <view>震动</view>
-                        <switch class="switch" @change="changeSetting('vibrate')" :checked="settings.enableTimerVibrate">
+                        <switch class="switch" @change="changeSetting('vibrate')"
+                            :checked="settings.enableTimerVibrate">
                         </switch>
                     </view>
                 </view>
@@ -29,7 +31,8 @@
                 <view>
                     <view class="span">
                         <view>倒计时</view>
-                        <switch class="switch" @change="changeSetting('timer')" :checked="settings.isReverseTimer"></switch>
+                        <switch class="switch" @change="changeSetting('timer')" :checked="settings.isReverseTimer">
+                        </switch>
                     </view>
                 </view>
             </view>
@@ -45,6 +48,8 @@
 import { useGlobalStore } from '@/stores/global';
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
+import { redirectTo } from '@/utils/pages';
+import { PageURLs } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
@@ -55,7 +60,7 @@ const timer = useTimerStore()
 const top = `${4 + global.safeArea.top}px`
 
 function fullscreen() {
-    uni.redirectTo({ url: 'timer-fullscreen' })
+    redirectTo(PageURLs.TimerFullscreen)
 }
 
 function changeSetting(type: 'ring' | 'vibrate' | 'timer' | 'hidden') {

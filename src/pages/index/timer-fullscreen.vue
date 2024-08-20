@@ -64,6 +64,8 @@ import { onHide } from '@dcloudio/uni-app';
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
 import { formatTime } from '@/utils/format';
+import { redirectTo } from '@/utils/pages';
+import { PageURLs } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue';
 import TimerActions from '@/components/timer-actions.vue';
@@ -79,7 +81,7 @@ const hidden = ref(false)
 const pickerVisible = computed(() => timer.state === 'stopped' && !settings.isLockedClock && settings.isReverseTimer)
 
 function goBack() {
-    uni.redirectTo({ url: 'index' })
+    redirectTo(PageURLs.Timer)
 }
 
 function toggleReverseTimer(e: any) {

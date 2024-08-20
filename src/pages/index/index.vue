@@ -1,48 +1,28 @@
 <template>
 	<view class="index">
-		<page-stopwatch v-if="settings.defaultPageType === PageType.Stopwatch"></page-stopwatch>
-		<page-timer v-if="settings.defaultPageType === PageType.Timer"></page-timer>
-		<footer-bar class="footer"></footer-bar>
-		<history-modal></history-modal>
-		<timer-modal></timer-modal>
+		<svg-icon class="icon" src="/static/icon-stopwatch.svg" size="120rpx" color="#eba54c"></svg-icon>
 	</view>
 </template>
 
 <script lang="ts" setup>
-import { provide, ref } from 'vue'
-import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app';
 
 import { useSettingsStore } from '@/stores/settings'
-import { bindHeightFor } from '@/utils/node'
-import { PageType } from '@/types/enums'
+import { PageType, PageURLs } from '@/types/enums'
 
-import PageStopwatch from '@/components/page-stopwatch.vue'
-import PageTimer from '@/components/page-timer.vue'
-import FooterBar from '@/components/footer-bar.vue'
-import HistoryModal from '@/components/history-modal.vue'
-import TimerModal from '@/components/timer-modal.vue'
+import SvgIcon from '@/components/svg-icon.vue'
+import { redirectTo } from '@/utils/pages';
 
 const settings = useSettingsStore()
-const footerHeight = ref(0)
-
-provide('footerHeight', footerHeight)
 
 onLoad(() => {
-	bindHeightFor('.footer >>> .footer-bar').to(footerHeight)
-})
-
-onShareAppMessage(() => {
-	return {
-		title: '秒表(支持导出Excel)|计时器',
-		imageUrl: '/static/share.jpeg'
+	if (settings.defaultPageType === PageType.Stopwatch) {
+		return redirectTo(PageURLs.Stopwatch)
 	}
-})
-
-onShareTimeline(() => {
-	return {
-		title: '秒表(支持导出Excel)|计时器',
+	if (settings.defaultPageType === PageType.Timer) {
+		return redirectTo(PageURLs.Timer)
 	}
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -50,6 +30,42 @@ onShareTimeline(() => {
 	width: 100vw;
 	height: 100vh;
 	background-color: var(--color-bg);
-	color: var(--color-text);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.icon {
+		animation-name: heartBeat;
+		animation-duration: 1.3s;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+	}
+}
+
+@keyframes heartBeat {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+
+	14% {
+		-webkit-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+
+	28% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+
+	42% {
+		-webkit-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+
+	70% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
 }
 </style>

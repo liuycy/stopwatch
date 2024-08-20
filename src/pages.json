@@ -13,6 +13,18 @@
             }
         },
         {
+            "path": "pages/index/stopwatch",
+            "style": {
+                "disableScroll": true
+            }
+        },
+        {
+            "path": "pages/index/timer",
+            "style": {
+                "disableScroll": true
+            }
+        },
+        {
             "path": "pages/index/timer-fullscreen",
             "style": {
                 "disableScroll": true,

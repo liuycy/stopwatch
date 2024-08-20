@@ -33,7 +33,8 @@
             <view class="function-list">
                 <view class="item">
                     <text>保持屏幕常亮</text>
-                    <switch @change="settings.changeScreenOn()" :checked="settings.keepScreenOn" class="switch"></switch>
+                    <switch @change="settings.changeScreenOn()" :checked="settings.keepScreenOn" class="switch">
+                    </switch>
                 </view>
 
                 <view class="item" @click="hitEgg()">
@@ -105,11 +106,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
+import { redirectTo } from '@/utils/pages'
 import { removeExcelDir } from '@/utils/excel'
 import { useGlobalStore } from '@/stores/global'
 import { useHistoryStore } from '@/stores/history'
 import { useSettingsStore } from '@/stores/settings'
-import { VibrateType, DialType, RecordType } from '@/types/enums'
+import { VibrateType, DialType, RecordType, PageURLs } from '@/types/enums'
 
 import SvgIcon from '@/components/svg-icon.vue'
 
@@ -151,7 +153,7 @@ function goToRecycleBinPage() {
     settings.vibrate()
     history.checkRecordDeleted()
     hidePanel()
-    uni.navigateTo({ url: 'recycle-bin' })
+    redirectTo(PageURLs.RecycleBin)
 }
 
 async function clearAllStorage() {
