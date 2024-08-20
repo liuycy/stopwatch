@@ -1,6 +1,6 @@
 <template>
-    <view class="fullscreen-button" @click="fullscreen()" hover-class="hover" :hover-start-time="0"
-        :hover-stay-time="50" :style="{ top }">
+    <view v-if="timer.state === 'stopped'" class="fullscreen-button" @click="fullscreen()" hover-class="hover"
+        :hover-start-time="0" :hover-stay-time="50" :style="{ top }">
         <svg-icon class="icon" src="/static/icon-fullscreen.svg" size="16px" color="#fff"></svg-icon>
         <text>横屏</text>
     </view>
