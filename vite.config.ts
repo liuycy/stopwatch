@@ -5,7 +5,7 @@ import uni from '@dcloudio/vite-plugin-uni';
 export default defineConfig({
     build: {
         target: 'es6',
-        sourcemap: true,
+        sourcemap: false,
     },
 
     plugins: [uni()],
