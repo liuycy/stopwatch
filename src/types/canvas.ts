@@ -3,6 +3,8 @@ import { getCurrentInstance } from 'vue';
 
 export interface CanvasPainterOptions {
     canvasId: string;
+    height?: number;
+    width?: number;
 }
 
 export abstract class CanvasPainter {
@@ -76,20 +78,22 @@ export abstract class CanvasPainter {
     }
 
     async init() {
-        const { canvasId } = this.options;
+        let { canvasId, ...size } = this.options;
         const instance = getCurrentInstance();
 
         try {
             const node = uni.createSelectorQuery().in(instance).select(`#${canvasId}`);
-            const { width, height } = await this.querySize(node);
+            if (!size.height || !size.width) {
+                size = await this.querySize(node);
+            }
 
             this.canvas = await this.queryCanvas(node);
             this.requestAnimationFrame = this.canvas.requestAnimationFrame;
             this.cancelAnimationFrame = this.canvas.cancelAnimationFrame;
-            this.canvas.height = this.dpr * height!;
-            this.canvas.width = this.dpr * width!;
-            this.canvasHeight = height!;
-            this.canvasWidth = width!;
+            this.canvas.height = this.dpr * size.height!;
+            this.canvas.width = this.dpr * size.width!;
+            this.canvasHeight = size.height!;
+            this.canvasWidth = size.width!;
 
             this.ctx = this.canvas.getContext('2d');
             this.ctx.scale(this.dpr, this.dpr);

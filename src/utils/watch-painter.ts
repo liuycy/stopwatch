@@ -20,9 +20,12 @@ export class WatchPainter extends CanvasPainter {
     options: WatchPainterOptions;
 
     constructor(options: WatchPainterOptions) {
+        const { screenWidth } = useGlobalStore();
+        options = { ...options, width: screenWidth, height: screenWidth };
+
         super(options);
         this.options = options;
-        this.width = useGlobalStore().screenWidth;
+        this.width = screenWidth;
     }
 
     drawSecondsDial() {
