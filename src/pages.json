@@ -8,6 +8,13 @@
             }
         },
         {
+            "path": "pages/index/quick-tags",
+            "style": {
+                "disableScroll": true,
+                "pageOrientation": "portrait"
+            }
+        },
+        {
             "path": "pages/index/recycle-bin",
             "style": {
                 "disableScroll": true,

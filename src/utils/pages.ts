@@ -1,4 +1,5 @@
 const PageURLs = {
+    QuickTags: '/pages/index/quick-tags',
     RecycleBin: '/pages/index/recycle-bin',
     Stopwatch: '/pages/index/stopwatch',
     Timer: '/pages/index/timer',

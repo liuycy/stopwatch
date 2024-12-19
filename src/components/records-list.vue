@@ -9,8 +9,12 @@
 				<view class="gap"></view>
 			</view>
 
-			<view class="record" v-for="record in records.timeRecords" :key="hashKey(record.id)">
-				<text class="label">{{ recordLabel }}{{ record.index }}</text>
+			<view class="record" v-for="record in records.timeRecords" :key="hashKey(record.id)"
+				@click="showPopup(record.id)">
+				<text class="label" v-if="record.tag" :style="{ backgroundColor: record.tag.color }">
+					{{ record.tag.text }}
+				</text>
+				<text class="label" v-else>{{ recordLabel }}{{ record.index }}</text>
 				<text :class="['duration', peakClass(record.index)]">{{ formatValue(record) }}</text>
 				<view class="gap"></view>
 			</view>
@@ -29,20 +33,35 @@ import { computed, inject, type Ref } from 'vue'
 
 import { useRecordsStore } from '@/stores/records'
 import { useSettingsStore } from '@/stores/settings'
-import { RecordType } from '@/types/enums'
-import type { TimeRecord } from '@/types/time'
+import { useTagsStore } from '@/stores/tags'
+
 import { formatDuration } from '@/utils/format'
 
 import RecordsHistory from '@/components/records-history.vue'
 
+import { RecordType } from '@/types/enums'
+import type { TimeRecord } from '@/types/time'
+import type { SettingPopup } from '@/types/ui'
+
 const settings = useSettingsStore()
 const records = useRecordsStore()
+const tags = useTagsStore()
 
 const isTimeRecord = computed(() => settings.defaultRecordType === RecordType.Time)
 const curRecord = computed(() => isTimeRecord.value ? records.timeText : records.durationText)
 const recordLabel = computed(() => isTimeRecord.value ? '计时' : '计次')
 
 const footerHeight = inject<Ref<number>>('footerHeight')
+
+const popup = inject<SettingPopup>('popup')!
+
+function showPopup(recordId: string) {
+	if (!tags.list.length) return
+	popup.type = 'tags'
+	popup.recordId = recordId
+	popup.position = 'top'
+	popup.show = true
+}
 
 function formatValue(record: TimeRecord) {
 	if (isTimeRecord.value) return formatDuration(record.time)

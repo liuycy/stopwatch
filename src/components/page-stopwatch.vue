@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted } from "vue"
+import { onUnmounted, provide, reactive } from "vue"
 
 import { useDialStore } from '@/stores/dial'
 import { useRecordsStore } from '@/stores/records'
@@ -18,8 +18,12 @@ import DialPanel from '@/components/dial-panel.vue'
 import RecordsList from '@/components/records-list.vue'
 import SettingPanel from '@/components/setting-panel.vue'
 
+import type { SettingPopup } from "@/types/ui"
+
 const dial = useDialStore()
 const records = useRecordsStore()
+
+provide<SettingPopup>('popup', reactive({}))
 
 onUnmounted(() => {
     dial.pause()

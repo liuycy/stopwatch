@@ -3,6 +3,7 @@ export interface TimeRecord {
     time: Duration;
     duration: Duration;
     index: number;
+    tag?: Tag;
 }
 
 export interface TimePeak {
@@ -21,4 +22,10 @@ export interface Duration {
     seconds: number;
     minutes: number;
     hours?: number;
+}
+
+export interface Tag {
+    id: number;
+    text: string;
+    color: string;
 }

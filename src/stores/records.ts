@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 import { formatDuration, parseDuration } from '@/utils/format';
-import type { TimeRecord, Duration, TimePeak } from '@/types/time';
+
+import type { TimeRecord, Duration, TimePeak, Tag } from '@/types/time';
 
 export const useRecordsStore = defineStore('records', () => {
     const timeRecords = ref<TimeRecord[]>([]);
@@ -98,6 +99,14 @@ export const useRecordsStore = defineStore('records', () => {
         });
     }
 
+    function bindTag(id: string, tag: Tag) {
+        const idx = timeRecords.value.findIndex(r => r.id === id);
+        const record = timeRecords.value[idx];
+        if (!record) return;
+        const [old] = timeRecords.value.splice(idx, 1, { ...record, tag });
+        return old.tag;
+    }
+
     return {
         timeRecords,
         duration,
@@ -109,5 +118,6 @@ export const useRecordsStore = defineStore('records', () => {
         start,
         pause,
         addTime,
+        bindTag,
     };
 });

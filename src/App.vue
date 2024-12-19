@@ -2,10 +2,12 @@
 import { useGlobalStore } from '@/stores/global'
 import { useSettingsLanuch } from '@/stores/settings'
 import { useHistoryLaunch } from '@/stores/history'
+import { useTagsLaunch } from './stores/tags';
 
 useGlobalStore()
 useSettingsLanuch()
 useHistoryLaunch()
+useTagsLaunch()
 </script>
 
 <style lang="scss">

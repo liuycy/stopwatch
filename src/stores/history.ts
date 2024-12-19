@@ -50,7 +50,7 @@ export const useHistoryStore = defineStore('history', () => {
             times.reduceRight(
                 (_, t) =>
                     sheet.push([
-                        t.index,
+                        t.tag ? t.tag.text : t.index,
                         formatDuration(t.duration, { ms3: true }),
                         formatDuration(t.time, { ms3: true }),
                         formatDuration(t.duration, { noMs: true }),

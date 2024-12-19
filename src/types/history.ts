@@ -7,6 +7,7 @@ export interface HistoryRecord {
     total: number;
     ctime: number;
     status: HistoryRecordStatus;
+    tag?: string;
 }
 
 export type HistoryRecordStatus = 'saving' | 'saved' | 'dead';

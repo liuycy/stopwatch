@@ -1,5 +1,5 @@
 <template>
-    <view class="recycle-bin">
+    <view class="quick-tags">
         <scroll-view class="list" v-show="navHeight" :show-scrollbar="false" enhanced scroll-y enable-passive
             enable-back-to-top>
             <view class="stub" :style="{ height: `${navHeight}px` }"></view>
@@ -157,7 +157,7 @@ watchEffect((onCleanup) => {
 </script>
 
 <style lang="scss" scoped>
-.recycle-bin {
+.quick-tags {
     width: 100vw;
     height: 100vh;
     display: flex;
