@@ -40,7 +40,8 @@
                         </view>
                     </template>
                 </view>
-                <scroll-view class="others" scroll-x enable-passive enhanced :bounces="false" @scroll="onScroll">
+                <scroll-view class="others" scroll-x enable-passive enhanced :bounces="false" :show-scrollbar="false"
+                    @scroll="onScroll">
                     <view class="grids">
                         <template v-for="(row, r) in history.tempSheet" :key="r">
                             <template v-for="(col, c) in row" :key="`${r}-${c}`">
