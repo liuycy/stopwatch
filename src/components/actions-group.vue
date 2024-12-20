@@ -37,12 +37,15 @@ import { useDialStore } from '@/stores/dial'
 import { useHistoryStore } from "@/stores/history"
 import { useRecordsStore } from '@/stores/records'
 import { useSettingsStore } from '@/stores/settings'
+import { useTagsStore } from "@/stores/tags"
+
 import { DialStatus, RecordType } from '@/types/enums'
 
 const settings = useSettingsStore()
 const history = useHistoryStore()
 const dial = useDialStore()
 const records = useRecordsStore()
+const tags = useTagsStore()
 
 const isInited = computed(() => dial.status === DialStatus.Init)
 const recordLabel = computed(() => settings.defaultRecordType === RecordType.Duration ? '计次' : '计时')
@@ -53,6 +56,7 @@ function onStart() {
 }
 
 function onReset() {
+	tags.binding.clear()
 	history.generate(records.timeRecords, records.timePeak)
 	dial.reset()
 	records.reset()

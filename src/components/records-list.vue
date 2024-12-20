@@ -56,6 +56,7 @@ const footerHeight = inject<Ref<number>>('footerHeight')
 const popup = inject<SettingPopup>('popup')!
 
 function showPopup(recordId: string) {
+	if (!settings.historyVisible) return
 	if (!tags.list.length) return
 	popup.type = 'tags'
 	popup.recordId = recordId

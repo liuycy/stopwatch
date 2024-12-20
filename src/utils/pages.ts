@@ -1,4 +1,5 @@
 const PageURLs = {
+    EditTags: '/pages/index/edit-tags',
     QuickTags: '/pages/index/quick-tags',
     RecycleBin: '/pages/index/recycle-bin',
     Stopwatch: '/pages/index/stopwatch',

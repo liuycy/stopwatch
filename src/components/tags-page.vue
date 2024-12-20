@@ -2,7 +2,7 @@
     <scroll-view class="tags-page" :style="{ paddingTop: top }" scroll-y>
         <view class="tags-box">
             <view class="tag" v-for="tag in tags.bindingList" :key="tag.id"
-                :style="{ backgroundColor: hex2rgba(tag.color, 0.5).rgba }" @click="bindTag(tag)">
+                :style="{ backgroundColor: hex2rgba(tag.color, 0.5).rgba }" @click="emit('bindtag', tag)">
                 <text class="label">{{ tag.text }}</text>
             </view>
         </view>
@@ -10,33 +10,25 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue';
+import { onUnload } from '@dcloudio/uni-app';
 
 import { useGlobalStore } from '@/stores/global';
-import { useRecordsStore } from '@/stores/records';
 import { useTagsStore } from '@/stores/tags';
 
 import { hex2rgba } from '@/utils/color';
 
-import type { SettingPopup } from '@/types/ui';
 import type { Tag } from '@/types/time';
 
-const global = useGlobalStore()
-const records = useRecordsStore()
-const tags = useTagsStore()
+const emit = defineEmits<{ bindtag: [tag: Tag] }>()
 
-const popup = inject<SettingPopup>('popup')!
+const global = useGlobalStore()
+const tags = useTagsStore()
 
 const top = `${4 + global.topGap}px`
 
-function bindTag(tag: Tag) {
-    if (popup.recordId) {
-        const oldTag = records.bindTag(popup.recordId, tag)
-        if (oldTag) tags.binding.delete(oldTag.id)
-        tags.binding.add(tag.id)
-    }
-    popup.show = false
-}
+onUnload(() => {
+    tags.binding.clear()
+})
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@ import { onLaunch } from '@dcloudio/uni-app';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { checkIfExist, deleteExcelFile, exportExcelFile, saveAsUserData } from '@/utils/excel';
+import { checkIfExist, deleteExcelFile, exportExcelFile, readExcelFile, saveAsUserData } from '@/utils/excel';
 import { formatDuration, parseDuration } from '@/utils/format';
 import type { TimePeak, TimeRecord } from '@/types/time';
 import {
@@ -18,6 +18,8 @@ export const useHistoryStore = defineStore('history', () => {
     const records = ref<HistoryRecord[]>([]);
     const deletedRecords = ref<DeletedRecord[]>([]);
     const recordToBeConfirmed = ref<RecordToBeConfirmed>();
+    const tempSheet = ref<string[][]>();
+    const tempFilename = ref('');
 
     function sortRecords() {
         records.value.sort((a, b) => b.ctime - a.ctime);
@@ -67,10 +69,11 @@ export const useHistoryStore = defineStore('history', () => {
         }
     }
 
-    function remove(id: string) {
+    function remove(id: string, isErased = false) {
         const index = records.value.findIndex(r => r.id === id);
         if (index < 0) return;
         const deletedRecord = records.value.splice(index, 1);
+        if (isErased) return;
         deletedRecords.value.unshift({
             ...deletedRecord[0],
             dtime: Date.now(),
@@ -91,6 +94,12 @@ export const useHistoryStore = defineStore('history', () => {
 
     function exportExcel(id: string) {
         return exportExcelFile(id);
+    }
+
+    async function readExcelToTemp(id: string) {
+        const sheet = await readExcelFile(id);
+        tempFilename.value = id;
+        tempSheet.value = sheet;
     }
 
     function confirmDelete(idset: Set<string>) {
@@ -144,12 +153,15 @@ export const useHistoryStore = defineStore('history', () => {
         records,
         deletedRecords,
         recordToBeConfirmed,
+        tempFilename,
+        tempSheet,
 
         sortRecords,
         generate,
         remove,
         recovery,
         exportExcel,
+        readExcelToTemp,
         confirmDelete,
         confirmRemove,
         checkRecordStatus,

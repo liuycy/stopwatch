@@ -1,7 +1,7 @@
 <template>
     <scroll-view class="records-history" :show-scrollbar="false" enhanced scroll-y enable-passive enable-back-to-top>
         <view class="wrapper" v-for="record in history.records" :key="record.id">
-            <view class="record">
+            <view class="record" @longpress="editTags(record)">
                 <view class="header">
                     <text>记录时间 {{ formatTime(record.ctime) }}</text>
                     <text>{{ record.total }} 条记录</text>
@@ -45,7 +45,10 @@ import { computed, inject, type Ref } from 'vue';
 
 import { useHistoryStore } from '@/stores/history';
 import { useSettingsStore } from '@/stores/settings';
+
+import { readExcelFile } from '@/utils/excel';
 import { formatTime } from '@/utils/format';
+import { pageTo } from '@/utils/pages';
 
 import { RecordType } from '@/types/enums';
 import { RecordConfirmRejectError, type HistoryRecord } from '@/types/history';
@@ -75,23 +78,32 @@ async function confirmRemove(record: HistoryRecord) {
     }
 }
 
-async function exportDeadRecord(record: HistoryRecord) {
-    const { confirm } = await uni.showModal({ title: '无法导出', content: 'Excel 文件已损坏，要删除吗？' })
-    if (confirm) history.remove(record.id)
+async function eraseDeadRecord(title: string, record: HistoryRecord) {
+    const { confirm } = await uni.showModal({
+        title,
+        content: '由于文件缓存被清理, Excel 文件已损坏, 请删除该文件',
+        confirmText: '删除',
+    })
+    if (confirm) history.remove(record.id, true)
 }
 
 async function exportExcel(record: HistoryRecord) {
     settings.vibrate()
 
-    if (record.status === 'dead') return await exportDeadRecord(record)
+    try {
+        await history.exportExcel(record.id)
+    } catch {
+        record.status = 'dead'
+        eraseDeadRecord('无法导出', record)
+    }
+}
 
-    if (record.status === 'saved') {
-        try {
-            await history.exportExcel(record.id)
-        } catch {
-            record.status = 'dead'
-            return exportDeadRecord(record)
-        }
+async function editTags(record: HistoryRecord) {
+    try {
+        await history.readExcelToTemp(record.id)
+        pageTo('EditTags')
+    } catch {
+        eraseDeadRecord('无法打开', record)
     }
 }
 </script>

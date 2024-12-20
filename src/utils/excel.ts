@@ -1,4 +1,4 @@
-import { utils, write } from 'xlsx';
+import { utils, write, read } from 'xlsx';
 import { useGlobalStore } from '@/stores/global';
 
 function buildExcelDir() {
@@ -87,6 +87,25 @@ export function exportExcelFile(filename: string) {
                 if (/canceled/.test(err.errMsg)) return success(null);
                 fail(err);
             },
+        });
+    });
+}
+
+export function readExcelFile(filename: string) {
+    const filePath = `${wx.env.USER_DATA_PATH}/excels/${filename}.xlsx`;
+
+    return new Promise<string[][]>((success, fail) => {
+        const fs = wx.getFileSystemManager();
+        fs.readFile({
+            filePath,
+            encoding: 'base64',
+            success: async file => {
+                const workbook = read(file.data);
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const data = utils.sheet_to_json(worksheet, { header: 1 });
+                success(data as string[][]);
+            },
+            fail,
         });
     });
 }
