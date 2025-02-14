@@ -38,6 +38,18 @@
             </view>
         </view>
 
+        <view class="function-list">
+            <view class="item">
+                <view>滴嗒声</view>
+                <view class="select" @click="changeSetting('tick')">
+                    <text class="green" v-if="settings.tickType == TickType.Quick">快</text>
+                    <text class="green" v-if="settings.tickType == TickType.Slow">慢</text>
+                    <text v-if="settings.tickType == TickType.Disabled">禁用</text>
+                    <svg-icon src="/static/icon-select.svg" size="12px" color="#fff" />
+                </view>
+            </view>
+        </view>
+
         <view class="tips" v-if="settings.isReverseTimer && timer.state === 'running'">
             <text>息屏或切到后台 自动暂停计时</text>
         </view>
@@ -49,7 +61,7 @@ import { useGlobalStore } from '@/stores/global';
 import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
 import { pageTo } from '@/utils/pages';
-import { PageType } from '@/types/enums';
+import { PageType, TickType } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue'
 
@@ -64,8 +76,9 @@ function fullscreen() {
     pageTo("TimerFullscreen")
 }
 
-function changeSetting(type: 'ring' | 'vibrate' | 'timer' | 'hidden') {
+function changeSetting(type: 'tick' | 'ring' | 'vibrate' | 'timer' | 'hidden') {
     settings.vibrate()
+    if (type === 'tick') settings.nextTickType()
     if (type === 'ring') settings.enableTimerRing = !settings.enableTimerRing
     if (type === 'vibrate') settings.enableTimerVibrate = !settings.enableTimerVibrate
     if (type === 'timer') {
@@ -126,6 +139,18 @@ function changeSetting(type: 'ring' | 'vibrate' | 'timer' | 'hidden') {
 
             .switch {
                 transform: scale(0.6);
+            }
+
+            .select {
+                display: inline-flex;
+                align-items: center;
+                height: 30px;
+                padding-right: 12px;
+                gap: 4px;
+                color: var(--color-panel-label);
+                .green {
+                    color: var(--color-green);
+                }
             }
         }
     }

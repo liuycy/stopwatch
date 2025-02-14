@@ -1,18 +1,10 @@
 export class TimerBell {
     context: WechatMiniprogram.InnerAudioContext;
 
-    constructor() {
+    constructor(type: 'ring' | 'tick-slow' | 'tick-quick') {
         this.context = wx.createInnerAudioContext({
             useWebAudioImplement: true,
         });
-        this.context.src = '/static/ring.mp3';
-    }
-
-    ring() {
-        this.context.play();
-    }
-
-    stop() {
-        this.context.stop();
+        this.context.src = `/static/${type}.mp3`;
     }
 }

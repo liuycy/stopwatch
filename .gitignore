@@ -13,6 +13,7 @@ dist
 *.local
 
 # Editor directories and files
+.vscode
 .idea
 *.suo
 *.ntvs*

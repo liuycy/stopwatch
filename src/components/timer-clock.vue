@@ -13,57 +13,87 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref, watch } from 'vue';
+import {
+    computed,
+    getCurrentInstance,
+    onMounted,
+    ref,
+    watch,
+    watchEffect,
+} from "vue";
 
-import { useTimerStore } from '@/stores/timer';
-import { useSettingsStore } from '@/stores/settings';
-import { parseDuration, padFixedInt } from '@/utils/format';
+import { useTimerStore } from "@/stores/timer";
+import { useSettingsStore } from "@/stores/settings";
+import { parseDuration, padFixedInt } from "@/utils/format";
+import { TimerBell } from "@/utils/timer-bell";
+import { TickType } from "@/types/enums";
 
-const timer = useTimerStore()
-const settings = useSettingsStore()
-const instance = getCurrentInstance()
+const timer = useTimerStore();
+const settings = useSettingsStore();
+const instance = getCurrentInstance();
 
-const duration = ref(0)
-const fontSize = ref<string>()
-const time = computed(() => parseDuration(duration.value))
-
-let interval = -1
+const duration = ref(0);
+const fontSize = ref<string>();
+const time = computed(() => parseDuration(duration.value));
 
 function setForOnlyClock() {
-    const date = new Date()
-    const h = date.getHours()
-    const m = date.getMinutes()
-    const s = date.getSeconds()
-    duration.value = 1000 * (s + 60 * m + 3600 * h)
-}
-
-function setDuration() {
-    if (settings.isLockedClock) return setForOnlyClock()
-    duration.value = timer.duration
+    const date = new Date();
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const s = date.getSeconds();
+    duration.value = 1000 * (s + 60 * m + 3600 * h);
 }
 
 function setFonstSize() {
-    fontSize.value = '0px'
+    fontSize.value = "0px";
     setTimeout(() => {
-        const nodeRef = uni.createSelectorQuery().in(instance).select('.card')
-        nodeRef.boundingClientRect(info => {
-            const { width, height } = info as UniApp.NodeInfo
-            const minSize = width! > height! ? height! : width!
-            fontSize.value = `${minSize ? `${0.7 * minSize}px` : '16px'}`
-        }).exec()
+        const nodeRef = uni.createSelectorQuery().in(instance).select(".card");
+        nodeRef
+            .boundingClientRect((info) => {
+                const { width, height } = info as UniApp.NodeInfo;
+                const minSize = width! > height! ? height! : width!;
+                fontSize.value = `${minSize ? `${0.7 * minSize}px` : "16px"}`;
+            })
+            .exec();
     });
 }
 
-watch(() => settings.hiddenSeconds, () => setFonstSize(), { immediate: false })
-
 onMounted(() => {
-    setFonstSize()
-    interval = setInterval(setDuration, 60)
-})
+    watch(() => settings.hiddenSeconds, setFonstSize, { immediate: true });
 
-onUnmounted(() => {
-    clearInterval(interval)
-})
+    watchEffect((onCleanup) => {
+        const tid = setInterval(() => {
+            if (settings.isLockedClock) return setForOnlyClock();
+            duration.value = timer.duration;
+        }, 60);
+        onCleanup(() => {
+            clearInterval(tid);
+        });
+    });
+
+    watchEffect((onCleanup) => {
+        const bell = (() => {
+            switch (settings.tickType) {
+                case TickType.Quick:
+                    return new TimerBell("tick-quick");
+                case TickType.Slow:
+                    return new TimerBell("tick-slow");
+            }
+        })();
+
+        const tid = +(() =>
+            (timer.state === "running" || settings.isLockedClock) &&
+            setInterval(() => {
+                bell?.context.stop();
+                bell?.context.play();
+            }, 1000))();
+
+        onCleanup(() => {
+            clearInterval(tid);
+            bell?.context.destroy();
+        });
+    });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -90,10 +120,6 @@ onUnmounted(() => {
             border-radius: 0.1em;
             width: 1.2em;
             height: 1.2em;
-        }
-
-        &+.card {
-            margin-left: 10px;
         }
     }
 }

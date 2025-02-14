@@ -2,13 +2,14 @@ import { onLaunch } from '@dcloudio/uni-app';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-import { DialType, PageType, RecordType, VibrateType } from '@/types/enums';
+import { DialType, PageType, RecordType, TickType, VibrateType } from '@/types/enums';
 
 export const useSettingsStore = defineStore('settings', () => {
     const historyVisible = ref(true);
     const recycleBinEnabled = ref(false);
     const keepScreenOn = ref(true);
     const isActionsReverse = ref(false);
+    const tickType = ref(TickType.Disabled);
     const vibrateType = ref(VibrateType.Short);
     const defaultRecordType = ref(RecordType.Duration);
     const defaultDialType = ref(DialType.Number);
@@ -70,6 +71,11 @@ export const useSettingsStore = defineStore('settings', () => {
         defaultDialType.value = (defaultDialType.value + 1) % 2;
     }
 
+    function nextTickType() {
+        tickType.value = (tickType.value + 1) % 3;
+        vibrate();
+    }
+
     return {
         historyVisible,
         recycleBinEnabled,
@@ -84,6 +90,7 @@ export const useSettingsStore = defineStore('settings', () => {
         isReverseTimer,
         isLockedClock,
         hiddenSeconds,
+        tickType,
 
         vibrate,
         changePageType,
@@ -94,6 +101,7 @@ export const useSettingsStore = defineStore('settings', () => {
         nextVibrateType,
         nextDefaultRecordType,
         nextDefaultDialType,
+        nextTickType,
     };
 });
 

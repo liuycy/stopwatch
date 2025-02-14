@@ -49,6 +49,15 @@
                 <switch class="switch" @change="toggleReverseTimer" :checked="settings.isReverseTimer">
                 </switch>
             </view>
+            <view class="action">
+                <text>滴嗒声</text>
+                <view class="select" @click="toggleTick">
+                    <text class="green" v-if="settings.tickType == TickType.Quick">快</text>
+                    <text class="green" v-if="settings.tickType == TickType.Slow">慢</text>
+                    <text v-if="settings.tickType == TickType.Disabled">禁用</text>
+                    <svg-icon src="/static/icon-select.svg" size="12px" color="#fff" />
+                </view>
+            </view>
 
             <timer-actions size="70px" fullscreen v-if="!settings.isLockedClock"></timer-actions>
         </view>
@@ -65,7 +74,7 @@ import { useSettingsStore } from '@/stores/settings';
 import { useTimerStore } from '@/stores/timer';
 import { formatTime } from '@/utils/format';
 import { pageTo } from '@/utils/pages';
-import { PageType } from '@/types/enums';
+import { PageType, TickType } from '@/types/enums';
 
 import SvgIcon from '@/components/svg-icon.vue';
 import TimerActions from '@/components/timer-actions.vue';
@@ -83,6 +92,11 @@ const pickerVisible = computed(() => timer.state === 'stopped' && !settings.isLo
 function goBack() {
     settings.changePageType(PageType.Timer)
     pageTo("Timer")
+}
+
+function toggleTick() {
+    settings.vibrate();
+    settings.nextTickType()
 }
 
 function toggleReverseTimer(e: any) {
@@ -251,6 +265,16 @@ onHide(() => {
 
             .switch {
                 transform: scale(0.8);
+            }
+
+            .select {
+                display: inline-flex;
+                align-items: center;
+                padding-right: 6px;
+                color: var(--color-panel-label);
+                .green {
+                    color: var(--color-green);
+                }
             }
         }
     }

@@ -35,7 +35,7 @@ let timeout = -1;
 
 const timer = useTimerStore()
 const settings = useSettingsStore()
-const timerbell = new TimerBell()
+const timerbell = new TimerBell('ring')
 
 const visible = ref(false)
 
@@ -70,7 +70,7 @@ function confirm() {
 }
 
 function heartBeat() {
-    if (settings.enableTimerRing) timerbell.ring()
+    if (settings.enableTimerRing) timerbell.context.play()
     if (settings.enableTimerVibrate) uni.vibrateLong()
     timeout = setTimeout(heartBeat, 1000)
 }

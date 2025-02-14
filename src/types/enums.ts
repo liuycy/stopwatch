@@ -1,3 +1,9 @@
+export const enum TickType {
+    Disabled = 0,
+    Slow = 1,
+    Quick = 2,
+}
+
 export const enum PageType {
     Stopwatch = 0,
     Timer = 1,
