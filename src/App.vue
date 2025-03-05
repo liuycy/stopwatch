@@ -1,89 +1,121 @@
-<script lang="ts" setup>
-import { useGlobalStore } from '@/stores/global'
-import { useSettingsLanuch } from '@/stores/settings'
-import { useHistoryLaunch } from '@/stores/history'
-import { useTagsLaunch } from './stores/tags';
+<script setup lang="ts">
+TODO_to_be_deleted_next_version();
 
-useGlobalStore()
-useSettingsLanuch()
-useHistoryLaunch()
-useTagsLaunch()
+function TODO_to_be_deleted_next_version() {
+  try {
+    const settings = uni.getStorageSync("settings");
+    if (settings) {
+      const old = JSON.parse(settings);
+      const cur = {
+        screenOn: old.keepScreenOn,
+        reversed: old.isActionsReverse,
+        history: old.historyVisible,
+        trash: old.recycleBinEnabled,
+        vibrateType: old.vibrateType,
+        record: 0,
+        timer: 0,
+      };
+      uni.setStorageSync("stopwatch-settings", cur);
+      uni.removeStorageSync("settings");
+    }
+
+    const history = uni.getStorageSync("history");
+    if (history) {
+      const old = JSON.parse(history);
+      uni.setStorageSync("history", old);
+    }
+
+    const tags = uni.getStorageSync("tags");
+    if (tags) {
+      const old = JSON.parse(tags);
+      uni.setStorageSync("tags", old);
+    }
+  } catch {
+    return;
+  }
+}
+
+useRouter().register();
+useSystem().register();
+useSetting().register();
+useHistory().register();
+useTimer().register();
+useTags().register();
 </script>
 
-<style lang="scss">
-page,
-root-portal {
-    // font-family: Arial, Helvetica, sans-serif;
-    font-family: "Courier New", Courier, monospace;
-    background-color: #000;
+<style>
+page {
+  width: 100vw;
+  height: 100vh;
+  font-size: 16rpx;
+  color: var(--color-text);
+  background-color: var(--color-bg);
 
-    --color-bg: #000;
-    --color-text: #fff;
-    --color-tips: #c6c6c6;
-    --color-line: #202020;
-    --color-border: #2b2b2b;
-    --color-blur: rgba(0, 0, 0, 0.3);
-
-    --color-green: #65ce67;
-    --color-green-bg: #112813;
-    --color-green-hover: #081609;
-
-    --color-red: #ee534f;
-    --color-red-bg: #2d100c;
-    --color-red-hover: #180808;
-
-    --color-orange: #efa448;
-    --color-orange-bg: #30200a;
-    --color-orange-hover: #191103;
-
-    --color-gray-bg: #333;
-    --color-gray-hover: #1b1b1b;
-
-    --color-panel-bg: #f7f7f7;
-    --color-panel-action-bg: #fff;
-    --color-panel-cancel-border: #e6e6e6;
-    --color-panel-cancel-text: #5e6696;
-    --color-panel-text: #000;
-    --color-panel-label: #999;
-    --color-panel-label-highlight: #27bd2d;
-
-    --color-overlay: rgba(0, 0, 0, 0.6);
-    --color-modal-bg: #2c2c2c;
-    --color-modal-text: #fff;
-    --color-modal-confirm-text: #5e6696;
-    --color-modal-border: #373737;
-
-    --color-recycle-action: #3183f4;
-    --color-recycle-tips: #767676;
-    --color-recycle-border: #3a3a3a;
-
-    --color-mask-bar: rgba(255, 255, 255, 0.15);
-    --color-mask-bg: rgba(0, 0, 0, 0.7);
+  --color-bg: #000000;
+  --color-bg2: #2c2c2c;
+  --color-text: #ffffff;
+  --color-text2: #5e6696;
+  --color-border: #2b2b2b;
+  --color-border2: #3a3a3a;
+  --color-border3: #373737;
+  --color-tips: #c6c6c6;
+  --color-tips2: #767676;
+  --color-line: #202020;
+  --color-blur: rgba(0, 0, 0, 0.3);
+  --color-mask: rgba(255, 255, 255, 0.15);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-action: #3183f4;
+  --color-green: #65ce67;
+  --color-red: #ee534f;
 }
 
-@media (prefers-color-scheme: dark) {
-    page {
-        --color-panel-bg: #1e1e1e;
-        --color-panel-action-bg: #2c2c2c;
-        --color-panel-cancel-border: #202020;
-        --color-panel-cancel-text: #7e88a1;
-        --color-panel-text: #808080;
-        --color-panel-label: #999;
-        --color-panel-label-highlight: #26c067;
-    }
+.picker-view-remove-mask-bg {
+  background: none;
+}
+.picker-view-remove-indicator-border::after {
+  border: none;
+}
+.picker-view-remove-indicator-border::before {
+  border: none;
 }
 
-.picker-mask {
-    background: none;
+.animate-fold {
+  transform-origin: bottom center;
+  animation: fold 0.5s ease-in;
 }
 
-.picker-indicator {
-    &::after {
-        border: none;
-    }
+@keyframes fold {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(165deg);
+  }
+}
 
-    &::before {
-        border: none;
-    }
+.animate-shaking {
+  animation: 0.5s shaking infinite;
+}
+
+@keyframes shaking {
+  0% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(-10deg);
+  }
+
+  30% {
+    transform: rotate(-15deg);
+  }
+
+  70% {
+    transform: rotate(5deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
 }
 </style>

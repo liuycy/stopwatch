@@ -1,58 +1,69 @@
 {
-    "pages": [
+  "globalStyle": {
+    "navigationStyle": "custom"
+  },
+  "pages": [
+    {
+      "path": "pages/router/router",
+      "style": {
+        "disableScroll": true
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pages-stopwatch",
+      "pages": [
         {
-            "path": "pages/index/index",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
+          "path": "main/main",
+          "style": {
+            "disableScroll": true
+          }
         },
         {
-            "path": "pages/index/edit-tags",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
+          "path": "trash/trash",
+          "style": {
+            "disableScroll": true
+          }
         },
         {
-            "path": "pages/index/quick-tags",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
+          "path": "tags/tags",
+          "style": {
+            "disableScroll": true
+          }
         },
         {
-            "path": "pages/index/recycle-bin",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
-        },
-        {
-            "path": "pages/index/stopwatch",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
-        },
-        {
-            "path": "pages/index/timer",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "portrait"
-            }
-        },
-        {
-            "path": "pages/index/timer-fullscreen",
-            "style": {
-                "disableScroll": true,
-                "pageOrientation": "landscape"
-            }
+          "path": "tagsview/tagsview",
+          "style": {
+            "disableScroll": true
+          }
         }
-    ],
-    "globalStyle": {
-        "backgroundColor": "#000",
-        "navigationStyle": "custom"
+      ]
     },
-    "uniIdRouter": {}
+    {
+      "root": "pages-timer",
+      "pages": [
+        {
+          "path": "main/main",
+          "style": {
+            "disableScroll": true
+          }
+        }
+      ]
+    },
+    {
+      "root": "pages-clock",
+      "pages": [
+        {
+          "path": "main/main",
+          "style": {
+            "mp-weixin": {
+              "pageOrientation": "landscape",
+              "renderer": "webview"
+            }
+          }
+        }
+      ]
+    }
+  ]
 }

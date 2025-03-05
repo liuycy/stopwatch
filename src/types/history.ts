@@ -1,23 +1,23 @@
 export interface HistoryRecord {
-    id: string;
-    min: string;
-    max?: string;
-    firstTime: string;
-    lastTime?: string;
-    total: number;
-    ctime: number;
-    status: HistoryRecordStatus;
+  id: string;
+  min: string;
+  max?: string;
+  firstTime: string;
+  lastTime?: string;
+  total: number;
+  ctime: number;
+  status: HistoryRecordStatus;
 }
 
-export type HistoryRecordStatus = 'saving' | 'saved' | 'dead';
+export type HistoryRecordStatus = "saving" | "saved" | "dead";
 
 export type DeletedRecord = HistoryRecord & {
-    dtime: number;
+  dtime: number;
 };
 
 export type RecordToBeConfirmed = HistoryRecord & {
-    confirm(): void;
-    cancel(): void;
+  confirm(): void;
+  cancel(): void;
 };
 
 export class RecordConfirmRejectError extends Error {}

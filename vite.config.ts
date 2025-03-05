@@ -1,12 +1,20 @@
-import { defineConfig } from 'vite';
-import uni from '@dcloudio/vite-plugin-uni';
+import { defineConfig } from "vite";
+import uni from "@dcloudio/vite-plugin-uni";
+import autoimport from "unplugin-auto-import/vite";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-    build: {
-        target: 'es6',
-        sourcemap: false,
-    },
+export default async () => {
+  const unocss = (await import("unocss/vite")).default;
 
-    plugins: [uni()],
-});
+  return defineConfig({
+    plugins: [
+      uni(),
+      unocss(),
+      autoimport({
+        imports: ["vue", "uni-app", "pinia"],
+        dts: "src/auto-imports.d.ts",
+        dirs: ["src/store", "src/types", "src/utils"],
+        vueTemplate: true,
+      }),
+    ],
+  });
+};

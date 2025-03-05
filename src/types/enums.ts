@@ -1,33 +1,27 @@
 export const enum TickType {
-    Disabled = 0,
-    Slow = 1,
-    Quick = 2,
-}
-
-export const enum PageType {
-    Stopwatch = 0,
-    Timer = 1,
-    TimerFullscreen = 2,
+  Disabled = 0,
+  Slow = 1,
+  Quick = 2,
 }
 
 export const enum DialType {
-    Number = 0,
-    Emulate = 1,
+  Emulate = 0,
+  Number = 1,
 }
 
 export const enum DialStatus {
-    Init = 0,
-    Running = 1,
-    Paused = 2,
+  Init = 0,
+  Running = 1,
+  Paused = 2,
 }
 
 export const enum RecordType {
-    Time = 0,
-    Duration = 1,
+  Duration = 0,
+  Time = 1,
 }
 
 export const enum VibrateType {
-    Short = 0,
-    Long = 1,
-    Disabled = 2,
+  Short = 0,
+  Long = 1,
+  Disabled = 2,
 }
