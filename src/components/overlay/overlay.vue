@@ -1,8 +1,9 @@
 <template>
   <view
     v-if="vsble"
-    un-flex="~ justify-center items-center"
+    :class="mergeClass"
     class="absolute top-0 left-0 h-screen w-screen bg-[--color-overlay] text-#ffffff"
+    un-flex="~ justify-center items-center"
     @click="$emit('clickoverlay')"
   >
     <view @click.stop="() => {}" class="content" :class="[position, enterclass]" v-if="show">
@@ -19,6 +20,7 @@ defineOptions({ options: { virtualHost: true, styleIsolation: "shared" } });
 
 const vsble = ref(false);
 const props = defineProps<{
+  mergeClass?: unknown;
   position?: "top" | "bottom";
   show?: boolean;
 }>();

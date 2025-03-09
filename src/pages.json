@@ -57,6 +57,7 @@
         {
           "path": "main/main",
           "style": {
+            "disableScroll": true,
             "mp-weixin": {
               "pageOrientation": "landscape",
               "renderer": "webview"

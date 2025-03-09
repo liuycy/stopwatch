@@ -27,7 +27,7 @@
     </view>
   </template>
 
-  <overlay :show="show" @clickoverlay="onStopClick">
+  <overlay merge-class="z-1" :show="show" @clickoverlay="onStopClick">
     <view class="w-250px rounded-10px bg-[--color-bg2]">
       <text class="pt-16px block font-bold text-(16px center [--color-tips])">计时结束</text>
       <text class="pt-8px block text-(12px center [--color-tips])">息屏或切到后台, 自动停止计时</text>
@@ -92,7 +92,7 @@ onHide(() => {
 });
 
 watchEffect((onCleanup) => {
-  if (timer.status !== "running") return;
+  if (!timer.settings.clock && timer.status !== "running") return;
 
   const bell = (() => {
     switch (timer.settings.tick) {
@@ -104,7 +104,6 @@ watchEffect((onCleanup) => {
   })();
 
   const tid = +(() => {
-    if (!timer.settings.clock && timer.status !== "running") return -1;
     return setInterval(() => {
       bell?.context.stop();
       bell?.context.play();

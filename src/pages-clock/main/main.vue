@@ -1,11 +1,16 @@
 <template>
-  <view class="h-screen w-screen bg-[--color-bg] text-[--color-text]" :style="{ '--safetop': `${system.top}px` }">
+  <view
+    :style="{ '--safetop': `${system.top}px` }"
+    class="absolute h-screen w-screen bg-[--color-bg] text-[--color-text] overflow-hidden"
+  >
     <clock-runner v-if="timer.settings.clock || timer.status !== 'stopped'" @click="AutoHide.toggle" />
     <clock-picker
       merge-class="ml-[--safetop]"
       :hidden-class="[{ '-translate-x-150%': !timer.settings.reversed }, 'transition-(all duration-0.3s)']"
     />
 
+    <clock-tips :hidden-class="['transition-(all duration-0.3s)', { '-translate-y-100px': hidden }]" />
+    <clock-setting :hidden-class="['transition-(all duration-0.3s)', { 'translate-x-100%': hidden }]" />
     <float-btn
       size="18px"
       label="竖屏"
@@ -14,8 +19,6 @@
       :hidden-class="['transition-(all duration-0.3s)', { '-translate-y-100px': hidden }]"
       @click="router.modto('timer')"
     />
-    <clock-setting :hidden-class="['transition-(all duration-0.3s)', { 'translate-x-100%': hidden }]" />
-    <clock-tips :hidden-class="['transition-(all duration-0.3s)', { '-translate-y-100px': hidden }]" />
   </view>
 </template>
 
