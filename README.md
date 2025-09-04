@@ -9,27 +9,11 @@
 - 横屏作为数字时钟显示
 
 ## 扫码体验
-<img src="./misc/qrcode.jpg" width="200px">
+<img src="./misc/qrcode.png" width="375" style="aspect-ratio: 1" />
 
 ## 小程序截图
 <p>
-    <img src="./misc/1.jpg" width="200">
-    <img src="./misc/2.jpg" width="200">
-    <img src="./misc/3.jpg" width="200">
-    <img src="./misc/4.jpg" width="200">
-    <img src="./misc/5.jpg" width="200">
-    <img src="./misc/6.jpg" width="200">
-    <img src="./misc/7.jpg" width="200">
-    <img src="./misc/8.jpg" width="200">
-    <img src="./misc/9.jpg" width="200">
-    <img src="./misc/10.jpg" width="200">
-    <img src="./misc/11.jpg" width="200">
+    <img src="./misc/sr01.gif" width="375" />
+    <img src="./misc/sr02.gif" width="375" />
 </p>
-<p>
-    <img src="./misc/12.jpg" width="400">
-    <img src="./misc/13.jpg" width="400">
-    <img src="./misc/14.jpg" width="400">
-    <img src="./misc/15.jpg" width="400">
-    <img src="./misc/16.jpg" width="400">
-    <img src="./misc/17.jpg" width="400">
-</p>
+
